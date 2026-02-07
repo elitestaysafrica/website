@@ -1,6 +1,7 @@
 import { Hero } from "@/components/sections/hero";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
 import { 
   MapPin, 
   Wifi, 
@@ -8,8 +9,115 @@ import {
   Users,
   TrendingUp,
   BarChart3,
-  Building2
+  Building2,
+  Bed,
+  Bath,
+  Users as Guests
 } from "lucide-react";
+
+// Featured Properties Section
+function FeaturedProperties() {
+  const properties = [
+    {
+      id: 1,
+      name: "Luxury Studio - Westlands",
+      location: "Westlands",
+      bedrooms: 1,
+      bathrooms: 1,
+      guests: 2,
+      price: "KES 8,500",
+      image: "/images/placeholder-property.jpg",
+      href: "/properties/westlands-studio",
+    },
+    {
+      id: 2,
+      name: "Modern 2BR - Kilimani",
+      location: "Kilimani",
+      bedrooms: 2,
+      bathrooms: 2,
+      guests: 4,
+      price: "KES 12,000",
+      image: "/images/placeholder-property.jpg",
+      href: "/properties/kilimani-2br",
+    },
+    {
+      id: 3,
+      name: "Executive Suite - Riverside",
+      location: "Riverside",
+      bedrooms: 1,
+      bathrooms: 1,
+      guests: 2,
+      price: "KES 10,000",
+      image: "/images/placeholder-property.jpg",
+      href: "/properties/riverside-suite",
+    },
+  ];
+
+  return (
+    <section className="py-24">
+      <div className="container mx-auto px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            Explore Our Properties
+          </h2>
+          <p className="mt-4 text-lg text-gray-600">
+            Handpicked apartments in Nairobi&apos;s most desirable locations. Every unit is
+            professionally managed, spotlessly clean, and equipped for work and leisure.
+          </p>
+        </div>
+        <div className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {properties.map((property) => (
+            <Link
+              key={property.id}
+              href={property.href}
+              className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-gray-200 hover:shadow-lg transition-shadow"
+            >
+              {/* Image placeholder */}
+              <div className="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 relative">
+                <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+                  <Building2 className="h-12 w-12" />
+                </div>
+              </div>
+              {/* Content */}
+              <div className="flex flex-1 flex-col p-6">
+                <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <MapPin className="h-4 w-4" />
+                  {property.location}
+                </div>
+                <h3 className="mt-2 text-lg font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                  {property.name}
+                </h3>
+                <div className="mt-4 flex items-center gap-4 text-sm text-gray-600">
+                  <div className="flex items-center gap-1">
+                    <Bed className="h-4 w-4" />
+                    {property.bedrooms}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Bath className="h-4 w-4" />
+                    {property.bathrooms}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Guests className="h-4 w-4" />
+                    {property.guests}
+                  </div>
+                </div>
+                <div className="mt-4 pt-4 border-t">
+                  <span className="text-lg font-bold text-gray-900">{property.price}</span>
+                  <span className="text-sm text-gray-500"> / night</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+        <div className="mt-12 text-center">
+          <Button size="lg" variant="outline" asChild>
+            <Link href="/properties">View All Properties →</Link>
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 // Value Props Section
 function WhyChooseUs() {
@@ -255,6 +363,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <FeaturedProperties />
       <WhyChooseUs />
       <MarketIntelTeaser />
       <ForInvestors />
