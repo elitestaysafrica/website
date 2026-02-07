@@ -220,27 +220,30 @@ function MarketIntelTeaser() {
               <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 p-8">
                 <div className="h-full rounded-xl bg-white shadow-lg p-6">
                   <div className="text-sm font-medium text-gray-500">
-                    Nairobi Average Occupancy
+                    Nairobi Market Average
                   </div>
                   <div className="mt-2 text-4xl font-bold text-gray-900">
-                    74.7%
+                    45%
                   </div>
-                  <div className="mt-1 text-sm text-green-600">
+                  <div className="mt-1 text-sm text-green-600 font-semibold">
                     ↑ Elite Stays: 85%+
                   </div>
                   <div className="mt-6 space-y-3">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Westlands</span>
-                      <span className="font-medium">77%</span>
+                      <span className="font-medium">52%</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Kilimani</span>
-                      <span className="font-medium">76%</span>
+                      <span className="font-medium">48%</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Kileleshwa</span>
-                      <span className="font-medium">74%</span>
+                      <span className="text-gray-600">Lavington</span>
+                      <span className="font-medium">53%</span>
                     </div>
+                  </div>
+                  <div className="mt-4 pt-4 border-t text-xs text-gray-400">
+                    Source: Airbtics, AirDNA 2025
                   </div>
                 </div>
               </div>

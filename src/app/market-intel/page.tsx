@@ -21,62 +21,62 @@ export const metadata = {
 
 // Free market data - visible to all
 const marketOverview = {
-  source: "Cytonn 2025 Real Estate Report",
-  lastUpdated: "January 2025",
-  averageOccupancy: "74.7%",
-  averageYield: "7.4%",
-  pricePerSqm: "KES 3,366/month",
+  source: "Airbtics, AirDNA",
+  lastUpdated: "January 2026",
+  averageOccupancy: "45%",
+  averageADR: "$55/night",
+  totalListings: "5,000+",
   eliteStaysOccupancy: "85%+",
 }
 
 const neighborhoods = [
   {
     name: "Westlands",
-    yield: "11.0%",
-    occupancy: "77%",
-    avgNightly: "KES 12,000",
-    trend: "up",
-    description: "Prime business district. High demand from corporate travelers and digital nomads. Best yields in the city.",
+    yield: "9.5%",
+    occupancy: "52%",
+    avgNightly: "KES 7,500",
+    trend: "stable",
+    description: "Prime business district. High demand from corporate travelers. 237 active listings competing for market share.",
   },
   {
-    name: "Limuru Road",
-    yield: "9.1%",
-    occupancy: "75%",
-    avgNightly: "KES 8,500",
+    name: "Downtown",
+    yield: "8.8%",
+    occupancy: "53%",
+    avgNightly: "KES 8,600",
     trend: "up",
-    description: "Emerging hotspot with newer developments. Growing expat community. Good value for investors.",
+    description: "Highest ADR in the city at $66/night. Business travelers drive weekday demand. 595 listings.",
   },
   {
     name: "Kilimani",
-    yield: "8.8%",
-    occupancy: "76%",
-    avgNightly: "KES 10,500",
-    trend: "stable",
-    description: "Central location, walkable to malls and restaurants. Popular with families and mid-term stays.",
-  },
-  {
-    name: "Kileleshwa",
-    yield: "7.6%",
-    occupancy: "74%",
-    avgNightly: "KES 9,000",
-    trend: "stable",
-    description: "Residential feel with good amenities. Quieter alternative to Kilimani. Steady demand.",
+    yield: "7.2%",
+    occupancy: "48%",
+    avgNightly: "KES 6,000",
+    trend: "down",
+    description: "Most saturated market with 1,424 listings. Price wars driving rates down. Differentiation critical.",
   },
   {
     name: "Lavington",
-    yield: "7.2%",
-    occupancy: "72%",
-    avgNightly: "KES 14,000",
+    yield: "7.8%",
+    occupancy: "53%",
+    avgNightly: "KES 5,700",
     trend: "stable",
-    description: "Upscale neighborhood. Lower occupancy but higher rates. Appeals to premium segment.",
+    description: "Family-oriented neighborhood. 469 listings. Steady demand from relocating families and mid-term stays.",
   },
   {
-    name: "Upper Hill",
-    yield: "6.8%",
-    occupancy: "70%",
-    avgNightly: "KES 11,000",
-    trend: "down",
-    description: "CBD-adjacent. Weekday demand from business travelers. Weekends can be slow.",
+    name: "Gigiri",
+    yield: "8.5%",
+    occupancy: "50%",
+    avgNightly: "KES 9,400",
+    trend: "up",
+    description: "UN and embassy area. Highest rates at $72/night. Limited supply (44 listings) keeps competition low.",
+  },
+  {
+    name: "Karen",
+    yield: "6.5%",
+    occupancy: "48%",
+    avgNightly: "KES 7,000",
+    trend: "stable",
+    description: "Premium residential. Lower density with only 75 listings. Appeals to long-stay guests seeking space.",
   },
 ]
 
@@ -84,7 +84,7 @@ const neighborhoods = [
 const premiumReports = [
   {
     title: "Nairobi STR Deep Dive Q1 2026",
-    description: "Comprehensive analysis of 1,500+ guests. Occupancy by property type, seasonal trends, pricing strategies that work.",
+    description: "Deep analysis of 5,000+ Nairobi listings. Occupancy by property type, seasonal trends, pricing strategies that work.",
     price: "KES 4,999",
     pages: 45,
     released: "January 2026",
@@ -222,27 +222,27 @@ export default function MarketIntelPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <StatCard 
                 icon={Percent}
-                label="Average Occupancy"
+                label="Market Avg Occupancy"
                 value={marketOverview.averageOccupancy}
-                subtext="Market-wide average"
+                subtext="Nairobi-wide average"
               />
               <StatCard 
                 icon={TrendingUp}
                 label="Elite Stays Occupancy"
                 value={marketOverview.eliteStaysOccupancy}
-                subtext="Our portfolio performance"
+                subtext="Our portfolio outperforms"
               />
               <StatCard 
                 icon={DollarSign}
-                label="Average Yield"
-                value={marketOverview.averageYield}
-                subtext="Annual rental yield"
+                label="Average Daily Rate"
+                value={marketOverview.averageADR}
+                subtext="~KES 7,150/night"
               />
               <StatCard 
                 icon={Building2}
-                label="Price per sqm"
-                value={marketOverview.pricePerSqm}
-                subtext="Average rental rate"
+                label="Active Listings"
+                value={marketOverview.totalListings}
+                subtext="Nairobi Airbnb market"
               />
             </div>
           </div>
@@ -275,24 +275,24 @@ export default function MarketIntelPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-8">Key Insights</h2>
             <div className="space-y-6">
               <div className="rounded-2xl bg-green-50 p-6 ring-1 ring-green-100">
-                <h3 className="font-semibold text-green-900">🔥 Hot Market: Westlands</h3>
+                <h3 className="font-semibold text-green-900">🔥 Opportunity: Gigiri & Downtown</h3>
                 <p className="mt-2 text-green-800">
-                  Highest yields in the city at 11%. Strong corporate demand. 
-                  Limited supply keeps occupancy high. Best for 1-2 bedroom units targeting business travelers.
+                  Highest ADRs in the city ($66-72/night). Limited supply keeps competition manageable. 
+                  UN staff, diplomats, and business travelers drive consistent demand.
                 </p>
               </div>
               <div className="rounded-2xl bg-blue-50 p-6 ring-1 ring-blue-100">
-                <h3 className="font-semibold text-blue-900">📈 Rising: Limuru Road</h3>
+                <h3 className="font-semibold text-blue-900">📈 Strategy: Mid-Term Rentals</h3>
                 <p className="mt-2 text-blue-800">
-                  Emerging neighborhood with newer developments. Lower entry costs than Westlands 
-                  but yields approaching 9%. Growing expat community driving demand.
+                  1-3 month stays are becoming the sweet spot. Less turnover, guaranteed occupancy, 
+                  better guests. Expats and digital nomads driving this shift.
                 </p>
               </div>
               <div className="rounded-2xl bg-amber-50 p-6 ring-1 ring-amber-100">
-                <h3 className="font-semibold text-amber-900">⚠️ Watch: Upper Hill</h3>
+                <h3 className="font-semibold text-amber-900">⚠️ Saturated: Kilimani</h3>
                 <p className="mt-2 text-amber-800">
-                  Declining trend. Heavy reliance on weekday business travel. 
-                  New supply coming online. Consider diversifying if heavily exposed.
+                  1,424 listings competing for guests. Price wars pushing rates down — units that 
+                  fetched $70/night now struggle at $40. Differentiation is survival.
                 </p>
               </div>
             </div>
