@@ -226,7 +226,7 @@ function MarketIntelTeaser() {
                     74.7%
                   </div>
                   <div className="mt-1 text-sm text-green-600">
-                    ↑ Elite Stays: 80%+
+                    ↑ Elite Stays: 85%+
                   </div>
                   <div className="mt-6 space-y-3">
                     <div className="flex justify-between text-sm">
@@ -268,11 +268,11 @@ function ForInvestors() {
                   </div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-white">80%+</div>
+                  <div className="text-3xl font-bold text-white">85%+</div>
                   <div className="mt-1 text-sm text-gray-400">occupancy rate</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-white">12</div>
+                  <div className="text-3xl font-bold text-white">50+</div>
                   <div className="mt-1 text-sm text-gray-400">properties managed</div>
                 </div>
               </div>

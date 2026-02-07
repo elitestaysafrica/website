@@ -26,7 +26,7 @@ const marketOverview = {
   averageOccupancy: "74.7%",
   averageYield: "7.4%",
   pricePerSqm: "KES 3,366/month",
-  eliteStaysOccupancy: "80%+",
+  eliteStaysOccupancy: "85%+",
 }
 
 const neighborhoods = [
@@ -84,7 +84,7 @@ const neighborhoods = [
 const premiumReports = [
   {
     title: "Nairobi STR Deep Dive Q1 2026",
-    description: "Comprehensive analysis of 500+ listings. Occupancy by property type, seasonal trends, pricing strategies that work.",
+    description: "Comprehensive analysis of 1,500+ guests. Occupancy by property type, seasonal trends, pricing strategies that work.",
     price: "KES 4,999",
     pages: 45,
     released: "January 2026",
