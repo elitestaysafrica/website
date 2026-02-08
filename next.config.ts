@@ -1,7 +1,20 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async rewrites() {
+    return [
+      {
+        // Proxy /blog requests to WordPress on VPS
+        source: '/blog',
+        destination: 'https://blog.elitestaysafrica.com/',
+      },
+      {
+        // Proxy /blog/* requests to WordPress on VPS
+        source: '/blog/:path*',
+        destination: 'https://blog.elitestaysafrica.com/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
