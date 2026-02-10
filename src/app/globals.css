@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+/* Container settings */
+.container {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1400px;
+  }
+}
+
 @theme {
   /* Brand Colors */
   --color-primary: #d57b66;
