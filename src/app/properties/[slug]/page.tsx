@@ -1,6 +1,9 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getProperty, getProperties, getPropertyAvailability } from "@/lib/api";
+
+// Force dynamic rendering so env vars are available at runtime
+export const dynamic = 'force-dynamic';
 import { PhotoGallery } from "@/components/PhotoGallery";
 import { BookingWidget } from "@/components/BookingWidget";
 import { AmenitiesList } from "@/components/AmenitiesList";
