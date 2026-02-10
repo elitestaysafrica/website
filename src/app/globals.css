@@ -77,6 +77,7 @@ button, a {
 .booking-calendar {
   width: 100%;
   font-family: inherit;
+  --rdp-cell-size: min(36px, calc((100% - 12px) / 7));
 }
 
 .booking-calendar .rdp-month {
@@ -85,8 +86,10 @@ button, a {
 
 .booking-calendar .rdp-table {
   width: 100%;
+  max-width: 100%;
   border-collapse: separate;
   border-spacing: 2px;
+  table-layout: fixed;
 }
 
 .booking-calendar .rdp-head_cell {
@@ -101,11 +104,14 @@ button, a {
 }
 
 .booking-calendar .rdp-day {
-  width: 36px;
-  height: 36px;
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 36px;
+  max-height: 36px;
   font-size: 14px;
   border-radius: 50%;
   font-weight: 500;
+  margin: 0 auto;
 }
 
 /* Available days - bold and clickable */

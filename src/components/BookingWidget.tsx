@@ -90,7 +90,7 @@ export function BookingWidget({
       {/* Calendar - Always Visible */}
       <div className="mb-4">
         <div className="text-sm font-medium text-gray-700 mb-2">Select dates</div>
-        <div className="border border-gray-200 rounded-xl p-3 bg-gray-50">
+        <div className="border border-gray-200 rounded-xl p-3 bg-gray-50 overflow-hidden">
           <DayPicker
             mode="range"
             selected={dateRange}
