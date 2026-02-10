@@ -77,10 +77,12 @@ export function BookingWidget({
     <div className="sticky top-24 rounded-2xl border border-gray-200 p-6 shadow-lg bg-white">
       {/* Price */}
       <div className="mb-4 pb-4 border-b border-gray-100">
+        {price && <span className="text-sm text-gray-500">From </span>}
         <span className="text-2xl font-bold text-gray-900">
           KES {price?.toLocaleString() || 'Contact us'}
         </span>
         {price && <span className="text-gray-500"> / night</span>}
+        <p className="text-xs text-gray-400 mt-1">Final price shown on Airbnb</p>
       </div>
 
       {/* Calendar - Always Visible */}
@@ -97,10 +99,12 @@ export function BookingWidget({
             ]}
             numberOfMonths={1}
             showOutsideDays={false}
-            className="!font-sans mx-auto"
-            styles={{
-              month: { width: '100%' },
-              table: { width: '100%' },
+            className="booking-calendar mx-auto"
+            modifiers={{
+              booked: disabledDays.map(d => new Date(d)),
+            }}
+            modifiersClassNames={{
+              booked: 'booked-day',
             }}
           />
         </div>
