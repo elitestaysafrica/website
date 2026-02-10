@@ -9,9 +9,10 @@ interface PropertyMapProps {
 }
 
 export function PropertyMap({ coordinates, address, gmapsUrl }: PropertyMapProps) {
-  // Use Google Maps embed without API key (works with place search)
-  const mapEmbedUrl = coordinates
-    ? `https://maps.google.com/maps?q=${coordinates.lat},${coordinates.lng}&z=15&output=embed`
+  // Use Google Maps embed - search by address to show pin
+  const query = encodeURIComponent(address || `${coordinates?.lat},${coordinates?.lng}`);
+  const mapEmbedUrl = (coordinates || address)
+    ? `https://maps.google.com/maps?q=${query}&z=16&output=embed`
     : null;
 
   if (!coordinates && !gmapsUrl) {
