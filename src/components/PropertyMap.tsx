@@ -34,18 +34,6 @@ export function PropertyMap({ coordinates, address, gmapsUrl }: PropertyMapProps
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
-            {gmapsUrl && (
-              <div className="p-3 bg-gray-50 border-t border-gray-200">
-                <a 
-                  href={gmapsUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-sm text-primary hover:underline"
-                >
-                  Open in Google Maps →
-                </a>
-              </div>
-            )}
           </>
         ) : (
           <div className="h-[350px] bg-gray-100 flex items-center justify-center">
