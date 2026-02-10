@@ -3,16 +3,26 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import { ChevronDown } from 'lucide-react';
 
-// Exchange rates (updated periodically - you can automate this)
-// Base: KES
-const EXCHANGE_RATES: Record<string, { rate: number; symbol: string; name: string }> = {
-  KES: { rate: 1, symbol: 'KES', name: 'Kenyan Shilling' },
-  USD: { rate: 0.0077, symbol: '$', name: 'US Dollar' },
-  EUR: { rate: 0.0071, symbol: '€', name: 'Euro' },
-  GBP: { rate: 0.0061, symbol: '£', name: 'British Pound' },
-  ZAR: { rate: 0.14, symbol: 'R', name: 'South African Rand' },
-  NGN: { rate: 11.9, symbol: '₦', name: 'Nigerian Naira' },
-  AED: { rate: 0.028, symbol: 'AED', name: 'UAE Dirham' },
+// Currency metadata (symbols and names)
+const CURRENCIES: Record<string, { symbol: string; name: string }> = {
+  KES: { symbol: 'KES', name: 'Kenyan Shilling' },
+  USD: { symbol: '$', name: 'US Dollar' },
+  EUR: { symbol: '€', name: 'Euro' },
+  GBP: { symbol: '£', name: 'British Pound' },
+  ZAR: { symbol: 'R', name: 'South African Rand' },
+  NGN: { symbol: '₦', name: 'Nigerian Naira' },
+  AED: { symbol: 'AED', name: 'UAE Dirham' },
+};
+
+// Fallback rates in case API fails
+const FALLBACK_RATES: Record<string, number> = {
+  KES: 1,
+  USD: 0.0077,
+  EUR: 0.0071,
+  GBP: 0.0061,
+  ZAR: 0.14,
+  NGN: 12.0,
+  AED: 0.028,
 };
 
 interface CurrencyContextType {
@@ -20,20 +30,41 @@ interface CurrencyContextType {
   setCurrency: (currency: string) => void;
   convert: (amountKES: number) => string;
   symbol: string;
+  rates: Record<string, number>;
+  ratesSource: string;
 }
 
 const CurrencyContext = createContext<CurrencyContextType | null>(null);
 
 export function CurrencyProvider({ children }: { children: React.ReactNode }) {
   const [currency, setCurrencyState] = useState('KES');
+  const [rates, setRates] = useState<Record<string, number>>(FALLBACK_RATES);
+  const [ratesSource, setRatesSource] = useState('fallback');
 
   useEffect(() => {
-    // Load from localStorage
+    // Load currency preference from localStorage
     const saved = localStorage.getItem('preferred_currency');
-    if (saved && EXCHANGE_RATES[saved]) {
+    if (saved && CURRENCIES[saved]) {
       setCurrencyState(saved);
     }
+
+    // Fetch live rates
+    fetchRates();
   }, []);
+
+  const fetchRates = async () => {
+    try {
+      const response = await fetch('/api/rates');
+      if (response.ok) {
+        const data = await response.json();
+        setRates(data.rates);
+        setRatesSource(data.source);
+      }
+    } catch (error) {
+      console.error('Failed to fetch rates:', error);
+      // Keep using fallback rates
+    }
+  };
 
   const setCurrency = (curr: string) => {
     setCurrencyState(curr);
@@ -41,9 +72,9 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
   };
 
   const convert = (amountKES: number): string => {
-    const rate = EXCHANGE_RATES[currency]?.rate || 1;
+    const rate = rates[currency] || 1;
     const converted = amountKES * rate;
-    const symbol = EXCHANGE_RATES[currency]?.symbol || 'KES';
+    const symbol = CURRENCIES[currency]?.symbol || 'KES';
     
     // Format based on currency
     if (currency === 'KES' || currency === 'NGN') {
@@ -57,7 +88,9 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
       currency, 
       setCurrency, 
       convert,
-      symbol: EXCHANGE_RATES[currency]?.symbol || 'KES'
+      symbol: CURRENCIES[currency]?.symbol || 'KES',
+      rates,
+      ratesSource
     }}>
       {children}
     </CurrencyContext.Provider>
@@ -82,7 +115,7 @@ export function CurrencySelector() {
         onClick={() => setOpen(!open)}
         className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 transition-colors"
       >
-        {EXCHANGE_RATES[currency]?.symbol} {currency}
+        {CURRENCIES[currency]?.symbol} {currency}
         <ChevronDown className={`h-4 w-4 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       
@@ -93,7 +126,7 @@ export function CurrencySelector() {
             onClick={() => setOpen(false)} 
           />
           <div className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 min-w-[180px]">
-            {Object.entries(EXCHANGE_RATES).map(([code, { symbol, name }]) => (
+            {Object.entries(CURRENCIES).map(([code, { symbol, name }]) => (
               <button
                 key={code}
                 onClick={() => { setCurrency(code); setOpen(false); }}

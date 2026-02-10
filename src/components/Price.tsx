@@ -2,17 +2,6 @@
 
 import { useCurrency } from "@/components/CurrencySelector"
 
-// Exchange rates (KES as base)
-const rates: Record<string, number> = {
-  KES: 1,
-  USD: 0.0077,  // 1 KES = 0.0077 USD
-  EUR: 0.0071,
-  GBP: 0.0061,
-  ZAR: 0.14,
-  NGN: 12.0,
-  AED: 0.028,
-}
-
 const symbols: Record<string, string> = {
   KES: "KES",
   USD: "$",
@@ -46,7 +35,7 @@ export function Price({
   perMonth = false,
   compact = false 
 }: PriceProps) {
-  const { currency } = useCurrency()
+  const { currency, rates } = useCurrency()
   
   const converted = amount * (rates[currency] || 1)
   const symbol = symbols[currency] || currency
@@ -84,7 +73,7 @@ export function parseKES(str: string): number {
 
 // Hook for manual conversion in complex cases
 export function useConvertPrice() {
-  const { currency } = useCurrency()
+  const { currency, rates } = useCurrency()
   
   return (kesAmount: number, options?: { compact?: boolean; decimals?: boolean }) => {
     const converted = kesAmount * (rates[currency] || 1)
