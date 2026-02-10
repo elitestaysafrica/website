@@ -123,6 +123,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
               coordinates={property.coordinates} 
               address={property.address}
               gmapsUrl={property.gmapsUrl}
+              apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}
             />
           </div>
 

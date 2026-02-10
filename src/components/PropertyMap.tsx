@@ -6,12 +6,11 @@ interface PropertyMapProps {
   coordinates: { lat: number; lng: number } | null;
   address: string;
   gmapsUrl: string | null;
+  apiKey?: string;
 }
 
-export function PropertyMap({ coordinates, address, gmapsUrl }: PropertyMapProps) {
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
-  
-  // Build embed URL
+export function PropertyMap({ coordinates, address, gmapsUrl, apiKey }: PropertyMapProps) {
+  // Build embed URL if we have coordinates and API key
   const mapEmbedUrl = coordinates && apiKey
     ? `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${coordinates.lat},${coordinates.lng}&zoom=15`
     : null;
@@ -61,9 +60,6 @@ export function PropertyMap({ coordinates, address, gmapsUrl }: PropertyMapProps
                 >
                   View on Google Maps →
                 </a>
-              )}
-              {!gmapsUrl && !apiKey && (
-                <p className="text-xs text-gray-400 mt-2">Map unavailable</p>
               )}
             </div>
           </div>
