@@ -73,6 +73,26 @@ button, a {
   user-select: none;
 }
 
+/* React Day Picker overrides */
+.rdp {
+  --rdp-accent-color: var(--color-primary);
+  --rdp-background-color: var(--color-primary);
+  margin: 0;
+}
+
+.rdp-day_selected:not(.rdp-day_disabled) {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+}
+
+.rdp-day_selected:hover:not(.rdp-day_disabled) {
+  background-color: var(--color-primary) !important;
+}
+
+.rdp-button:hover:not(.rdp-day_selected):not(.rdp-day_disabled) {
+  background-color: #f3f4f6;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

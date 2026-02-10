@@ -1,23 +1,14 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { getProperty, getProperties, getAmenityLabel } from "@/lib/api";
+import { getProperty, getProperties, getPropertyAvailability } from "@/lib/api";
+import { PhotoGallery } from "@/components/PhotoGallery";
+import { BookingWidget } from "@/components/BookingWidget";
+import { AmenitiesList } from "@/components/AmenitiesList";
 import { 
   MapPin, 
   Bed, 
   Bath, 
   Users, 
-  Clock, 
-  ExternalLink,
-  Wifi,
-  Car,
-  Dumbbell,
-  Waves,
-  Tv,
-  Wind,
-  UtensilsCrossed,
-  ShieldCheck,
   ChevronLeft,
 } from "lucide-react";
 
@@ -47,62 +38,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-// Amenity icon mapping
-const amenityIcons: Record<string, React.ElementType> = {
-  wifi: Wifi,
-  parking: Car,
-  gym: Dumbbell,
-  pool: Waves,
-  tv: Tv,
-  ac: Wind,
-  kitchen: UtensilsCrossed,
-  security: ShieldCheck,
-};
-
-// Image Gallery Component
-function ImageGallery({ photos, name }: { photos: { main: string; thumb: string }[]; name: string }) {
-  if (photos.length === 0) {
-    return (
-      <div className="aspect-[16/9] bg-gray-100 rounded-2xl flex items-center justify-center">
-        <span className="text-gray-400">No photos available</span>
-      </div>
-    );
-  }
-
-  return (
-    <div className="grid grid-cols-4 gap-2 rounded-2xl overflow-hidden">
-      {/* Main image */}
-      <div className="col-span-4 md:col-span-2 md:row-span-2 relative aspect-[4/3] md:aspect-auto">
-        <Image
-          src={photos[0].main}
-          alt={name}
-          fill
-          className="object-cover"
-          priority
-          sizes="(max-width: 768px) 100vw, 50vw"
-        />
-      </div>
-      {/* Secondary images */}
-      {photos.slice(1, 5).map((photo, idx) => (
-        <div key={idx} className="relative aspect-[4/3] hidden md:block">
-          <Image
-            src={photo.thumb || photo.main}
-            alt={`${name} - ${idx + 2}`}
-            fill
-            className="object-cover"
-            sizes="25vw"
-          />
-          {idx === 3 && photos.length > 5 && (
-            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-              <span className="text-white font-semibold">+{photos.length - 5} more</span>
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 // Google Map Component
 function PropertyMap({ coordinates, address, gmapsUrl }: { 
   coordinates: { lat: number; lng: number } | null;
@@ -110,17 +45,40 @@ function PropertyMap({ coordinates, address, gmapsUrl }: {
   gmapsUrl: string | null;
 }) {
   if (!coordinates) {
+    if (gmapsUrl) {
+      return (
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Location</h2>
+          <div className="rounded-xl overflow-hidden h-[300px] bg-gray-100 flex items-center justify-center">
+            <div className="text-center p-6">
+              <MapPin className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+              <p className="text-gray-600 mb-3">{address}</p>
+              <a 
+                href={gmapsUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+              >
+                View on Google Maps →
+              </a>
+            </div>
+          </div>
+        </div>
+      );
+    }
     return null;
   }
 
-  // Use Google Maps Static API or embed
-  const mapEmbedUrl = `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}&q=${coordinates.lat},${coordinates.lng}&zoom=15`;
+  // Use Google Maps Embed API
+  const mapEmbedUrl = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY 
+    ? `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}&q=${coordinates.lat},${coordinates.lng}&zoom=15`
+    : null;
   
   return (
     <div className="mt-8">
       <h2 className="text-xl font-semibold text-gray-900 mb-4">Location</h2>
       <div className="rounded-xl overflow-hidden">
-        {process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ? (
+        {mapEmbedUrl ? (
           <iframe
             src={mapEmbedUrl}
             width="100%"
@@ -129,18 +87,19 @@ function PropertyMap({ coordinates, address, gmapsUrl }: {
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
+            className="rounded-xl"
           />
         ) : (
-          <div className="h-[300px] bg-gray-100 flex items-center justify-center">
-            <div className="text-center">
+          <div className="h-[300px] bg-gray-100 flex items-center justify-center rounded-xl">
+            <div className="text-center p-6">
               <MapPin className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-              <p className="text-gray-600">{address}</p>
+              <p className="text-gray-600 mb-3">{address}</p>
               {gmapsUrl && (
                 <a 
                   href={gmapsUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-primary hover:underline text-sm mt-2 inline-block"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
                 >
                   View on Google Maps →
                 </a>
@@ -149,7 +108,7 @@ function PropertyMap({ coordinates, address, gmapsUrl }: {
           </div>
         )}
       </div>
-      {gmapsUrl && process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY && (
+      {gmapsUrl && mapEmbedUrl && (
         <a 
           href={gmapsUrl} 
           target="_blank" 
@@ -165,7 +124,10 @@ function PropertyMap({ coordinates, address, gmapsUrl }: {
 
 export default async function PropertyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const property = await getProperty(slug);
+  const [property, bookedDates] = await Promise.all([
+    getProperty(slug),
+    getPropertyAvailability(slug),
+  ]);
   
   if (!property) {
     notFound();
@@ -183,8 +145,8 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
           Back to Properties
         </Link>
 
-        {/* Image Gallery */}
-        <ImageGallery photos={property.photos} name={property.name} />
+        {/* Photo Gallery with Lightbox */}
+        <PhotoGallery photos={property.photos} name={property.name} />
 
         {/* Content */}
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -209,7 +171,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
             </div>
 
             {/* Quick stats */}
-            <div className="mt-6 flex flex-wrap items-center gap-6 text-gray-700">
+            <div className="mt-6 flex flex-wrap items-center gap-6 text-gray-700 pb-6 border-b border-gray-200">
               <div className="flex items-center gap-2">
                 <Bed className="h-5 w-5" />
                 <span>{property.bedrooms} Bedroom{property.bedrooms !== 1 ? 's' : ''}</span>
@@ -228,8 +190,8 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
             <div className="mt-8">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">About this property</h2>
               <div className="prose prose-gray max-w-none">
-                {property.description?.split('\n').map((paragraph, idx) => (
-                  <p key={idx} className="text-gray-600 mb-4">
+                {property.description?.split('\n').filter(p => p.trim()).map((paragraph, idx) => (
+                  <p key={idx} className="text-gray-600 mb-4 whitespace-pre-line">
                     {paragraph}
                   </p>
                 ))}
@@ -237,24 +199,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
             </div>
 
             {/* Amenities */}
-            {property.amenities && property.amenities.length > 0 && (
-              <div className="mt-8">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Amenities</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {property.amenities.map((amenity) => {
-                    const Icon = amenityIcons[amenity] || ShieldCheck;
-                    return (
-                      <div key={amenity} className="flex items-center gap-3 text-gray-700">
-                        <div className="p-2 bg-gray-100 rounded-lg">
-                          <Icon className="h-5 w-5" />
-                        </div>
-                        <span>{getAmenityLabel(amenity)}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
+            <AmenitiesList amenities={property.amenities || []} />
 
             {/* Map */}
             <PropertyMap 
@@ -264,52 +209,17 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
             />
           </div>
 
-          {/* Sidebar - Booking Card */}
+          {/* Sidebar - Booking Widget */}
           <div className="lg:col-span-1">
-            <div className="sticky top-24 rounded-2xl border border-gray-200 p-6 shadow-sm">
-              {/* Price */}
-              <div className="mb-6">
-                <span className="text-3xl font-bold text-gray-900">
-                  KES {property.price?.toLocaleString() || 'Contact us'}
-                </span>
-                {property.price && (
-                  <span className="text-gray-500"> / night</span>
-                )}
-              </div>
-
-              {/* Check-in/out */}
-              <div className="space-y-3 mb-6 text-sm text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4" />
-                  <span>Check-in: {property.checkInTime}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4" />
-                  <span>Check-out: {property.checkOutTime}</span>
-                </div>
-              </div>
-
-              {/* Book Button */}
-              {property.bookingUrl ? (
-                <Button size="lg" className="w-full" asChild>
-                  <a href={property.bookingUrl} target="_blank" rel="noopener noreferrer">
-                    Book on Airbnb
-                    <ExternalLink className="h-4 w-4 ml-2" />
-                  </a>
-                </Button>
-              ) : (
-                <Button size="lg" className="w-full" asChild>
-                  <Link href="/contact">Contact Us to Book</Link>
-                </Button>
-              )}
-
-              {/* Contact */}
-              <div className="mt-4 text-center">
-                <Link href="/contact" className="text-sm text-gray-500 hover:text-primary">
-                  Have questions? Contact us
-                </Link>
-              </div>
-            </div>
+            <BookingWidget
+              price={property.price}
+              maxGuests={property.maxGuests}
+              checkInTime={property.checkInTime}
+              checkOutTime={property.checkOutTime}
+              bookingUrl={property.bookingUrl}
+              slug={property.slug}
+              bookedDates={bookedDates}
+            />
           </div>
         </div>
       </div>
