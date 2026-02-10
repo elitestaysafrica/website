@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 
@@ -17,6 +17,27 @@ interface PhotoGalleryProps {
 export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set([0]));
+
+  // Preload adjacent images
+  useEffect(() => {
+    if (lightboxOpen && photos.length > 1) {
+      const toPreload = [
+        currentIndex - 1,
+        currentIndex + 1,
+        currentIndex - 2,
+        currentIndex + 2,
+      ].filter(i => i >= 0 && i < photos.length && !loadedImages.has(i));
+
+      toPreload.forEach(idx => {
+        const img = new window.Image();
+        img.src = photos[idx].main;
+        img.onload = () => {
+          setLoadedImages(prev => new Set([...prev, idx]));
+        };
+      });
+    }
+  }, [currentIndex, lightboxOpen, photos, loadedImages]);
 
   if (photos.length === 0) {
     return (
@@ -37,20 +58,27 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
     document.body.style.overflow = '';
   };
 
-  const goNext = () => {
+  const goNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % photos.length);
-  };
+  }, [photos.length]);
 
-  const goPrev = () => {
+  const goPrev = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + photos.length) % photos.length);
-  };
+  }, [photos.length]);
 
   // Handle keyboard navigation
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowRight') goNext();
-    if (e.key === 'ArrowLeft') goPrev();
-  };
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') goNext();
+      if (e.key === 'ArrowLeft') goPrev();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxOpen, goNext, goPrev]);
 
   return (
     <>
@@ -109,21 +137,20 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
       {/* Lightbox */}
       {lightboxOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black flex items-center justify-center"
+          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
           onClick={closeLightbox}
-          onKeyDown={handleKeyDown}
-          tabIndex={0}
         >
           {/* Close button */}
           <button
             onClick={closeLightbox}
             className="absolute top-4 right-4 z-10 p-2 text-white/80 hover:text-white transition-colors"
+            aria-label="Close"
           >
             <X className="h-8 w-8" />
           </button>
 
           {/* Counter */}
-          <div className="absolute top-4 left-4 text-white/80 text-sm">
+          <div className="absolute top-4 left-4 text-white/80 text-sm font-medium">
             {currentIndex + 1} / {photos.length}
           </div>
 
@@ -131,46 +158,52 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
           {photos.length > 1 && (
             <button
               onClick={(e) => { e.stopPropagation(); goPrev(); }}
-              className="absolute left-4 p-2 text-white/80 hover:text-white transition-colors"
+              className="absolute left-2 md:left-4 p-2 text-white/80 hover:text-white transition-colors z-10 bg-black/20 rounded-full hover:bg-black/40"
+              aria-label="Previous"
             >
-              <ChevronLeft className="h-10 w-10" />
+              <ChevronLeft className="h-8 w-8 md:h-10 md:w-10" />
             </button>
           )}
 
-          {/* Image */}
+          {/* Image Container */}
           <div 
-            className="relative w-full h-full max-w-5xl max-h-[85vh] mx-16"
+            className="relative w-full h-full flex items-center justify-center px-16"
             onClick={(e) => e.stopPropagation()}
           >
-            <Image
-              src={photos[currentIndex].main}
-              alt={`${name} - ${currentIndex + 1}`}
-              fill
-              className="object-contain"
-              sizes="100vw"
-              priority
-            />
+            {/* Current Image */}
+            <div className="relative w-full h-[70vh] md:h-[80vh]">
+              <Image
+                src={photos[currentIndex].main}
+                alt={`${name} - ${currentIndex + 1}`}
+                fill
+                className="object-contain"
+                sizes="100vw"
+                priority
+                quality={90}
+              />
+            </div>
           </div>
 
           {/* Next button */}
           {photos.length > 1 && (
             <button
               onClick={(e) => { e.stopPropagation(); goNext(); }}
-              className="absolute right-4 p-2 text-white/80 hover:text-white transition-colors"
+              className="absolute right-2 md:right-4 p-2 text-white/80 hover:text-white transition-colors z-10 bg-black/20 rounded-full hover:bg-black/40"
+              aria-label="Next"
             >
-              <ChevronRight className="h-10 w-10" />
+              <ChevronRight className="h-8 w-8 md:h-10 md:w-10" />
             </button>
           )}
 
           {/* Thumbnails */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 max-w-[90vw] overflow-x-auto p-2">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 max-w-[90vw] overflow-x-auto p-2 bg-black/30 rounded-lg">
             {photos.map((photo, idx) => (
               <button
                 key={idx}
                 onClick={(e) => { e.stopPropagation(); setCurrentIndex(idx); }}
-                className={`relative w-16 h-12 flex-shrink-0 rounded overflow-hidden ${
-                  idx === currentIndex ? 'ring-2 ring-white' : 'opacity-60 hover:opacity-100'
-                } transition-opacity`}
+                className={`relative w-14 h-10 md:w-16 md:h-12 flex-shrink-0 rounded overflow-hidden transition-all ${
+                  idx === currentIndex ? 'ring-2 ring-white scale-110' : 'opacity-50 hover:opacity-80'
+                }`}
               >
                 <Image
                   src={photo.thumb || photo.main}

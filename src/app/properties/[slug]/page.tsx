@@ -4,6 +4,7 @@ import { getProperty, getProperties, getPropertyAvailability } from "@/lib/api";
 import { PhotoGallery } from "@/components/PhotoGallery";
 import { BookingWidget } from "@/components/BookingWidget";
 import { AmenitiesList } from "@/components/AmenitiesList";
+import { PropertyMap } from "@/components/PropertyMap";
 import { 
   MapPin, 
   Bed, 
@@ -36,90 +37,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       images: property.photos[0]?.main ? [property.photos[0].main] : [],
     },
   };
-}
-
-// Google Map Component
-function PropertyMap({ coordinates, address, gmapsUrl }: { 
-  coordinates: { lat: number; lng: number } | null;
-  address: string;
-  gmapsUrl: string | null;
-}) {
-  if (!coordinates) {
-    if (gmapsUrl) {
-      return (
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Location</h2>
-          <div className="rounded-xl overflow-hidden h-[300px] bg-gray-100 flex items-center justify-center">
-            <div className="text-center p-6">
-              <MapPin className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-              <p className="text-gray-600 mb-3">{address}</p>
-              <a 
-                href={gmapsUrl} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
-              >
-                View on Google Maps →
-              </a>
-            </div>
-          </div>
-        </div>
-      );
-    }
-    return null;
-  }
-
-  // Use Google Maps Embed API
-  const mapEmbedUrl = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY 
-    ? `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}&q=${coordinates.lat},${coordinates.lng}&zoom=15`
-    : null;
-  
-  return (
-    <div className="mt-8">
-      <h2 className="text-xl font-semibold text-gray-900 mb-4">Location</h2>
-      <div className="rounded-xl overflow-hidden">
-        {mapEmbedUrl ? (
-          <iframe
-            src={mapEmbedUrl}
-            width="100%"
-            height="300"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            className="rounded-xl"
-          />
-        ) : (
-          <div className="h-[300px] bg-gray-100 flex items-center justify-center rounded-xl">
-            <div className="text-center p-6">
-              <MapPin className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-              <p className="text-gray-600 mb-3">{address}</p>
-              {gmapsUrl && (
-                <a 
-                  href={gmapsUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
-                >
-                  View on Google Maps →
-                </a>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
-      {gmapsUrl && mapEmbedUrl && (
-        <a 
-          href={gmapsUrl} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-sm text-gray-500 hover:text-primary mt-2 inline-block"
-        >
-          Open in Google Maps →
-        </a>
-      )}
-    </div>
-  );
 }
 
 export default async function PropertyPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -209,7 +126,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
             />
           </div>
 
-          {/* Sidebar - Booking Widget */}
+          {/* Sidebar - Booking Widget with Calendar */}
           <div className="lg:col-span-1">
             <BookingWidget
               price={property.price}
