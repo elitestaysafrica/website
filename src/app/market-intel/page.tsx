@@ -1,5 +1,8 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { Price } from "@/components/Price"
 import { 
   BarChart3, 
   TrendingUp, 
@@ -13,11 +16,6 @@ import {
   DollarSign,
   Calendar
 } from "lucide-react"
-
-export const metadata = {
-  title: "Market Intelligence | Elite Stays Africa",
-  description: "Nairobi short-term rental market data, occupancy rates, pricing trends, and investment insights. The data other operators keep secret.",
-}
 
 // Free market data - visible to all
 const marketOverview = {
@@ -34,7 +32,7 @@ const neighborhoods = [
     name: "Westlands",
     yield: "9.5%",
     occupancy: "52%",
-    avgNightly: "KES 7,500",
+    avgNightly: 7500,
     trend: "stable",
     description: "Prime business district. High demand from corporate travelers. 237 active listings competing for market share.",
   },
@@ -42,7 +40,7 @@ const neighborhoods = [
     name: "Downtown",
     yield: "8.8%",
     occupancy: "53%",
-    avgNightly: "KES 8,600",
+    avgNightly: 8600,
     trend: "up",
     description: "Highest ADR in the city at $66/night. Business travelers drive weekday demand. 595 listings.",
   },
@@ -50,7 +48,7 @@ const neighborhoods = [
     name: "Kilimani",
     yield: "7.2%",
     occupancy: "48%",
-    avgNightly: "KES 6,000",
+    avgNightly: 6000,
     trend: "down",
     description: "Most saturated market with 1,424 listings. Price wars driving rates down. Differentiation critical.",
   },
@@ -58,7 +56,7 @@ const neighborhoods = [
     name: "Lavington",
     yield: "7.8%",
     occupancy: "53%",
-    avgNightly: "KES 5,700",
+    avgNightly: 5700,
     trend: "stable",
     description: "Family-oriented neighborhood. 469 listings. Steady demand from relocating families and mid-term stays.",
   },
@@ -66,7 +64,7 @@ const neighborhoods = [
     name: "Gigiri",
     yield: "8.5%",
     occupancy: "50%",
-    avgNightly: "KES 9,400",
+    avgNightly: 9400,
     trend: "up",
     description: "UN and embassy area. Highest rates at $72/night. Limited supply (44 listings) keeps competition low.",
   },
@@ -74,7 +72,7 @@ const neighborhoods = [
     name: "Karen",
     yield: "6.5%",
     occupancy: "48%",
-    avgNightly: "KES 7,000",
+    avgNightly: 7000,
     trend: "stable",
     description: "Premium residential. Lower density with only 75 listings. Appeals to long-stay guests seeking space.",
   },
@@ -85,21 +83,21 @@ const premiumReports = [
   {
     title: "Nairobi STR Deep Dive Q1 2026",
     description: "Deep analysis of 5,000+ Nairobi listings. Occupancy by property type, seasonal trends, pricing strategies that work.",
-    price: "KES 4,999",
+    price: 4999,
     pages: 45,
     released: "January 2026",
   },
   {
     title: "Neighborhood Investment Guide",
     description: "Which areas are oversaturated? Where's the opportunity? Data-driven investment recommendations.",
-    price: "KES 7,999",
+    price: 7999,
     pages: 62,
     released: "February 2026",
   },
   {
     title: "Pricing Optimization Playbook",
     description: "Dynamic pricing strategies used by top performers. Seasonal adjustments, event pricing, length-of-stay discounts.",
-    price: "KES 3,499",
+    price: 3499,
     pages: 28,
     released: "Coming Soon",
   },
@@ -108,8 +106,8 @@ const premiumReports = [
 function StatCard({ icon: Icon, label, value, subtext }: { 
   icon: React.ElementType
   label: string
-  value: string
-  subtext?: string
+  value: string | React.ReactNode
+  subtext?: string | React.ReactNode
 }) {
   return (
     <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
@@ -153,7 +151,7 @@ function NeighborhoodCard({ neighborhood }: { neighborhood: typeof neighborhoods
         </div>
         <div>
           <div className="text-xs text-gray-500">Avg/Night</div>
-          <div className="font-semibold text-gray-900">{neighborhood.avgNightly}</div>
+          <div className="font-semibold text-gray-900"><Price amount={neighborhood.avgNightly} /></div>
         </div>
       </div>
     </div>
@@ -172,7 +170,7 @@ function PremiumReportCard({ report }: { report: typeof premiumReports[0] }) {
       <p className="mt-2 text-sm text-gray-600">{report.description}</p>
       <div className="mt-4 flex items-center justify-between">
         <div>
-          <span className="text-lg font-bold text-gray-900">{report.price}</span>
+          <span className="text-lg font-bold text-gray-900"><Price amount={report.price} /></span>
           {!isComingSoon && (
             <span className="ml-2 text-xs text-gray-500">{report.released}</span>
           )}
@@ -236,7 +234,7 @@ export default function MarketIntelPage() {
                 icon={DollarSign}
                 label="Average Daily Rate"
                 value={marketOverview.averageADR}
-                subtext="~KES 7,150/night"
+                subtext={<>~<Price amount={7150} />/night</>}
               />
               <StatCard 
                 icon={Building2}

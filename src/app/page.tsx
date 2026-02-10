@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { PropertyCard } from "@/components/PropertyCard";
 import { getProperties, getStats } from "@/lib/api";
+import { StatsWithCurrency } from "@/components/StatsWithCurrency";
 import { 
   MapPin, 
   Wifi, 
@@ -199,22 +200,13 @@ async function ForInvestors() {
         <div className="mx-auto max-w-5xl">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
             <div className="order-2 lg:order-1">
-              <div className="grid grid-cols-3 gap-6 text-center">
-                <div>
-                  <div className="text-3xl font-bold text-white">KES 180K+</div>
-                  <div className="mt-1 text-sm text-gray-400">
-                    avg monthly revenue
-                  </div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-white">{stats.avgOccupancy}</div>
-                  <div className="mt-1 text-sm text-gray-400">occupancy rate</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-white">{stats.totalProperties || '50'}+</div>
-                  <div className="mt-1 text-sm text-gray-400">properties managed</div>
-                </div>
-              </div>
+              <StatsWithCurrency 
+                stats={[
+                  { kesAmount: 180000, label: "avg monthly revenue", compact: true },
+                  { value: stats.avgOccupancy, label: "occupancy rate" },
+                  { value: `${stats.totalProperties || '50'}+`, label: "properties managed" },
+                ]}
+              />
               <ul className="mt-12 space-y-4">
                 {[
                   "Complete property setup & furnishing",

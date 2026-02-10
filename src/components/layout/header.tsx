@@ -189,7 +189,13 @@ export function Header() {
               ))}
             </nav>
 
-            <div style={{ marginTop: '32px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {/* Currency Selector for Mobile */}
+            <div style={{ marginTop: '24px', paddingBottom: '16px', borderBottom: '1px solid #f3f4f6' }}>
+              <div style={{ fontSize: '14px', color: '#6b7280', marginBottom: '8px' }}>Currency</div>
+              <CurrencySelector />
+            </div>
+
+            <div style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <Button variant="outline" size="lg" className="w-full">
                 Sign In
               </Button>

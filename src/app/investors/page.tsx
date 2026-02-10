@@ -1,5 +1,8 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { Price } from "@/components/Price"
 import { 
   Building2, 
   TrendingUp, 
@@ -17,15 +20,10 @@ import {
   Mail
 } from "lucide-react"
 
-export const metadata = {
-  title: "Partner With Us | Elite Stays Africa",
-  description: "Turn your Nairobi property into a revenue machine. Elite Stays Africa offers full-service Airbnb management with 85%+ occupancy and transparent fees.",
-}
-
 const stats = [
   { value: "85%+", label: "Average Occupancy", subtext: "vs 45% market average" },
   { value: "50+", label: "Properties Managed", subtext: "across Nairobi" },
-  { value: "KES 180K+", label: "Avg Monthly Revenue", subtext: "per 1-bedroom unit" },
+  { kesAmount: 180000, label: "Avg Monthly Revenue", subtext: "per 1-bedroom unit" },
   { value: "4.92★", label: "Guest Rating", subtext: "Superhost status" },
 ]
 
@@ -65,23 +63,23 @@ const services = [
 const projections = [
   {
     type: "1-Bedroom",
-    setupCost: "KES 1,400,000",
-    furnishing: "KES 1,200,000",
-    setupFee: "KES 200,000",
-    nightlyRate: "KES 8,000",
-    monthlyGross: "KES 180,000",
-    monthlyNet: "KES 126,000",
+    setupCost: 1400000,
+    furnishing: 1200000,
+    setupFee: 200000,
+    nightlyRate: 8000,
+    monthlyGross: 180000,
+    monthlyNet: 126000,
     payback: "~11 months",
     annualYield: "9-11%",
   },
   {
     type: "2-Bedroom",
-    setupCost: "KES 1,700,000",
-    furnishing: "KES 1,500,000",
-    setupFee: "KES 200,000",
-    nightlyRate: "KES 12,000",
-    monthlyGross: "KES 270,000",
-    monthlyNet: "KES 189,000",
+    setupCost: 1700000,
+    furnishing: 1500000,
+    setupFee: 200000,
+    nightlyRate: 12000,
+    monthlyGross: 270000,
+    monthlyNet: 189000,
     payback: "~9 months",
     annualYield: "10-12%",
   },
@@ -171,7 +169,9 @@ export default function InvestorsPage() {
             <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
               {stats.map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <div className="text-3xl font-bold text-white sm:text-4xl">{stat.value}</div>
+                  <div className="text-3xl font-bold text-white sm:text-4xl">
+                    {'kesAmount' in stat ? <><Price amount={stat.kesAmount!} compact />+</> : stat.value}
+                  </div>
                   <div className="mt-2 text-sm font-medium text-gray-300">{stat.label}</div>
                   <div className="mt-1 text-xs text-gray-500">{stat.subtext}</div>
                 </div>
@@ -235,26 +235,26 @@ export default function InvestorsPage() {
                   <div className="mt-6 space-y-4">
                     <div className="border-b pb-4">
                       <div className="text-sm font-medium text-gray-500">Setup Investment</div>
-                      <div className="mt-1 text-2xl font-bold text-gray-900">{proj.setupCost}</div>
+                      <div className="mt-1 text-2xl font-bold text-gray-900"><Price amount={proj.setupCost} /></div>
                       <div className="mt-1 text-sm text-gray-500">
-                        Furnishing ({proj.furnishing}) + Setup ({proj.setupFee})
+                        Furnishing (<Price amount={proj.furnishing} />) + Setup (<Price amount={proj.setupFee} />)
                       </div>
                     </div>
                     
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <div className="text-sm text-gray-500">Nightly Rate</div>
-                        <div className="font-semibold text-gray-900">{proj.nightlyRate}</div>
+                        <div className="font-semibold text-gray-900"><Price amount={proj.nightlyRate} /></div>
                       </div>
                       <div>
                         <div className="text-sm text-gray-500">Monthly Gross</div>
-                        <div className="font-semibold text-gray-900">{proj.monthlyGross}</div>
+                        <div className="font-semibold text-gray-900"><Price amount={proj.monthlyGross} /></div>
                       </div>
                     </div>
                     
                     <div className="rounded-lg bg-green-50 p-4">
                       <div className="text-sm text-green-700">Net to Owner (after 30% fee)</div>
-                      <div className="text-2xl font-bold text-green-700">{proj.monthlyNet}/mo</div>
+                      <div className="text-2xl font-bold text-green-700"><Price amount={proj.monthlyNet} />/mo</div>
                     </div>
                     
                     <div className="flex items-center justify-between pt-4 border-t">
