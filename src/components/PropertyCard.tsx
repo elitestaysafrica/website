@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { MapPin, Users, Bed, Bath, Wifi, Car, Dumbbell, Waves } from "lucide-react";
 import { Property } from "@/lib/api";
+import { useCurrency } from "@/components/CurrencySelector";
 
 interface PropertyCardProps {
   property: Property;
@@ -13,6 +14,7 @@ interface PropertyCardProps {
 
 export function PropertyCard({ property, showBookButton = true }: PropertyCardProps) {
   const mainPhoto = property.photos[0];
+  const { convert } = useCurrency();
   
   return (
     <div className="group rounded-2xl bg-white shadow-sm ring-1 ring-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
@@ -107,7 +109,7 @@ export function PropertyCard({ property, showBookButton = true }: PropertyCardPr
         <div className="mt-4 flex items-center justify-between">
           <div>
             <span className="text-lg font-bold text-gray-900">
-              KES {property.price?.toLocaleString() || 'Contact us'}
+              {property.price ? convert(property.price) : 'Contact us'}
             </span>
             {property.price && <span className="text-gray-500 text-sm"> / night</span>}
           </div>

@@ -5,6 +5,7 @@ import Image from "next/image"
 import { useState, useEffect } from "react"
 import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { CurrencySelector } from "@/components/CurrencySelector"
 
 const navigation = [
   { name: "Properties", href: "/properties" },
@@ -101,7 +102,8 @@ export function Header() {
             ))}
           </div>
 
-          <div className="hidden lg:flex lg:gap-x-4">
+          <div className="hidden lg:flex lg:items-center lg:gap-x-4">
+            <CurrencySelector />
             <Button variant="ghost" size="sm">Sign In</Button>
             <Button size="sm">Book Now</Button>
           </div>

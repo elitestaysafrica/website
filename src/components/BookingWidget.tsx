@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { DayPicker, DateRange } from 'react-day-picker';
-import { format, differenceInDays, addDays, isWithinInterval, parseISO } from 'date-fns';
+import { format, differenceInDays, addDays, parseISO } from 'date-fns';
 import { Users, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useCurrency } from '@/components/CurrencySelector';
 import Link from 'next/link';
 import 'react-day-picker/style.css';
 
@@ -28,6 +29,7 @@ export function BookingWidget({
 }: BookingWidgetProps) {
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [guests, setGuests] = useState(2);
+  const { convert } = useCurrency();
 
   // Convert booked dates to disabled dates
   const disabledDays = bookedDates.flatMap(({ start, end }) => {
@@ -79,7 +81,7 @@ export function BookingWidget({
       <div className="mb-4 pb-4 border-b border-gray-100">
         {price && <span className="text-sm text-gray-500">From </span>}
         <span className="text-2xl font-bold text-gray-900">
-          KES {price?.toLocaleString() || 'Contact us'}
+          {price ? convert(price) : 'Contact us'}
         </span>
         {price && <span className="text-gray-500"> / night</span>}
         <p className="text-xs text-gray-400 mt-1">Final price shown on Airbnb</p>
@@ -157,13 +159,13 @@ export function BookingWidget({
         <div className="mb-4 pb-4 border-b border-gray-100 space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">
-              KES {price.toLocaleString()} × {nights} night{nights !== 1 ? 's' : ''}
+              {convert(price)} × {nights} night{nights !== 1 ? 's' : ''}
             </span>
-            <span>KES {total.toLocaleString()}</span>
+            <span>{convert(total)}</span>
           </div>
           <div className="flex justify-between font-semibold text-lg">
             <span>Total</span>
-            <span>KES {total.toLocaleString()}</span>
+            <span>{convert(total)}</span>
           </div>
         </div>
       )}
