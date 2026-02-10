@@ -6,13 +6,12 @@ interface PropertyMapProps {
   coordinates: { lat: number; lng: number } | null;
   address: string;
   gmapsUrl: string | null;
-  apiKey?: string;
 }
 
-export function PropertyMap({ coordinates, address, gmapsUrl, apiKey }: PropertyMapProps) {
-  // Build embed URL if we have coordinates and API key
-  const mapEmbedUrl = coordinates && apiKey
-    ? `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${coordinates.lat},${coordinates.lng}&zoom=15`
+export function PropertyMap({ coordinates, address, gmapsUrl }: PropertyMapProps) {
+  // Use Google Maps embed without API key (works with place search)
+  const mapEmbedUrl = coordinates
+    ? `https://maps.google.com/maps?q=${coordinates.lat},${coordinates.lng}&z=15&output=embed`
     : null;
 
   if (!coordinates && !gmapsUrl) {
@@ -22,7 +21,7 @@ export function PropertyMap({ coordinates, address, gmapsUrl, apiKey }: Property
   return (
     <div className="mt-8">
       <h2 className="text-xl font-semibold text-gray-900 mb-4">Location</h2>
-      <div className="rounded-xl overflow-hidden">
+      <div className="rounded-xl overflow-hidden border border-gray-200">
         {mapEmbedUrl ? (
           <>
             <iframe
@@ -33,21 +32,22 @@ export function PropertyMap({ coordinates, address, gmapsUrl, apiKey }: Property
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              className="rounded-xl"
             />
             {gmapsUrl && (
-              <a 
-                href={gmapsUrl} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-sm text-gray-500 hover:text-primary mt-2 inline-block"
-              >
-                Open in Google Maps →
-              </a>
+              <div className="p-3 bg-gray-50 border-t border-gray-200">
+                <a 
+                  href={gmapsUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm text-primary hover:underline"
+                >
+                  Open in Google Maps →
+                </a>
+              </div>
             )}
           </>
         ) : (
-          <div className="h-[350px] bg-gray-100 flex items-center justify-center rounded-xl">
+          <div className="h-[350px] bg-gray-100 flex items-center justify-center">
             <div className="text-center p-6">
               <MapPin className="h-8 w-8 text-gray-400 mx-auto mb-2" />
               <p className="text-gray-600 mb-3">{address}</p>
