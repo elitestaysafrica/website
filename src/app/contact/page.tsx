@@ -16,15 +16,15 @@ const contactMethods = [
     icon: MessageCircle,
     title: "WhatsApp",
     description: "Quick responses, 24/7",
-    value: "+254 XXX XXX XXX",
-    href: "https://wa.me/254XXXXXXXXX",
+    value: "+254 111 695 444",
+    href: "https://wa.me/254111695444",
   },
   {
     icon: Phone,
     title: "Phone",
     description: "Business hours: 8am - 8pm EAT",
-    value: "+254 XXX XXX XXX",
-    href: "tel:+254XXXXXXXXX",
+    value: "+254 111 695 444",
+    href: "tel:+254111695444",
   },
   {
     icon: MapPin,
@@ -46,15 +46,30 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
+  const [error, setError] = useState<string | null>(null)
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setError(null)
     
-    // TODO: Implement form submission (email API or database)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    
-    setSubmitted(true)
-    setIsSubmitting(false)
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      
+      if (!response.ok) {
+        throw new Error('Failed to send message')
+      }
+      
+      setSubmitted(true)
+    } catch (err) {
+      setError('Something went wrong. Please try WhatsApp or email instead.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (

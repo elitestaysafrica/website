@@ -88,7 +88,6 @@ const projections = [
 const feeStructure = [
   { tier: "Standard Management", fee: "30%", description: "Full-service management for all properties" },
   { tier: "Volume Partner (5+ units)", fee: "25%", description: "Discounted rate for portfolio owners" },
-  { tier: "Owner-Referred Guests", fee: "20%", description: "Lower fee when you refer direct bookings" },
 ]
 
 const process = [
