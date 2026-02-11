@@ -1,30 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// WhatsApp notification via CallMeBot
-// To activate: Send "I allow callmebot to send me messages" to +34 644 71 81 99 on WhatsApp
-const WHATSAPP_NUMBER = '254111695444'
-const CALLMEBOT_APIKEY = process.env.CALLMEBOT_APIKEY || ''
+// Telegram Bot notification
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || ''
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || ''
 
-async function sendWhatsAppNotification(message: string) {
-  if (!CALLMEBOT_APIKEY) {
-    console.log('CallMeBot API key not configured, skipping WhatsApp notification')
+async function sendTelegramNotification(message: string) {
+  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+    console.log('Telegram not configured, skipping notification')
     return false
   }
   
   try {
-    const encodedMessage = encodeURIComponent(message)
-    const url = `https://api.callmebot.com/whatsapp.php?phone=${WHATSAPP_NUMBER}&text=${encodedMessage}&apikey=${CALLMEBOT_APIKEY}`
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`
     
-    const response = await fetch(url)
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: message,
+        parse_mode: 'Markdown',
+      }),
+    })
+    
     if (response.ok) {
-      console.log('WhatsApp notification sent successfully')
+      console.log('Telegram notification sent successfully')
       return true
     } else {
-      console.error('Failed to send WhatsApp notification:', await response.text())
+      console.error('Failed to send Telegram notification:', await response.text())
       return false
     }
   } catch (error) {
-    console.error('WhatsApp notification error:', error)
+    console.error('Telegram notification error:', error)
     return false
   }
 }
@@ -42,7 +49,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Format the message for WhatsApp
+    // Format the message for notification
     const formattedMessage = `🔔 *New Website Inquiry*
 
 *Name:* ${name}
@@ -59,8 +66,8 @@ _elitestaysafrica.com_`
     // Log the submission
     console.log('Contact form submission:', { name, email, phone, subject, message })
 
-    // Send WhatsApp notification
-    await sendWhatsAppNotification(formattedMessage)
+    // Send Telegram notification
+    await sendTelegramNotification(formattedMessage)
 
     return NextResponse.json({ 
       success: true, 
