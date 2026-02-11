@@ -24,7 +24,7 @@ export function Hero() {
             {/* Badge */}
             <div className="mb-8 flex justify-center">
               <div className="relative rounded-full px-3 py-1 text-sm text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                1,500+ guests hosted across Nairobi{" "}
+                5,000+ guests hosted across Nairobi{" "}
                 <Link href="/properties" className="font-semibold text-primary">
                   <span className="absolute inset-0" aria-hidden="true" />
                   Browse properties <span aria-hidden="true">&rarr;</span>
@@ -61,7 +61,7 @@ export function Hero() {
             {/* Trust bar */}
             <div className="mt-16 flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm text-gray-500">
               <div className="flex items-center gap-x-2">
-                <span className="font-semibold text-gray-900">1,500+</span>
+                <span className="font-semibold text-gray-900">5,000+</span>
                 <span>guests hosted</span>
               </div>
               <div className="flex items-center gap-x-2">

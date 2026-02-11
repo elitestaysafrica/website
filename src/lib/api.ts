@@ -84,7 +84,7 @@ export async function getStats() {
   if (!res.ok) {
     return {
       totalProperties: 0,
-      guestsHosted: '1,500+',
+      guestsHosted: '5,000+',
       avgOccupancy: '85%+',
       avgRating: '4.92',
       yearsInBusiness: 4,
