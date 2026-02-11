@@ -1,5 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+// WhatsApp notification via CallMeBot
+// To activate: Send "I allow callmebot to send me messages" to +34 644 71 81 99 on WhatsApp
+const WHATSAPP_NUMBER = '254111695444'
+const CALLMEBOT_APIKEY = process.env.CALLMEBOT_APIKEY || ''
+
+async function sendWhatsAppNotification(message: string) {
+  if (!CALLMEBOT_APIKEY) {
+    console.log('CallMeBot API key not configured, skipping WhatsApp notification')
+    return false
+  }
+  
+  try {
+    const encodedMessage = encodeURIComponent(message)
+    const url = `https://api.callmebot.com/whatsapp.php?phone=${WHATSAPP_NUMBER}&text=${encodedMessage}&apikey=${CALLMEBOT_APIKEY}`
+    
+    const response = await fetch(url)
+    if (response.ok) {
+      console.log('WhatsApp notification sent successfully')
+      return true
+    } else {
+      console.error('Failed to send WhatsApp notification:', await response.text())
+      return false
+    }
+  } catch (error) {
+    console.error('WhatsApp notification error:', error)
+    return false
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
@@ -13,42 +42,25 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Format the message for WhatsApp/notification
-    const formattedMessage = `
-🔔 New Contact Form Submission
+    // Format the message for WhatsApp
+    const formattedMessage = `🔔 *New Website Inquiry*
 
-Name: ${name}
-Email: ${email}
-Phone: ${phone || 'Not provided'}
-Subject: ${subject}
+*Name:* ${name}
+*Email:* ${email}
+*Phone:* ${phone || 'Not provided'}
+*Subject:* ${subject}
 
-Message:
+*Message:*
 ${message}
 
 ---
-Sent from elitestaysafrica.com
-    `.trim()
+_elitestaysafrica.com_`
 
-    // Log the submission (for debugging)
-    console.log('Contact form submission:', formattedMessage)
+    // Log the submission
+    console.log('Contact form submission:', { name, email, phone, subject, message })
 
-    // Try to send WhatsApp notification via CallMeBot or similar
-    // For now, we'll just log it and return success
-    // TODO: Add email notification via SendGrid/Resend/etc when configured
-
-    // Option 1: Store in a local file (simple approach for now)
-    // Option 2: Send to webhook
-    // Option 3: Email API
-
-    // For production, you'd want to send an email notification
-    // Example with Resend (would need API key):
-    // const resend = new Resend(process.env.RESEND_API_KEY)
-    // await resend.emails.send({
-    //   from: 'website@elitestaysafrica.com',
-    //   to: 'hello@elitestaysafrica.com',
-    //   subject: `Contact Form: ${subject}`,
-    //   text: formattedMessage,
-    // })
+    // Send WhatsApp notification
+    await sendWhatsAppNotification(formattedMessage)
 
     return NextResponse.json({ 
       success: true, 
