@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 
@@ -18,6 +18,11 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set([0]));
+  
+  // Touch handling
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+  const minSwipeDistance = 50;
 
   // Preload adjacent images
   useEffect(() => {
@@ -65,6 +70,33 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
   const goPrev = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + photos.length) % photos.length);
   }, [photos.length]);
+
+  // Touch handlers for swipe
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchEndX.current = null;
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    
+    const distance = touchStartX.current - touchEndX.current;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      goNext();
+    } else if (isRightSwipe) {
+      goPrev();
+    }
+
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
 
   // Handle keyboard navigation
   useEffect(() => {
@@ -134,44 +166,43 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
         </button>
       )}
 
-      {/* Lightbox */}
+      {/* Lightbox - Full Screen */}
       {lightboxOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
-          onClick={closeLightbox}
+          className="fixed inset-0 z-50 bg-black flex flex-col"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
         >
-          {/* Close button */}
-          <button
-            onClick={closeLightbox}
-            className="absolute top-4 right-4 z-10 p-2 text-white/80 hover:text-white transition-colors"
-            aria-label="Close"
-          >
-            <X className="h-8 w-8" />
-          </button>
-
-          {/* Counter */}
-          <div className="absolute top-4 left-4 text-white/80 text-sm font-medium">
-            {currentIndex + 1} / {photos.length}
+          {/* Header with close button */}
+          <div className="flex items-center justify-between p-4 bg-black/50 relative z-20">
+            <div className="text-white font-medium">
+              {currentIndex + 1} / {photos.length}
+            </div>
+            <button
+              onClick={closeLightbox}
+              className="p-2 text-white bg-white/20 hover:bg-white/30 rounded-full transition-colors"
+              aria-label="Close"
+            >
+              <X className="h-6 w-6" />
+            </button>
           </div>
 
-          {/* Previous button */}
-          {photos.length > 1 && (
-            <button
-              onClick={(e) => { e.stopPropagation(); goPrev(); }}
-              className="absolute left-2 md:left-4 p-2 text-white/80 hover:text-white transition-colors z-10 bg-black/20 rounded-full hover:bg-black/40"
-              aria-label="Previous"
-            >
-              <ChevronLeft className="h-8 w-8 md:h-10 md:w-10" />
-            </button>
-          )}
+          {/* Image Container - Full Screen */}
+          <div className="flex-1 relative flex items-center justify-center overflow-hidden">
+            {/* Previous button - desktop */}
+            {photos.length > 1 && (
+              <button
+                onClick={goPrev}
+                className="hidden md:flex absolute left-4 p-3 text-white bg-black/40 hover:bg-black/60 rounded-full transition-colors z-10"
+                aria-label="Previous"
+              >
+                <ChevronLeft className="h-8 w-8" />
+              </button>
+            )}
 
-          {/* Image Container */}
-          <div 
-            className="relative w-full h-full flex items-center justify-center px-16"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Current Image */}
-            <div className="relative w-full h-[70vh] md:h-[80vh]">
+            {/* Current Image - Full Width */}
+            <div className="relative w-full h-full">
               <Image
                 src={photos[currentIndex].main}
                 alt={`${name} - ${currentIndex + 1}`}
@@ -182,26 +213,31 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
                 quality={90}
               />
             </div>
+
+            {/* Next button - desktop */}
+            {photos.length > 1 && (
+              <button
+                onClick={goNext}
+                className="hidden md:flex absolute right-4 p-3 text-white bg-black/40 hover:bg-black/60 rounded-full transition-colors z-10"
+                aria-label="Next"
+              >
+                <ChevronRight className="h-8 w-8" />
+              </button>
+            )}
           </div>
 
-          {/* Next button */}
-          {photos.length > 1 && (
-            <button
-              onClick={(e) => { e.stopPropagation(); goNext(); }}
-              className="absolute right-2 md:right-4 p-2 text-white/80 hover:text-white transition-colors z-10 bg-black/20 rounded-full hover:bg-black/40"
-              aria-label="Next"
-            >
-              <ChevronRight className="h-8 w-8 md:h-10 md:w-10" />
-            </button>
-          )}
+          {/* Swipe hint on mobile */}
+          <div className="md:hidden text-center text-white/50 text-sm py-2">
+            Swipe to navigate
+          </div>
 
-          {/* Thumbnails */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 max-w-[90vw] overflow-x-auto p-2 bg-black/30 rounded-lg">
+          {/* Thumbnails - desktop only */}
+          <div className="hidden md:flex justify-center gap-2 p-4 bg-black/50 overflow-x-auto">
             {photos.map((photo, idx) => (
               <button
                 key={idx}
-                onClick={(e) => { e.stopPropagation(); setCurrentIndex(idx); }}
-                className={`relative w-14 h-10 md:w-16 md:h-12 flex-shrink-0 rounded overflow-hidden transition-all ${
+                onClick={() => setCurrentIndex(idx)}
+                className={`relative w-16 h-12 flex-shrink-0 rounded overflow-hidden transition-all ${
                   idx === currentIndex ? 'ring-2 ring-white scale-110' : 'opacity-50 hover:opacity-80'
                 }`}
               >
@@ -213,6 +249,20 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
                   sizes="64px"
                 />
               </button>
+            ))}
+          </div>
+
+          {/* Mobile dots indicator */}
+          <div className="md:hidden flex justify-center gap-1.5 py-4 bg-black/50">
+            {photos.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentIndex(idx)}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  idx === currentIndex ? 'bg-white w-4' : 'bg-white/40'
+                }`}
+                aria-label={`Go to photo ${idx + 1}`}
+              />
             ))}
           </div>
         </div>

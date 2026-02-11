@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { MapPin, Users, Bed, Bath, Wifi, Car, Dumbbell, Waves } from "lucide-react";
