@@ -23,7 +23,7 @@ import {
 const stats = [
   { value: "85%+", label: "Average Occupancy", subtext: "vs 45% market average" },
   { value: "50+", label: "Properties Managed", subtext: "across Nairobi" },
-  { kesAmount: 150000, label: "1-Bed Owner Net", subtext: "per month after fees" },
+  { kesAmount: 165000, label: "1-Bed Owner Net", subtext: "per month after fees" },
   { kesAmount: 245000, label: "2-Bed Owner Net", subtext: "per month after fees" },
 ]
 
@@ -66,10 +66,10 @@ const projections = [
     setupCost: 1400000,
     furnishing: 1200000,
     setupFee: 200000,
-    nightlyRate: 10000,
-    monthlyGross: 255000,
-    monthlyNet: 150000,
-    payback: "~9 months",
+    nightlyRate: 12500,
+    monthlyGross: 280000,
+    monthlyNet: 165000,
+    payback: "~8 months",
     annualYield: "12-15%",
   },
   {
@@ -78,7 +78,7 @@ const projections = [
     furnishing: 1500000,
     setupFee: 200000,
     nightlyRate: 15000,
-    monthlyGross: 380000,
+    monthlyGross: 340000,
     monthlyNet: 245000,
     payback: "~7 months",
     annualYield: "14-17%",
@@ -268,8 +268,8 @@ export default function InvestorsPage() {
               ))}
             </div>
             <p className="mt-8 text-center text-sm text-gray-500">
-              * Projections based on 75% occupancy. Actual results may vary based on location, 
-              seasonality, and market conditions. Net figures are before utilities and major repairs.
+              * Projections use 75% occupancy to be conservative — our portfolio actually averages 85%+. 
+              Results may vary based on location, seasonality, and market conditions. Net figures are before utilities and major repairs.
             </p>
           </div>
         </div>
