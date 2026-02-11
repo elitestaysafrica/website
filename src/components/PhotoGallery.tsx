@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Loader2 } from 'lucide-react';
 
 interface Photo {
   main: string;
@@ -18,31 +18,27 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set([0]));
+  const [isTransitioning, setIsTransitioning] = useState(false);
   
   // Touch handling
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
   const minSwipeDistance = 50;
 
-  // Preload adjacent images
+  // Preload ALL images when lightbox opens
   useEffect(() => {
     if (lightboxOpen && photos.length > 1) {
-      const toPreload = [
-        currentIndex - 1,
-        currentIndex + 1,
-        currentIndex - 2,
-        currentIndex + 2,
-      ].filter(i => i >= 0 && i < photos.length && !loadedImages.has(i));
-
-      toPreload.forEach(idx => {
-        const img = new window.Image();
-        img.src = photos[idx].main;
-        img.onload = () => {
-          setLoadedImages(prev => new Set([...prev, idx]));
-        };
+      photos.forEach((photo, idx) => {
+        if (!loadedImages.has(idx)) {
+          const img = new window.Image();
+          img.src = photo.main;
+          img.onload = () => {
+            setLoadedImages(prev => new Set([...prev, idx]));
+          };
+        }
       });
     }
-  }, [currentIndex, lightboxOpen, photos, loadedImages]);
+  }, [lightboxOpen, photos, loadedImages]);
 
   if (photos.length === 0) {
     return (
@@ -64,12 +60,18 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
   };
 
   const goNext = useCallback(() => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
     setCurrentIndex((prev) => (prev + 1) % photos.length);
-  }, [photos.length]);
+    setTimeout(() => setIsTransitioning(false), 200);
+  }, [photos.length, isTransitioning]);
 
   const goPrev = useCallback(() => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
     setCurrentIndex((prev) => (prev - 1 + photos.length) % photos.length);
-  }, [photos.length]);
+    setTimeout(() => setIsTransitioning(false), 200);
+  }, [photos.length, isTransitioning]);
 
   // Touch handlers for swipe
   const onTouchStart = (e: React.TouchEvent) => {
@@ -111,6 +113,10 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, goNext, goPrev]);
+
+  // Get indices for prev, current, next for smooth transitions
+  const prevIndex = (currentIndex - 1 + photos.length) % photos.length;
+  const nextIndex = (currentIndex + 1) % photos.length;
 
   return (
     <>
@@ -171,12 +177,9 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
         <div
           className="fixed inset-0 bg-black flex flex-col"
           style={{ zIndex: 99999 }}
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
         >
           {/* Header with close button - safe area for notch */}
-          <div className="flex items-center justify-between p-4 pt-safe relative" style={{ paddingTop: 'max(1rem, env(safe-area-inset-top))' }}>
+          <div className="flex items-center justify-between p-4 relative" style={{ paddingTop: 'max(1rem, env(safe-area-inset-top))' }}>
             <div className="text-white font-medium bg-black/60 px-3 py-1 rounded-full">
               {currentIndex + 1} / {photos.length}
             </div>
@@ -190,47 +193,101 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
             </button>
           </div>
 
-          {/* Image Container - Full Screen */}
-          <div className="flex-1 relative flex items-center justify-center overflow-hidden">
-            {/* Previous button - desktop */}
-            {photos.length > 1 && (
-              <button
-                onClick={goPrev}
-                className="hidden md:flex absolute left-4 p-3 text-white bg-black/40 hover:bg-black/60 rounded-full transition-colors z-10"
-                aria-label="Previous"
-              >
-                <ChevronLeft className="h-8 w-8" />
-              </button>
-            )}
+          {/* Image Container with Swipe */}
+          <div 
+            className="flex-1 relative overflow-hidden"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
+            {/* Slider container */}
+            <div 
+              className="absolute inset-0 flex transition-transform duration-200 ease-out"
+              style={{ transform: `translateX(-100%)` }}
+            >
+              {/* Previous Image */}
+              <div className="w-full h-full flex-shrink-0 relative flex items-center justify-center">
+                {loadedImages.has(prevIndex) ? (
+                  <Image
+                    src={photos[prevIndex].main}
+                    alt={`${name} - ${prevIndex + 1}`}
+                    fill
+                    className="object-contain"
+                    sizes="100vw"
+                  />
+                ) : (
+                  <Loader2 className="h-8 w-8 text-white animate-spin" />
+                )}
+              </div>
 
-            {/* Current Image - Full Width */}
-            <div className="relative w-full h-full">
-              <Image
-                src={photos[currentIndex].main}
-                alt={`${name} - ${currentIndex + 1}`}
-                fill
-                className="object-contain"
-                sizes="100vw"
-                priority
-                quality={90}
-              />
+              {/* Current Image */}
+              <div className="w-full h-full flex-shrink-0 relative flex items-center justify-center">
+                {loadedImages.has(currentIndex) ? (
+                  <Image
+                    src={photos[currentIndex].main}
+                    alt={`${name} - ${currentIndex + 1}`}
+                    fill
+                    className="object-contain"
+                    sizes="100vw"
+                    priority
+                  />
+                ) : (
+                  <Loader2 className="h-8 w-8 text-white animate-spin" />
+                )}
+              </div>
+
+              {/* Next Image */}
+              <div className="w-full h-full flex-shrink-0 relative flex items-center justify-center">
+                {loadedImages.has(nextIndex) ? (
+                  <Image
+                    src={photos[nextIndex].main}
+                    alt={`${name} - ${nextIndex + 1}`}
+                    fill
+                    className="object-contain"
+                    sizes="100vw"
+                  />
+                ) : (
+                  <Loader2 className="h-8 w-8 text-white animate-spin" />
+                )}
+              </div>
             </div>
 
-            {/* Next button - desktop */}
+            {/* Tap zones for navigation */}
+            <button
+              onClick={goPrev}
+              className="absolute left-0 top-0 bottom-0 w-1/4 z-10"
+              aria-label="Previous"
+            />
+            <button
+              onClick={goNext}
+              className="absolute right-0 top-0 bottom-0 w-1/4 z-10"
+              aria-label="Next"
+            />
+
+            {/* Desktop nav buttons */}
             {photos.length > 1 && (
-              <button
-                onClick={goNext}
-                className="hidden md:flex absolute right-4 p-3 text-white bg-black/40 hover:bg-black/60 rounded-full transition-colors z-10"
-                aria-label="Next"
-              >
-                <ChevronRight className="h-8 w-8" />
-              </button>
+              <>
+                <button
+                  onClick={goPrev}
+                  className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 p-3 text-white bg-black/40 hover:bg-black/60 rounded-full transition-colors z-10"
+                  aria-label="Previous"
+                >
+                  <ChevronLeft className="h-8 w-8" />
+                </button>
+                <button
+                  onClick={goNext}
+                  className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 p-3 text-white bg-black/40 hover:bg-black/60 rounded-full transition-colors z-10"
+                  aria-label="Next"
+                >
+                  <ChevronRight className="h-8 w-8" />
+                </button>
+              </>
             )}
           </div>
 
           {/* Swipe hint on mobile */}
           <div className="md:hidden text-center text-white/50 text-sm py-2">
-            Swipe to navigate
+            Swipe or tap edges to navigate
           </div>
 
           {/* Thumbnails - desktop only */}
@@ -256,16 +313,22 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
 
           {/* Mobile dots indicator */}
           <div className="md:hidden flex justify-center gap-1.5 py-4 bg-black/50">
-            {photos.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentIndex(idx)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  idx === currentIndex ? 'bg-white w-4' : 'bg-white/40'
-                }`}
-                aria-label={`Go to photo ${idx + 1}`}
-              />
-            ))}
+            {photos.length <= 15 ? (
+              photos.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentIndex(idx)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    idx === currentIndex ? 'bg-white w-4' : 'bg-white/40'
+                  }`}
+                  aria-label={`Go to photo ${idx + 1}`}
+                />
+              ))
+            ) : (
+              <span className="text-white/70 text-sm">
+                {currentIndex + 1} of {photos.length}
+              </span>
+            )}
           </div>
         </div>
       )}
