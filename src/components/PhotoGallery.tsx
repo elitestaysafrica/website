@@ -175,16 +175,17 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
           onTouchEnd={onTouchEnd}
         >
           {/* Header with close button */}
-          <div className="flex items-center justify-between p-4 bg-black/50 relative z-20">
-            <div className="text-white font-medium">
+          <div className="flex items-center justify-between p-4 relative z-20">
+            <div className="text-white font-medium bg-black/60 px-3 py-1 rounded-full">
               {currentIndex + 1} / {photos.length}
             </div>
             <button
               onClick={closeLightbox}
-              className="p-2 text-white bg-white/20 hover:bg-white/30 rounded-full transition-colors"
+              className="flex items-center gap-2 px-4 py-2 text-white bg-white/30 hover:bg-white/40 rounded-full transition-colors font-medium"
               aria-label="Close"
             >
-              <X className="h-6 w-6" />
+              <X className="h-5 w-5" />
+              <span>Close</span>
             </button>
           </div>
 
