@@ -24,7 +24,7 @@ const stats = [
   { value: "85%+", label: "Average Occupancy", subtext: "vs 45% market average" },
   { value: "50+", label: "Properties Managed", subtext: "across Nairobi" },
   { kesAmount: 165000, label: "1-Bed Owner Net", subtext: "per month after fees" },
-  { kesAmount: 245000, label: "2-Bed Owner Net", subtext: "per month after fees" },
+  { kesAmount: 225000, label: "2-Bed Owner Net", subtext: "per month after fees" },
 ]
 
 const services = [
@@ -77,10 +77,10 @@ const projections = [
     setupCost: 1700000,
     furnishing: 1500000,
     setupFee: 200000,
-    nightlyRate: 15000,
-    monthlyGross: 340000,
-    monthlyNet: 245000,
-    payback: "~7 months",
+    nightlyRate: 17000,
+    monthlyGross: 380000,
+    monthlyNet: 225000,
+    payback: "~8 months",
     annualYield: "14-17%",
   },
 ]
