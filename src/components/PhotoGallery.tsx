@@ -169,19 +169,20 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
       {/* Lightbox - Full Screen */}
       {lightboxOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black flex flex-col"
+          className="fixed inset-0 bg-black flex flex-col"
+          style={{ zIndex: 99999 }}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
         >
-          {/* Header with close button */}
-          <div className="flex items-center justify-between p-4 relative z-20">
+          {/* Header with close button - safe area for notch */}
+          <div className="flex items-center justify-between p-4 pt-safe relative" style={{ paddingTop: 'max(1rem, env(safe-area-inset-top))' }}>
             <div className="text-white font-medium bg-black/60 px-3 py-1 rounded-full">
               {currentIndex + 1} / {photos.length}
             </div>
             <button
               onClick={closeLightbox}
-              className="flex items-center gap-2 px-4 py-2 text-white bg-white/30 hover:bg-white/40 rounded-full transition-colors font-medium"
+              className="flex items-center gap-2 px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-full transition-colors font-medium shadow-lg"
               aria-label="Close"
             >
               <X className="h-5 w-5" />
