@@ -47,8 +47,11 @@ export function Price({
   if (compact && converted >= 1000) {
     if (converted >= 1000000) {
       formatted = `${(converted / 1000000).toFixed(1)}M`
-    } else {
+    } else if (converted >= 10000) {
       formatted = `${Math.round(converted / 1000)}K`
+    } else {
+      // For 1000-9999, show one decimal for precision (e.g., 1.3K instead of 1K)
+      formatted = `${(converted / 1000).toFixed(1)}K`
     }
   } else {
     formatted = showDecimals 

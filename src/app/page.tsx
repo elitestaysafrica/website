@@ -202,9 +202,9 @@ async function ForInvestors() {
             <div className="order-2 lg:order-1">
               <StatsWithCurrency 
                 stats={[
-                  { kesAmount: 180000, label: "avg monthly revenue", compact: true },
-                  { value: stats.avgOccupancy, label: "occupancy rate" },
-                  { value: `${stats.totalProperties || '50'}+`, label: "properties managed" },
+                  { kesAmount: 175000, label: "1-bed owner net/mo", compact: true },
+                  { kesAmount: 245000, label: "2-bed owner net/mo", compact: true },
+                  { value: "50+", label: "properties managed" },
                 ]}
               />
               <ul className="mt-12 space-y-4">
