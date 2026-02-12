@@ -10,6 +10,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/invest',
+        destination: '/investors',
+        permanent: true,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
