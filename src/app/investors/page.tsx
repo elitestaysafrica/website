@@ -382,7 +382,7 @@ export default function InvestorsPage() {
               <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10" asChild>
                 <a href="https://wa.me/254111695444">
                   <Phone className="mr-2 h-5 w-5" />
-                  WhatsApp: +254 111 695 444
+                  Message us on WhatsApp
                 </a>
               </Button>
             </div>

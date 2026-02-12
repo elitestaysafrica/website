@@ -16,15 +16,15 @@ const contactMethods = [
     icon: MessageCircle,
     title: "WhatsApp",
     description: "Quick responses, 24/7",
-    value: "+254 111 695 444",
+    value: "Message us on WhatsApp",
     href: "https://wa.me/254111695444",
   },
   {
     icon: Phone,
     title: "Phone",
     description: "Business hours: 8am - 8pm EAT",
-    value: "+254 111 695 444",
-    href: "tel:+254111695444",
+    value: "Available via WhatsApp",
+    href: "https://wa.me/254111695444",
   },
   {
     icon: MapPin,
