@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 
 const BREVO_API_KEY = process.env.BREVO_API_KEY || ""
-const BREVO_LIST_ID = parseInt(process.env.BREVO_INVESTOR_LIST_ID || "2") // Default list ID 2 for investors
+const BREVO_LIST_ID = parseInt(process.env.BREVO_INVESTOR_LIST_ID || "7") // List ID 7 = Investors
 const NOTIFICATION_EMAIL = "hello@elitestaysafrica.com"
 
 export async function POST(req: NextRequest) {
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
           attributes: {
             FIRSTNAME: name?.split(" ")[0] || "",
             LASTNAME: name?.split(" ").slice(1).join(" ") || "",
-            SMS: phone || "",
+            ...(phone ? { WHATSAPP: phone } : {}),
           },
           listIds: [BREVO_LIST_ID],
           updateEnabled: true,
