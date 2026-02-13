@@ -52,7 +52,7 @@ export function Hero() {
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link href="/investors">
+                <Link href="/invest">
                   Partner With Us
                 </Link>
               </Button>

@@ -237,7 +237,7 @@ async function ForInvestors() {
               </p>
               <div className="mt-8 flex gap-4">
                 <Button size="lg" asChild>
-                  <Link href="/investors">Learn More</Link>
+                  <Link href="/invest">Learn More</Link>
                 </Button>
                 <Button size="lg" className="border border-gray-500 bg-transparent text-white hover:bg-white/10" asChild>
                   <Link href="/contact">Get in Touch</Link>
@@ -279,7 +279,7 @@ function FinalCTA() {
               </p>
               <div className="mt-6">
                 <Button asChild>
-                  <Link href="/investors">Partner With Us</Link>
+                  <Link href="/invest">Partner With Us</Link>
                 </Button>
               </div>
             </div>

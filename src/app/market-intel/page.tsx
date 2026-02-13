@@ -382,7 +382,7 @@ export default function MarketIntelPage() {
                 </div>
                 <div className="text-center lg:text-right">
                   <Button size="lg" asChild>
-                    <Link href="/investors">
+                    <Link href="/invest">
                       Partner With Us
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
