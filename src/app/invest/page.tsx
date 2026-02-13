@@ -316,23 +316,23 @@ export default function InvestPage() {
         <div className="container mx-auto px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Premium Buildings Don&apos;t Guarantee Premium Returns
+              Buying the Right Property Is Only Half the Equation
             </h2>
             <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-              We&apos;ve seen it across Nairobi: luxury apartments with rooftop pools,
-              gyms, and saunas charging{" "}
-              <span className="font-semibold text-gray-900">KES 12,000/night</span>{" "}
-              for a 2-bedroom at{" "}
-              <span className="font-semibold text-gray-900">~60% occupancy</span>.
-              Meanwhile, our units in standard buildings earn{" "}
+              A great unit in a great location is a strong start. But without
+              expert management, even premium properties underperform. Our
+              portfolio consistently earns{" "}
               <span className="font-semibold text-primary">
-                KES 18,700/night
+                56% higher nightly rates
               </span>{" "}
-              at{" "}
-              <span className="font-semibold text-primary">85%+ occupancy</span>.
+              and{" "}
+              <span className="font-semibold text-primary">
+                25% more booked nights
+              </span>{" "}
+              than comparable listings in the same neighborhoods.
             </p>
             <p className="mt-4 text-lg font-semibold text-gray-900">
-              The difference isn&apos;t the building. It&apos;s the management.
+              The right management turns a good investment into a great one.
             </p>
           </div>
         </div>
