@@ -667,11 +667,12 @@ export default function InvestPage() {
               </div>
               <blockquote className="text-gray-700 leading-relaxed">
                 &ldquo;Sustained occupancies of over 85% and rental rates above market,
-                even compared to other units within the same building. We did try
-                another management group at one point, and the difference was night
-                and day. After switching back, occupancy increased, income improved,
-                and ratings climbed. I highly recommend them to anyone seeking peace
-                of mind and strong passive rental returns.&rdquo;
+                even compared to other units within the same building. We had one
+                unit with another management group, and the difference was night
+                and day. Once we handed it over to Andrew and Peris, occupancy
+                increased, income more than doubled, and ratings climbed. I highly
+                recommend them to anyone seeking peace of mind and strong passive
+                rental returns.&rdquo;
               </blockquote>
               <div className="mt-6 flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
