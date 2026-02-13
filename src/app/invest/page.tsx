@@ -104,7 +104,7 @@ const faqs = [
   },
   {
     q: "How much does it cost to furnish an Airbnb in Nairobi?",
-    a: "1-bedroom units: KES 1M-1.4M. 2-bedroom units: KES 1.4M-1.7M. We use local builders and craftsmen for custom furniture — better quality and a unique look that stands out from cookie-cutter units. Plus, our partnerships with major electronics and appliance dealers give us up to 50% off brand-name products, stretching your budget further.",
+    a: "We recommend budgeting KES 1M-1.4M for a 1-bedroom and KES 1.4M-1.7M for a 2-bedroom. Some hosts claim they can furnish for KES 200-500K, but those units severely lack the wow factor — and that's everything when it comes to standing out and attracting high-paying guests consistently. A single 85\" TV (a huge selling point) can cost KES 200K alone. We can't stress enough: don't skimp on furnishing, but stick to a budget — overspending increases your payback period. We leverage local craftsmen and dealer partnerships to maximize quality within budget.",
   },
   {
     q: "What does a property management company charge in Kenya?",
