@@ -99,28 +99,40 @@ const steps = [
 
 const faqs = [
   {
-    q: "What does the management fee cover?",
-    a: "Everything operational: guest communication, cleaning coordination, maintenance management, listing optimization, dynamic pricing, and monthly reporting. You only cover utilities and major repairs.",
+    q: "Is Airbnb profitable in Nairobi?",
+    a: "Yes — when managed well. Our portfolio averages 85%+ occupancy with nightly rates 40-56% above market average. A well-furnished 1-bedroom in a good area can net the owner KES 165,000+ per month after management fees. Location, furnishing quality, and professional management are the three biggest factors.",
   },
   {
-    q: "How much does furnishing cost?",
-    a: "1-bedroom units: KES 1M-1.4M. 2-bedroom units: KES 1.4M-1.7M. We use local builders and craftsmen — better quality at lower cost than store-bought furniture, and your unit stands out from the crowd.",
+    q: "How much does it cost to furnish an Airbnb in Nairobi?",
+    a: "1-bedroom units: KES 1M-1.4M. 2-bedroom units: KES 1.4M-1.7M. We use local builders and craftsmen for custom furniture — better quality and a unique look that stands out from cookie-cutter units. Plus, our partnerships with major electronics and appliance dealers give us up to 50% off brand-name products, stretching your budget further.",
   },
   {
-    q: "Can I use my unit sometimes?",
-    a: "Yes. Block up to 30 days per year for personal use with advance notice.",
+    q: "What does a property management company charge in Kenya?",
+    a: "Typical Airbnb management fees in Nairobi range from 20-30% of gross revenue. Our fee covers everything operational: guest communication, cleaning coordination, maintenance management, listing optimization, dynamic pricing, and monthly reporting. You only cover utilities and major repairs.",
   },
   {
-    q: "What's the minimum commitment?",
-    a: "12-month initial contract with 60-day notice for termination. Most owners stay years — the results speak for themselves.",
+    q: "How much can I earn from an Airbnb in Kenya?",
+    a: "It depends on location, unit size, and management quality. Our 1-bedroom units gross KES 280,000+/month at 75% occupancy. 2-bedrooms gross KES 420,000+/month. After management fees, owners typically net KES 165,000-250,000+ per month before rent and utilities.",
+  },
+  {
+    q: "What are the best areas for Airbnb in Nairobi?",
+    a: "Westlands, Kilimani, Kileleshwa, and Lavington consistently perform best for short-term rentals. These areas attract both international tourists and business travelers, with strong demand year-round. We operate across all four neighborhoods.",
+  },
+  {
+    q: "Do I need to pay taxes on Airbnb income in Kenya?",
+    a: "Yes. Airbnb income is subject to Withholding Tax (5% on gross) and VAT considerations. We handle KRA compliance including WHT deductions and provide all documentation you need for tax filing, so you stay compliant without the headache.",
+  },
+  {
+    q: "Can I use my property sometimes?",
+    a: "Yes. Block up to 30 days per year for personal use with advance notice. Many of our owners use their units when visiting Nairobi.",
+  },
+  {
+    q: "How long before my property starts earning?",
+    a: "From signing to first booking is typically 4-6 weeks. That includes furnishing (4-6 weeks with local craftsmen), professional photography, listing creation, and optimization. First booking usually comes within 7-14 days of going live.",
   },
   {
     q: "When do I get paid?",
-    a: "Monthly payouts by the 15th, covering the previous month. Direct bank transfer or M-PESA.",
-  },
-  {
-    q: "What about taxes?",
-    a: "We handle KRA compliance including WHT deductions and provide all documentation you need for tax filing.",
+    a: "Monthly payouts by the 15th of each month, covering the previous month's bookings. Direct bank transfer or M-PESA — your choice.",
   },
 ]
 
