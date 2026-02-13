@@ -624,6 +624,68 @@ export default function InvestPage() {
         </div>
       </section>
 
+      {/* ═══ TESTIMONIALS ═══ */}
+      <section className="py-16 sm:py-20 bg-white">
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              What Our Property Owners Say
+            </h2>
+          </div>
+          <div className="mx-auto max-w-5xl grid grid-cols-1 gap-8 lg:grid-cols-2">
+            {/* Testimonial 1 */}
+            <div className="rounded-2xl bg-gray-50 p-8">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-5 w-5 fill-primary text-primary" />
+                ))}
+              </div>
+              <blockquote className="text-gray-700 leading-relaxed">
+                &ldquo;My apartments have been operating near full capacity, and guests
+                consistently leave glowing reviews. I couldn&apos;t be happier with the
+                results and highly recommend their services to any property owner
+                looking for reliable, professional management. I&apos;m excited to
+                continue working with them!&rdquo;
+              </blockquote>
+              <div className="mt-6 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+                  <Users className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <div className="font-semibold text-gray-900">Property Owner</div>
+                  <div className="text-sm text-gray-500">2 units — Lavington &amp; Westlands</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Testimonial 2 */}
+            <div className="rounded-2xl bg-gray-50 p-8">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-5 w-5 fill-primary text-primary" />
+                ))}
+              </div>
+              <blockquote className="text-gray-700 leading-relaxed">
+                &ldquo;Sustained occupancies of over 85% and rental rates above market,
+                even compared to other units within the same building. We did try
+                another management group at one point, and the difference was night
+                and day — occupancy increased, income improved, and ratings
+                climbed.&rdquo;
+              </blockquote>
+              <div className="mt-6 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+                  <Users className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <div className="font-semibold text-gray-900">Property Owner — 4 Years</div>
+                  <div className="text-sm text-gray-500">2 units — Westlands &amp; Riverside</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ FAQ ═══ */}
       <section className="py-16 sm:py-20 bg-white">
         <div className="container mx-auto px-6 lg:px-8">
