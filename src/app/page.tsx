@@ -239,7 +239,7 @@ async function ForInvestors() {
                 <Button size="lg" asChild>
                   <Link href="/investors">Learn More</Link>
                 </Button>
-                <Button size="lg" variant="outline" className="border-gray-600 text-white hover:bg-gray-800" asChild>
+                <Button size="lg" className="border border-gray-500 bg-transparent text-white hover:bg-white/10" asChild>
                   <Link href="/contact">Get in Touch</Link>
                 </Button>
               </div>

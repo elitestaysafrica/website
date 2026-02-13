@@ -661,7 +661,7 @@ export default function InvestPage() {
                 </div>
               </div>
               <div className="mt-8">
-                <Button size="lg" variant="outline" className="border-gray-600 text-white hover:bg-white/10" asChild>
+                <Button size="lg" className="border border-gray-500 bg-transparent text-white hover:bg-white/10" asChild>
                   <a href="https://wa.me/254111695444">
                     <Phone className="mr-2 h-5 w-5" />
                     Or message us on WhatsApp
