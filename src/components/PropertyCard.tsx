@@ -24,7 +24,7 @@ export function PropertyCard({ property, showBookButton = true }: PropertyCardPr
         <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
           {mainPhoto ? (
             <Image
-              src={mainPhoto.thumb || mainPhoto.main}
+              src={mainPhoto.main || mainPhoto.thumb}
               alt={property.name}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"
