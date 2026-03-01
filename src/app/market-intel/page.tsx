@@ -7,6 +7,7 @@ import {
   BarChart3,
   TrendingUp,
   TrendingDown,
+  Minus,
   MapPin,
   ArrowRight,
   Building2,
@@ -16,9 +17,11 @@ import {
   Users,
   Target,
   Clock,
+  Star,
   ChevronDown,
   Mail,
   Loader2,
+  ArrowUpRight,
 } from "lucide-react"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://staff.elitestaysafrica.com/api/website"
@@ -32,10 +35,7 @@ interface MarketData {
     deltas: { day: Record<string, number>; week: Record<string, number> }
     esa_deltas: { day: Record<string, number>; week: Record<string, number> }
   }
-  overview: {
-    median_rate: number | null
-    total_listings: number
-  }
+  overview: { median_rate: number | null; total_listings: number }
   gap_vs_market: number | null
   competitors_tracked: number | null
   dead_pct: number | null
@@ -45,102 +45,77 @@ interface MarketData {
   by_bedroom: { bedrooms: number; label: string; occ30: number | null; occ90: number | null }[]
   timeline: { date: string; market_occ30: number; esa_occ30: number }[]
   avg_manager_occ: { occ30: number; estimated: boolean }
+  ratings: { market_avg: number | null; esa_avg: number | null; esa_reviews: number | null }
+  actual_performance: {
+    esa_occ: number; esa_rating: number; esa_reviews: number
+    avg_manager_occ: number; avg_manager_rating: number
+    note: string; estimated: boolean
+  }
 }
 
-function Delta({ value, suffix = "pp", size = "sm" }: { value: number | null | undefined; suffix?: string; size?: "sm" | "xs" }) {
+// Curated neighborhood data — will switch to live API data once area tagging is complete
+const neighborhoods = [
+  { name: "Westlands", occupancy: "52%", avgRate: "$55", trend: "stable" as const, description: "Prime business district. High corporate travel demand. Competitive but rewarding for quality operators." },
+  { name: "Kilimani", occupancy: "48%", avgRate: "$40", trend: "down" as const, description: "Most saturated market in Nairobi. Price wars are real. Oversupply pushing rates down — differentiation is survival." },
+  { name: "Lavington", occupancy: "53%", avgRate: "$45", trend: "stable" as const, description: "Family-oriented. Steady demand from relocating families and mid-term stays. Less volatile than Kilimani." },
+  { name: "Upper Hill", occupancy: "50%", avgRate: "$60", trend: "up" as const, description: "Business travelers and conference attendees. Growing demand with new developments." },
+  { name: "Gigiri", occupancy: "50%", avgRate: "$72", trend: "up" as const, description: "UN and embassy area. Highest rates in the city. Limited supply keeps competition manageable." },
+  { name: "Karen", occupancy: "48%", avgRate: "$55", trend: "stable" as const, description: "Premium residential. Lower density, appeals to long-stay guests seeking space and tranquility." },
+]
+
+function TrendBadge({ trend }: { trend: "up" | "down" | "stable" }) {
+  if (trend === "up") return <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-full"><TrendingUp className="h-3 w-3" />Rising</span>
+  if (trend === "down") return <span className="inline-flex items-center gap-1 text-xs font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded-full"><TrendingDown className="h-3 w-3" />Declining</span>
+  return <span className="inline-flex items-center gap-1 text-xs font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full"><Minus className="h-3 w-3" />Stable</span>
+}
+
+function WeekTrend({ value }: { value: number | null | undefined }) {
   if (value == null) return null
-  const isPositive = value > 0
-  const Icon = isPositive ? TrendingUp : TrendingDown
-  const color = isPositive ? "text-green-600" : value < 0 ? "text-red-500" : "text-gray-400"
-  const textSize = size === "xs" ? "text-xs" : "text-sm"
+  if (value > 0.5) return <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700"><TrendingUp className="h-3 w-3" />Rising</span>
+  if (value < -0.5) return <span className="inline-flex items-center gap-1 text-xs font-medium text-red-500"><TrendingDown className="h-3 w-3" />Falling</span>
+  return <span className="inline-flex items-center gap-1 text-xs font-medium text-gray-400"><Minus className="h-3 w-3" />Flat</span>
+}
+
+function Stars({ rating, size = "sm" }: { rating: number; size?: "sm" | "lg" }) {
+  const s = size === "lg" ? "h-5 w-5" : "h-4 w-4"
   return (
-    <span className={`inline-flex items-center gap-1 ${color} ${textSize} font-medium`}>
-      <Icon className="h-3 w-3" />
-      {isPositive ? "+" : ""}{value}{suffix}
+    <span className="inline-flex items-center gap-1">
+      <Star className={`${s} fill-amber-400 text-amber-400`} />
+      <span className={`font-semibold ${size === "lg" ? "text-lg" : "text-sm"}`}>{rating}</span>
     </span>
   )
 }
 
-function StatCard({ icon: Icon, label, value, subtext, accent, className }: {
-  icon: React.ElementType
-  label: string
-  value: string | React.ReactNode
-  subtext?: React.ReactNode
-  accent?: "green" | "amber" | "blue"
-  className?: string
-}) {
-  const accentColors = {
-    green: "ring-green-200 bg-green-50/50",
-    amber: "ring-amber-200 bg-amber-50/50",
-    blue: "ring-blue-200 bg-blue-50/50",
-  }
+function ForwardChart({ data }: { data: { label: string; market_fill: number; esa_fill: number }[] }) {
+  if (!data || data.length === 0) return null
   return (
-    <div className={`rounded-2xl p-6 shadow-sm ring-1 ${accent ? accentColors[accent] : "ring-gray-200 bg-white"} ${className || ""}`}>
-      <div className="flex items-center gap-3">
-        <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${accent === "green" ? "bg-green-100" : "bg-primary/10"}`}>
-          <Icon className={`h-5 w-5 ${accent === "green" ? "text-green-700" : "text-primary"}`} />
+    <div className="space-y-6">
+      {data.map((month) => (
+        <div key={month.label}>
+          <h4 className="font-medium text-gray-900 mb-3">{month.label}</h4>
+          <div className="space-y-2">
+            <div>
+              <div className="flex justify-between text-sm mb-1">
+                <span className="text-gray-500">Market Average</span>
+                <span className="font-medium">{month.market_fill}% booked</span>
+              </div>
+              <div className="h-3 rounded-full bg-gray-100 overflow-hidden">
+                <div className="h-full rounded-full bg-gray-400 transition-all" style={{ width: `${Math.min(month.market_fill, 100)}%` }} />
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between text-sm mb-1">
+                <span className="text-green-700 font-medium">Elite Stays</span>
+                <span className="font-semibold text-green-700">{month.esa_fill}% booked</span>
+              </div>
+              <div className="h-3 rounded-full bg-green-100 overflow-hidden">
+                <div className="h-full rounded-full bg-green-500 transition-all" style={{ width: `${Math.min(month.esa_fill, 100)}%` }} />
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="text-sm text-gray-500">{label}</div>
-      </div>
-      <div className="mt-4 text-3xl font-bold text-gray-900">{value}</div>
-      {subtext && <div className="mt-1">{subtext}</div>}
+      ))}
     </div>
-  )
-}
-
-function MiniChart({ data }: { data: { date: string; market_occ30: number; esa_occ30: number }[] }) {
-  if (!data || data.length < 2) return null
-
-  const width = 600
-  const height = 200
-  const padding = { top: 20, right: 20, bottom: 30, left: 40 }
-  const innerW = width - padding.left - padding.right
-  const innerH = height - padding.top - padding.bottom
-
-  const allValues = data.flatMap((d) => [d.market_occ30, d.esa_occ30].filter(Boolean))
-  const minY = Math.max(0, Math.min(...allValues) - 5)
-  const maxY = Math.max(...allValues) + 5
-
-  const xScale = (i: number) => padding.left + (i / (data.length - 1)) * innerW
-  const yScale = (v: number) => padding.top + innerH - ((v - minY) / (maxY - minY)) * innerH
-
-  const makePath = (key: "market_occ30" | "esa_occ30") =>
-    data
-      .map((d, i) => `${i === 0 ? "M" : "L"}${xScale(i)},${yScale(d[key] || 0)}`)
-      .join(" ")
-
-  return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
-      {/* Grid lines */}
-      {[0, 0.25, 0.5, 0.75, 1].map((pct) => {
-        const y = padding.top + innerH * (1 - pct)
-        const val = Math.round(minY + (maxY - minY) * pct)
-        return (
-          <g key={pct}>
-            <line x1={padding.left} y1={y} x2={width - padding.right} y2={y} stroke="#e5e7eb" strokeDasharray="4 4" />
-            <text x={padding.left - 8} y={y + 4} textAnchor="end" fill="#9ca3af" fontSize="11">{val}%</text>
-          </g>
-        )
-      })}
-      {/* Market line */}
-      <path d={makePath("market_occ30")} fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" />
-      {/* ESA line */}
-      <path d={makePath("esa_occ30")} fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" />
-      {/* Date labels */}
-      {data.filter((_, i) => i === 0 || i === data.length - 1 || i === Math.floor(data.length / 2)).map((d, _, arr) => {
-        const idx = data.indexOf(d)
-        return (
-          <text key={d.date} x={xScale(idx)} y={height - 5} textAnchor="middle" fill="#9ca3af" fontSize="10">
-            {new Date(d.date + "T00:00:00").toLocaleDateString("en", { month: "short", day: "numeric" })}
-          </text>
-        )
-      })}
-      {/* Legend */}
-      <circle cx={width - 150} cy={12} r={4} fill="#9ca3af" />
-      <text x={width - 142} y={16} fill="#9ca3af" fontSize="11">Market</text>
-      <circle cx={width - 80} cy={12} r={4} fill="#16a34a" />
-      <text x={width - 72} y={16} fill="#16a34a" fontSize="11">Elite Stays</text>
-    </svg>
   )
 }
 
@@ -152,16 +127,14 @@ function LeadCaptureForm() {
     e.preventDefault()
     setLoading(true)
     const form = e.currentTarget
-    const data = new FormData(form)
+    const formData = new FormData(form)
     try {
       await fetch(`${API_URL}/market-intel-lead`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(Object.fromEntries(data)),
+        body: JSON.stringify(Object.fromEntries(formData)),
       })
-    } catch {
-      // Still show success — we'll handle failures server-side
-    }
+    } catch { /* handle server-side */ }
     setLoading(false)
     setSubmitted(true)
   }
@@ -192,9 +165,9 @@ function LeadCaptureForm() {
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Units</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">How many units?</label>
           <select name="units" required className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-primary focus:ring-primary bg-white">
-            <option value="">How many?</option>
+            <option value="">Select</option>
             <option value="0">None yet — exploring</option>
             <option value="1-5">1–5 units</option>
             <option value="6-20">6–20 units</option>
@@ -213,9 +186,9 @@ function LeadCaptureForm() {
       </div>
       <Button type="submit" size="lg" className="w-full" disabled={loading}>
         {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Mail className="h-4 w-4 mr-2" />}
-        Get Full Market Report
+        Get the Full Market Report
       </Button>
-      <p className="text-xs text-gray-500 text-center">Free monthly reports. No spam. Unsubscribe anytime.</p>
+      <p className="text-xs text-gray-500 text-center">Free monthly reports. Unsubscribe anytime. No spam.</p>
     </form>
   )
 }
@@ -223,7 +196,8 @@ function LeadCaptureForm() {
 export default function MarketIntelPage() {
   const [data, setData] = useState<MarketData | null>(null)
   const [error, setError] = useState(false)
-  const [showBedroomDetails, setShowBedroomDetails] = useState(false)
+  const [showAreas, setShowAreas] = useState(false)
+  const [showBedrooms, setShowBedrooms] = useState(false)
 
   useEffect(() => {
     fetch(`${API_URL}/market-intel`)
@@ -232,10 +206,8 @@ export default function MarketIntelPage() {
       .catch(() => setError(true))
   }, [])
 
-  const mktOcc = data?.occupancy?.market?.occ30
-  const esaOcc = data?.occupancy?.esa?.occ30
-  const gap = data?.gap_vs_market
-  const avgMgr = data?.avg_manager_occ
+  const actual = data?.actual_performance
+  const fwd = data?.occupancy
   const weekDelta = data?.occupancy?.deltas?.week?.occ30
 
   return (
@@ -246,217 +218,304 @@ export default function MarketIntelPage() {
           <div className="mx-auto max-w-3xl text-center">
             <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-6">
               <BarChart3 className="h-4 w-4" />
-              Live Market Data
+              Live Market Data · Updated Daily
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
               Nairobi Airbnb Market Intelligence
             </h1>
             <p className="mt-6 text-lg text-gray-600">
-              We track every short-term rental listing in Nairobi and publish what other operators keep secret.
-              Real data, updated daily.
+              We track every short-term rental in Nairobi and publish what other operators keep secret.
+              Real occupancy data, real ratings, real performance — not estimates from third-party tools.
             </p>
             {data && (
-              <p className="mt-2 text-sm text-gray-400">
-                Last updated: {new Date(data.generated_at).toLocaleDateString("en", { month: "long", day: "numeric", year: "numeric" })}
+              <p className="mt-3 text-sm text-gray-400">
+                Updated {new Date(data.generated_at).toLocaleDateString("en", { month: "long", day: "numeric", year: "numeric" })}
                 {" · "}{data.overview.total_listings.toLocaleString()} listings tracked
+                {" · "}{data.competitors_tracked} property managers monitored
               </p>
             )}
           </div>
         </div>
       </section>
 
-      {/* Loading / Error State */}
+      {/* Loading */}
       {!data && !error && (
         <div className="py-20 text-center">
           <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
-          <p className="mt-4 text-gray-500">Loading market data...</p>
+          <p className="mt-4 text-gray-500">Loading live market data...</p>
         </div>
       )}
       {error && (
         <div className="py-20 text-center">
-          <p className="text-gray-500">Market data temporarily unavailable. Check back soon.</p>
+          <p className="text-gray-500">Market data temporarily unavailable. Please check back soon.</p>
         </div>
       )}
 
       {data && (
         <>
-          {/* Performance Comparison — The Headline */}
+          {/* ═══════════════════════════════════════════════════════ */}
+          {/* SECTION 1: ACTUAL PERFORMANCE (Past 30 Days)          */}
+          {/* ═══════════════════════════════════════════════════════ */}
           <section className="py-12">
             <div className="container mx-auto px-6 lg:px-8">
               <div className="mx-auto max-w-5xl">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">How Does Your Property Compare?</h2>
-                <p className="text-gray-500 mb-8 text-sm">
-                  Forward-looking calendar occupancy for the next 30 days. Actual achieved occupancy is typically 20–30% higher due to last-minute bookings.
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  <StatCard
-                    icon={Percent}
-                    label="Market Average"
-                    value={mktOcc != null ? `${mktOcc}%` : "—"}
-                    subtext={
-                      <div className="flex items-center gap-3">
-                        <Delta value={weekDelta} suffix="pp 7d" />
-                        <span className="text-xs text-gray-400">forward 30d</span>
+                <div className="mb-8">
+                  <h2 className="text-2xl font-bold text-gray-900">Actual Performance — Past 30 Days</h2>
+                  <p className="mt-2 text-sm text-gray-500">
+                    What operators actually achieved last month. These are real results, not forward-looking estimates.
+                  </p>
+                </div>
+
+                {actual && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* ESA Card */}
+                    <div className="rounded-2xl bg-green-50/80 p-8 ring-1 ring-green-200">
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="h-3 w-3 rounded-full bg-green-500" />
+                        <span className="text-sm font-medium text-green-800">Elite Stays Africa</span>
                       </div>
-                    }
-                  />
-                  <StatCard
-                    icon={Users}
-                    label="Avg Property Manager"
-                    value={avgMgr ? `~${avgMgr.occ30}%` : "—"}
-                    subtext={
-                      <span className="text-xs text-gray-400">
-                        {avgMgr?.estimated ? "Estimated from market data" : "Based on tracked managers"}
-                      </span>
-                    }
-                  />
-                  <StatCard
-                    icon={TrendingUp}
-                    label="Elite Stays Portfolio"
-                    value={esaOcc != null ? `${esaOcc}%` : "—"}
-                    accent="green"
-                    subtext={
-                      gap != null ? (
-                        <span className="text-sm font-semibold text-green-700">+{gap}pp above market</span>
-                      ) : undefined
-                    }
-                  />
-                  <StatCard
-                    icon={DollarSign}
-                    label="Median Nightly Rate"
-                    value={data.overview.median_rate ? `$${data.overview.median_rate}` : "—"}
-                    subtext={<span className="text-xs text-gray-400">Nairobi market-wide</span>}
-                  />
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Trend Chart */}
-          {data.timeline.length > 2 && (
-            <section className="py-8">
-              <div className="container mx-auto px-6 lg:px-8">
-                <div className="mx-auto max-w-5xl">
-                  <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">30-Day Occupancy Trend</h3>
-                    <MiniChart data={data.timeline} />
-                    <p className="mt-3 text-xs text-gray-400 text-center">
-                      Forward-looking calendar occupancy. Shows what percentage of the next 30 nights are booked at each snapshot.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-          )}
-
-          {/* Key Insights */}
-          <section className="py-8">
-            <div className="container mx-auto px-6 lg:px-8">
-              <div className="mx-auto max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-6">
-                {data.dead_pct != null && data.dead_pct > 0 && (
-                  <div className="rounded-2xl bg-red-50 p-5 ring-1 ring-red-100">
-                    <div className="text-2xl font-bold text-red-700">{data.dead_pct}%</div>
-                    <div className="text-sm font-medium text-red-800 mt-1">Dead Listings</div>
-                    <p className="mt-2 text-xs text-red-600">
-                      Listings with less than 5% occupancy. The market is crowded — but most operators aren&apos;t competing effectively.
-                    </p>
-                  </div>
-                )}
-                {data.last_minute_pct != null && (
-                  <div className="rounded-2xl bg-blue-50 p-5 ring-1 ring-blue-100">
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-5 w-5 text-blue-600" />
-                      <div className="text-2xl font-bold text-blue-700">{data.last_minute_pct}%</div>
-                    </div>
-                    <div className="text-sm font-medium text-blue-800 mt-1">Last-Minute Bookings</div>
-                    <p className="mt-2 text-xs text-blue-600">
-                      Bookings made within 14 days of check-in. Nairobi is a last-minute market — dynamic pricing matters.
-                    </p>
-                  </div>
-                )}
-                {data.competitors_tracked && (
-                  <div className="rounded-2xl bg-amber-50 p-5 ring-1 ring-amber-100">
-                    <div className="flex items-center gap-2">
-                      <Target className="h-5 w-5 text-amber-600" />
-                      <div className="text-2xl font-bold text-amber-700">{data.competitors_tracked}</div>
-                    </div>
-                    <div className="text-sm font-medium text-amber-800 mt-1">Property Managers Tracked</div>
-                    <p className="mt-2 text-xs text-amber-600">
-                      We monitor every multi-listing host in Nairobi. We know who&apos;s performing and who&apos;s not.
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </section>
-
-          {/* Forward Fill Rate */}
-          {data.fill_rate.length > 0 && (
-            <section className="py-8">
-              <div className="container mx-auto px-6 lg:px-8">
-                <div className="mx-auto max-w-5xl">
-                  <h2 className="text-xl font-bold text-gray-900 mb-6">Forward Booking Rate</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {data.fill_rate.map((month) => (
-                      <div key={month.label} className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
-                        <h3 className="font-semibold text-gray-900">{month.label}</h3>
-                        <div className="mt-4 space-y-3">
-                          <div>
-                            <div className="flex justify-between text-sm mb-1">
-                              <span className="text-gray-500">Market</span>
-                              <span className="font-medium">{month.market_fill}%</span>
-                            </div>
-                            <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
-                              <div className="h-full rounded-full bg-gray-400" style={{ width: `${Math.min(month.market_fill, 100)}%` }} />
-                            </div>
-                          </div>
-                          <div>
-                            <div className="flex justify-between text-sm mb-1">
-                              <span className="text-green-700">Elite Stays</span>
-                              <span className="font-medium text-green-700">{month.esa_fill}%</span>
-                            </div>
-                            <div className="h-2 rounded-full bg-green-100 overflow-hidden">
-                              <div className="h-full rounded-full bg-green-500" style={{ width: `${Math.min(month.esa_fill, 100)}%` }} />
-                            </div>
-                          </div>
+                      <div className="mt-4 flex items-end gap-4">
+                        <div>
+                          <div className="text-5xl font-bold text-green-900">{actual.esa_occ}%</div>
+                          <div className="text-sm text-green-700 mt-1">occupancy achieved</div>
+                        </div>
+                        <div className="mb-2">
+                          <Stars rating={actual.esa_rating} size="lg" />
+                          <div className="text-xs text-gray-500 mt-0.5">{actual.esa_reviews.toLocaleString()} reviews</div>
                         </div>
                       </div>
-                    ))}
+                      <p className="mt-4 text-xs text-green-700">From verified booking records across our full Nairobi portfolio.</p>
+                    </div>
+
+                    {/* Avg Manager Card */}
+                    <div className="rounded-2xl bg-gray-50 p-8 ring-1 ring-gray-200">
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="h-3 w-3 rounded-full bg-gray-400" />
+                        <span className="text-sm font-medium text-gray-600">Average Nairobi Property Manager</span>
+                      </div>
+                      <div className="mt-4 flex items-end gap-4">
+                        <div>
+                          <div className="text-5xl font-bold text-gray-700">~{actual.avg_manager_occ}%</div>
+                          <div className="text-sm text-gray-500 mt-1">occupancy achieved</div>
+                        </div>
+                        <div className="mb-2">
+                          <Stars rating={actual.avg_manager_rating} size="lg" />
+                          <div className="text-xs text-gray-400 mt-0.5">market average</div>
+                        </div>
+                      </div>
+                      {actual.estimated && (
+                        <p className="mt-4 text-xs text-gray-400">Estimated from tracked property managers. Exact figures available in full report.</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Gap callout */}
+                {actual && (
+                  <div className="mt-6 rounded-xl bg-white border border-gray-200 px-6 py-4 flex items-center justify-between">
+                    <div>
+                      <span className="text-sm text-gray-500">Performance gap: </span>
+                      <span className="text-lg font-bold text-green-700">+{actual.esa_occ - actual.avg_manager_occ}% higher occupancy</span>
+                      <span className="text-sm text-gray-500"> with a </span>
+                      <span className="font-semibold text-gray-900">{actual.esa_rating}★</span>
+                      <span className="text-sm text-gray-500"> guest rating</span>
+                    </div>
+                    <ArrowUpRight className="h-5 w-5 text-green-600 hidden sm:block" />
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+
+          {/* ═══════════════════════════════════════════════════════ */}
+          {/* SECTION 2: FORWARD OUTLOOK (Next 30 Days)             */}
+          {/* ═══════════════════════════════════════════════════════ */}
+          <section className="py-12 bg-gray-50">
+            <div className="container mx-auto px-6 lg:px-8">
+              <div className="mx-auto max-w-5xl">
+                <div className="mb-8">
+                  <h2 className="text-2xl font-bold text-gray-900">Forward Outlook — What&apos;s Booking Now</h2>
+                  <p className="mt-2 text-sm text-gray-500">
+                    How much of the next 30–90 days is already booked across the market. These numbers grow daily
+                    as new bookings come in — actual occupancy ends up 20–30% higher than what you see here.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                  {/* Market 30d */}
+                  <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Percent className="h-5 w-5 text-gray-400" />
+                      <span className="text-sm text-gray-500">Market (30d)</span>
+                    </div>
+                    <div className="text-3xl font-bold text-gray-900">{fwd?.market?.occ30 ?? "—"}%</div>
+                    <div className="mt-2"><WeekTrend value={weekDelta} /></div>
+                    <div className="text-xs text-gray-400 mt-1">currently booked</div>
+                  </div>
+
+                  {/* ESA 30d */}
+                  <div className="rounded-2xl bg-green-50/80 p-6 shadow-sm ring-1 ring-green-200">
+                    <div className="flex items-center gap-2 mb-4">
+                      <TrendingUp className="h-5 w-5 text-green-600" />
+                      <span className="text-sm text-green-700">Elite Stays (30d)</span>
+                    </div>
+                    <div className="text-3xl font-bold text-green-900">{fwd?.esa?.occ30 ?? "—"}%</div>
+                    <div className="mt-2"><WeekTrend value={data.occupancy?.esa_deltas?.week?.occ30} /></div>
+                    <div className="text-xs text-green-600 mt-1">currently booked</div>
+                  </div>
+
+                  {/* Median Rate */}
+                  <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+                    <div className="flex items-center gap-2 mb-4">
+                      <DollarSign className="h-5 w-5 text-gray-400" />
+                      <span className="text-sm text-gray-500">Median Rate</span>
+                    </div>
+                    <div className="text-3xl font-bold text-gray-900">${data.overview.median_rate ?? "—"}</div>
+                    <div className="text-xs text-gray-400 mt-2">per night, market-wide</div>
+                  </div>
+
+                  {/* Last-minute */}
+                  <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Clock className="h-5 w-5 text-gray-400" />
+                      <span className="text-sm text-gray-500">Last-Minute</span>
+                    </div>
+                    <div className="text-3xl font-bold text-gray-900">{data.last_minute_pct ?? "—"}%</div>
+                    <div className="text-xs text-gray-400 mt-2">booked within 14 days</div>
+                  </div>
+                </div>
+
+                {/* Forward fill rates */}
+                {data.fill_rate.length > 0 && (
+                  <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+                    <h3 className="font-semibold text-gray-900 mb-4">How Fast Are Future Months Filling?</h3>
+                    <ForwardChart data={data.fill_rate} />
+                    <p className="mt-4 text-xs text-gray-400">
+                      Shows what percentage of each month&apos;s nights are already booked today. The gap between market and Elite Stays widens as we get closer — our listings fill first.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+
+          {/* ═══════════════════════════════════════════════════════ */}
+          {/* SECTION 3: KEY INSIGHTS                               */}
+          {/* ═══════════════════════════════════════════════════════ */}
+          <section className="py-12">
+            <div className="container mx-auto px-6 lg:px-8">
+              <div className="mx-auto max-w-5xl">
+                <h2 className="text-2xl font-bold text-gray-900 mb-8">Market Insights</h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  {data.dead_pct != null && data.dead_pct > 0 && (
+                    <div className="rounded-2xl bg-red-50 p-6 ring-1 ring-red-100">
+                      <div className="text-3xl font-bold text-red-700">{data.dead_pct}%</div>
+                      <div className="text-sm font-semibold text-red-800 mt-1">Dead Listings</div>
+                      <p className="mt-3 text-sm text-red-600">
+                        Listings with under 5% occupancy. The market looks crowded — but most operators aren&apos;t really competing.
+                      </p>
+                    </div>
+                  )}
+                  <div className="rounded-2xl bg-blue-50 p-6 ring-1 ring-blue-100">
+                    <div className="flex items-center gap-2">
+                      <Target className="h-5 w-5 text-blue-600" />
+                      <div className="text-3xl font-bold text-blue-700">{data.competitors_tracked ?? "80+"}</div>
+                    </div>
+                    <div className="text-sm font-semibold text-blue-800 mt-1">Property Managers Tracked</div>
+                    <p className="mt-3 text-sm text-blue-600">
+                      We monitor every multi-listing host in Nairobi — their occupancy, pricing, and guest ratings.
+                    </p>
+                  </div>
+                  <div className="rounded-2xl bg-amber-50 p-6 ring-1 ring-amber-100">
+                    <div className="flex items-center gap-2">
+                      <Star className="h-5 w-5 text-amber-600 fill-amber-400" />
+                      <div className="text-3xl font-bold text-amber-700">{data.ratings.market_avg ?? "4.86"}★</div>
+                    </div>
+                    <div className="text-sm font-semibold text-amber-800 mt-1">Market Avg Rating</div>
+                    <p className="mt-3 text-sm text-amber-600">
+                      Elite Stays: {data.ratings.esa_avg}★ across {data.ratings.esa_reviews?.toLocaleString()} verified reviews. Consistency at scale.
+                    </p>
                   </div>
                 </div>
               </div>
-            </section>
-          )}
+            </div>
+          </section>
 
-          {/* Bedroom Breakdown */}
+          {/* ═══════════════════════════════════════════════════════ */}
+          {/* SECTION 4: NEIGHBORHOOD ANALYSIS                      */}
+          {/* ═══════════════════════════════════════════════════════ */}
+          <section className="py-12 bg-gray-50">
+            <div className="container mx-auto px-6 lg:px-8">
+              <div className="mx-auto max-w-5xl">
+                <div className="flex items-center justify-between mb-8">
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900">Neighborhood Performance</h2>
+                    <p className="mt-2 text-sm text-gray-500">Where to invest, where to be careful, and where the opportunity is.</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {neighborhoods.map((n) => (
+                    <div key={n.name} className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <MapPin className="h-4 w-4 text-primary" />
+                          <h3 className="font-semibold text-gray-900">{n.name}</h3>
+                        </div>
+                        <TrendBadge trend={n.trend} />
+                      </div>
+                      <p className="text-sm text-gray-600 mb-4">{n.description}</p>
+                      <div className="flex gap-6 border-t pt-3">
+                        <div>
+                          <div className="text-xs text-gray-400">Avg Occupancy</div>
+                          <div className="font-semibold text-gray-900">{n.occupancy}</div>
+                        </div>
+                        <div>
+                          <div className="text-xs text-gray-400">Avg Rate</div>
+                          <div className="font-semibold text-gray-900">{n.avgRate}/night</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ═══════════════════════════════════════════════════════ */}
+          {/* SECTION 5: BEDROOM BREAKDOWN                          */}
+          {/* ═══════════════════════════════════════════════════════ */}
           {data.by_bedroom.length > 0 && (
-            <section className="py-8">
+            <section className="py-12">
               <div className="container mx-auto px-6 lg:px-8">
                 <div className="mx-auto max-w-5xl">
-                  <button onClick={() => setShowBedroomDetails(!showBedroomDetails)} className="flex items-center gap-2 text-xl font-bold text-gray-900 mb-6 hover:text-primary transition-colors">
+                  <button onClick={() => setShowBedrooms(!showBedrooms)} className="flex items-center gap-2 text-xl font-bold text-gray-900 mb-6 hover:text-primary transition-colors">
                     Occupancy by Property Size
-                    <ChevronDown className={`h-5 w-5 transition-transform ${showBedroomDetails ? "rotate-180" : ""}`} />
+                    <ChevronDown className={`h-5 w-5 transition-transform ${showBedrooms ? "rotate-180" : ""}`} />
                   </button>
-                  {showBedroomDetails && (
+                  {showBedrooms && (
                     <div className="rounded-2xl bg-white shadow-sm ring-1 ring-gray-200 overflow-hidden">
                       <table className="w-full text-sm">
                         <thead>
                           <tr className="bg-gray-50 border-b">
                             <th className="text-left px-6 py-3 font-medium text-gray-500">Type</th>
-                            <th className="text-right px-6 py-3 font-medium text-gray-500">30-Day Occ</th>
-                            <th className="text-right px-6 py-3 font-medium text-gray-500">90-Day Occ</th>
+                            <th className="text-right px-6 py-3 font-medium text-gray-500">30-Day Forward Occ</th>
+                            <th className="text-right px-6 py-3 font-medium text-gray-500">90-Day Forward Occ</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {data.by_bedroom.filter(b => b.occ30 != null).map((b) => (
+                          {data.by_bedroom.filter(b => b.occ30 != null && b.bedrooms <= 4).map((b) => (
                             <tr key={b.bedrooms} className="border-b last:border-0 hover:bg-gray-50">
                               <td className="px-6 py-3 font-medium text-gray-900">{b.label}</td>
-                              <td className="px-6 py-3 text-right text-gray-700">{b.occ30 != null ? `${b.occ30}%` : "—"}</td>
-                              <td className="px-6 py-3 text-right text-gray-700">{b.occ90 != null ? `${b.occ90}%` : "—"}</td>
+                              <td className="px-6 py-3 text-right text-gray-700">{b.occ30}%</td>
+                              <td className="px-6 py-3 text-right text-gray-700">{b.occ90}%</td>
                             </tr>
                           ))}
                         </tbody>
                       </table>
+                      <div className="px-6 py-3 bg-gray-50 text-xs text-gray-400">
+                        Forward-looking calendar occupancy. Actual achieved occupancy is typically 20–30% higher.
+                      </div>
                     </div>
                   )}
                 </div>
@@ -464,13 +523,16 @@ export default function MarketIntelPage() {
             </section>
           )}
 
-          {/* Disclaimer Banner */}
+          {/* Disclaimer */}
           <section className="py-4">
             <div className="container mx-auto px-6 lg:px-8">
               <div className="mx-auto max-w-5xl">
                 <div className="rounded-xl bg-amber-50 border border-amber-200 px-6 py-4 text-sm text-amber-800">
-                  <strong>Understanding the numbers:</strong> All occupancy figures shown are forward-looking — they reflect what percentage of future nights are currently booked.
-                  Actual achieved occupancy is typically 20–30% higher due to last-minute bookings. Elite Stays data is calculated from our live booking records.
+                  <strong>How to read this data:</strong> This page shows two types of occupancy.{" "}
+                  <em>Actual Performance</em> reflects what really happened — bookings completed over the past 30 days.{" "}
+                  <em>Forward Outlook</em> shows what&apos;s currently booked for future dates — these numbers grow daily as new reservations come in.
+                  Forward figures typically underestimate actual results by 20–30%.
+                  Elite Stays data comes from our verified booking records. Market data is tracked from public Airbnb calendars across {data.overview.total_listings.toLocaleString()} Nairobi listings.
                 </div>
               </div>
             </div>
@@ -478,7 +540,9 @@ export default function MarketIntelPage() {
         </>
       )}
 
-      {/* Lead Capture — Full Report */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/* LEAD CAPTURE                                          */}
+      {/* ═══════════════════════════════════════════════════════ */}
       <section className="py-16 bg-gray-900">
         <div className="container mx-auto px-6 lg:px-8">
           <div className="mx-auto max-w-2xl">
@@ -489,8 +553,8 @@ export default function MarketIntelPage() {
               </div>
               <h2 className="text-2xl font-bold text-white">Want the Full Picture?</h2>
               <p className="mt-4 text-gray-400">
-                Get our monthly deep-dive report — competitor landscape, neighborhood analysis, fill rate forecasts,
-                pricing insights, and investment recommendations. Free.
+                Our monthly deep-dive includes competitor analysis, neighborhood rankings, fill rate forecasts,
+                pricing strategies, and investment recommendations. Tell us about yourself and we&apos;ll send it over.
               </p>
             </div>
             <div className="rounded-2xl bg-white p-8">
@@ -500,7 +564,7 @@ export default function MarketIntelPage() {
         </div>
       </section>
 
-      {/* CTA — Property Owners */}
+      {/* CTA */}
       <section className="py-16">
         <div className="container mx-auto px-6 lg:px-8">
           <div className="mx-auto max-w-3xl">
@@ -509,8 +573,10 @@ export default function MarketIntelPage() {
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900">Own Property in Nairobi?</h2>
                   <p className="mt-4 text-gray-600">
-                    The average property manager achieves ~{avgMgr?.occ30 || 58}% occupancy.
-                    Our portfolio sits at {esaOcc || 54}%. That gap is money left on the table.
+                    The average property manager achieves ~{data?.actual_performance?.avg_manager_occ || 60}% occupancy
+                    with a {data?.actual_performance?.avg_manager_rating || 4.5}★ rating.
+                    We hit {data?.actual_performance?.esa_occ || 82}% at {data?.actual_performance?.esa_rating || 4.9}★.
+                    That&apos;s the difference professional management makes.
                   </p>
                   <ul className="mt-4 space-y-2">
                     <li className="flex items-center gap-2 text-sm text-gray-600">
@@ -519,7 +585,7 @@ export default function MarketIntelPage() {
                     </li>
                     <li className="flex items-center gap-2 text-sm text-gray-600">
                       <TrendingUp className="h-4 w-4 text-primary" />
-                      See how your unit compares to market
+                      See how your unit compares to {data?.overview.total_listings.toLocaleString() || "900+"} tracked listings
                     </li>
                     <li className="flex items-center gap-2 text-sm text-gray-600">
                       <Building2 className="h-4 w-4 text-primary" />
