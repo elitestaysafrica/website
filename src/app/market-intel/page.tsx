@@ -295,22 +295,22 @@ export default function MarketIntelPage() {
       {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
-      {/* ══════ HERO (dark) ══════ */}
-      <section className="py-16 bg-gray-900">
+      {/* ══════ HERO (light, matches home page) ══════ */}
+      <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-primary mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-6">
               <BarChart3 className="h-4 w-4" /> Live Market Data · Updated Daily
             </div>
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
               Nairobi Airbnb Market Data &amp; Occupancy Rates
             </h1>
-            <p className="mt-6 text-lg text-gray-300">
+            <p className="mt-6 text-lg text-gray-600">
               Live occupancy rates, pricing trends, and neighborhood performance for
               Nairobi&apos;s short-term rental market. Updated daily from real booking data.
             </p>
             {data && (
-              <p className="mt-3 text-sm text-gray-500">
+              <p className="mt-3 text-sm text-gray-400">
                 Updated {new Date(data.generated_at).toLocaleDateString("en", { month: "long", day: "numeric", year: "numeric" })}
               </p>
             )}
@@ -520,7 +520,6 @@ export default function MarketIntelPage() {
                         <div className="flex items-center gap-2 mb-3">
                           <MapPin className="h-4 w-4 text-primary" />
                           <h3 className="font-semibold text-gray-900">{area.name}</h3>
-                          <span className="ml-auto text-xs text-gray-400">{area.count} listings</span>
                         </div>
                         <div className="grid grid-cols-3 gap-4 border-t pt-4">
                           <div>
