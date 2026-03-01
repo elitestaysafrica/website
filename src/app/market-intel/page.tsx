@@ -53,6 +53,7 @@ interface MarketData {
     avg_manager_occ: number; avg_manager_rating: number
     estimated: boolean
   }
+  trailing_occupancy: { date: string; esa: number; market: number; avg_manager: number }[]
 }
 
 function WeekTrend({ value }: { value: number | null | undefined }) {
@@ -137,6 +138,77 @@ function ForwardCurveChart({ data }: { data: { date: string; day: number; market
       <text x={w - 175} y={18} fill="rgba(255,255,255,0.7)" fontSize="11" fontWeight="500">Elite Stays</text>
       <line x1={w - 95} y1={14} x2={w - 75} y2={14} stroke="rgba(255,255,255,0.3)" strokeWidth="2" strokeDasharray="6 4" />
       <text x={w - 70} y={18} fill="rgba(255,255,255,0.4)" fontSize="11">Market</text>
+    </svg>
+  )
+}
+
+// Trailing 30-day occupancy chart: ESA real, market estimated, avg manager band
+function TrailingOccupancyChart({ data }: { data: { date: string; esa: number; market: number; avg_manager: number }[] }) {
+  if (!data || data.length < 2) return null
+  const w = 640, h = 280
+  const pad = { top: 30, right: 25, bottom: 40, left: 50 }
+  const iW = w - pad.left - pad.right
+  const iH = h - pad.top - pad.bottom
+  const minY = 0, maxY = 100
+
+  const x = (i: number) => pad.left + (i / (data.length - 1)) * iW
+  const y = (v: number) => pad.top + iH - ((v - minY) / (maxY - minY)) * iH
+
+  const mkLine = (key: "esa" | "market" | "avg_manager") =>
+    data.map((d, i) => `${i === 0 ? "M" : "L"}${x(i)},${y(d[key])}`).join(" ")
+
+  // Area fill under ESA
+  const esaArea = data.map((d, i) => `${i === 0 ? "M" : "L"}${x(i)},${y(d.esa)}`).join(" ")
+    + ` L${x(data.length - 1)},${pad.top + iH} L${x(0)},${pad.top + iH} Z`
+
+  // Avg manager band (fill between ±3%)
+  const mgrUpper = data.map((d, i) => `${i === 0 ? "M" : "L"}${x(i)},${y(Math.min(d.avg_manager + 3, 100))}`).join(" ")
+  const mgrLowerRev = [...data].reverse().map((d, i) => `L${x(data.length - 1 - i)},${y(Math.max(d.avg_manager - 3, 0))}`).join(" ")
+  const mgrBand = mgrUpper + " " + mgrLowerRev + " Z"
+
+  // Date labels
+  const dateLabels = [0, 7, 14, 21, data.length - 1].filter(i => i < data.length)
+
+  return (
+    <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="esaTrailFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#22c55e" stopOpacity="0.15" />
+          <stop offset="100%" stopColor="#22c55e" stopOpacity="0.02" />
+        </linearGradient>
+      </defs>
+      {/* Grid lines */}
+      {[0, 25, 50, 75, 100].map(val => (
+        <g key={val}>
+          <line x1={pad.left} y1={y(val)} x2={w - pad.right} y2={y(val)} stroke="rgba(0,0,0,0.06)" />
+          <text x={pad.left - 8} y={y(val) + 4} textAnchor="end" fill="rgba(0,0,0,0.35)" fontSize="11">{val}%</text>
+        </g>
+      ))}
+      {/* Manager band */}
+      <path d={mgrBand} fill="rgba(249,115,22,0.08)" />
+      {/* ESA area fill */}
+      <path d={esaArea} fill="url(#esaTrailFill)" />
+      {/* Market line */}
+      <path d={mkLine("market")} fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="1.5" strokeDasharray="6 4" />
+      {/* Avg manager line */}
+      <path d={mkLine("avg_manager")} fill="none" stroke="#f97316" strokeWidth="1.5" strokeDasharray="4 3" />
+      {/* ESA line */}
+      <path d={mkLine("esa")} fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" />
+      {/* End dots */}
+      <circle cx={x(data.length-1)} cy={y(data[data.length-1].esa)} r={4} fill="#16a34a" />
+      <circle cx={x(data.length-1)} cy={y(data[data.length-1].avg_manager)} r={3} fill="#f97316" />
+      {/* Date labels */}
+      {dateLabels.map(i => {
+        const d = new Date(data[i].date)
+        return <text key={i} x={x(i)} y={h - 8} textAnchor="middle" fill="rgba(0,0,0,0.35)" fontSize="10">{d.toLocaleDateString("en", { month: "short", day: "numeric" })}</text>
+      })}
+      {/* Legend */}
+      <line x1={pad.left} y1={14} x2={pad.left + 20} y2={14} stroke="#16a34a" strokeWidth="2.5" />
+      <text x={pad.left + 25} y={18} fill="rgba(0,0,0,0.6)" fontSize="11" fontWeight="500">Elite Stays</text>
+      <line x1={pad.left + 115} y1={14} x2={pad.left + 135} y2={14} stroke="#f97316" strokeWidth="1.5" strokeDasharray="4 3" />
+      <text x={pad.left + 140} y={18} fill="rgba(0,0,0,0.5)" fontSize="11">Avg Manager</text>
+      <line x1={pad.left + 240} y1={14} x2={pad.left + 260} y2={14} stroke="rgba(0,0,0,0.2)" strokeWidth="1.5" strokeDasharray="6 4" />
+      <text x={pad.left + 265} y={18} fill="rgba(0,0,0,0.35)" fontSize="11">Market Avg</text>
     </svg>
   )
 }
@@ -389,6 +461,37 @@ export default function MarketIntelPage() {
             </div>
           </section>
 
+          {/* ══════ TRAILING OCCUPANCY (light) ══════ */}
+          {data.trailing_occupancy && data.trailing_occupancy.length > 0 && (
+            <section className="py-14">
+              <div className="container mx-auto px-6 lg:px-8">
+                <div className="mx-auto max-w-5xl">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Occupancy — Past 30 Days</h2>
+                  <p className="text-sm text-gray-500 mb-8">
+                    Daily occupancy rates across Nairobi&apos;s short-term rental market. Elite Stays data from verified booking records.
+                  </p>
+                  <div className="rounded-2xl bg-white p-6 ring-1 ring-gray-200 shadow-sm">
+                    <TrailingOccupancyChart data={data.trailing_occupancy} />
+                  </div>
+                  <div className="mt-4 grid grid-cols-3 gap-4 text-center">
+                    <div className="rounded-xl bg-green-50 p-4 ring-1 ring-green-100">
+                      <div className="text-2xl font-bold text-green-700">{Math.round(data.trailing_occupancy.reduce((s, p) => s + p.esa, 0) / data.trailing_occupancy.length)}%</div>
+                      <div className="text-xs text-green-600 mt-1">Elite Stays Avg</div>
+                    </div>
+                    <div className="rounded-xl bg-orange-50 p-4 ring-1 ring-orange-100">
+                      <div className="text-2xl font-bold text-orange-700">{Math.round(data.trailing_occupancy.reduce((s, p) => s + p.avg_manager, 0) / data.trailing_occupancy.length)}%</div>
+                      <div className="text-xs text-orange-600 mt-1">Avg Manager</div>
+                    </div>
+                    <div className="rounded-xl bg-gray-50 p-4 ring-1 ring-gray-200">
+                      <div className="text-2xl font-bold text-gray-600">{Math.round(data.trailing_occupancy.reduce((s, p) => s + p.market, 0) / data.trailing_occupancy.length)}%</div>
+                      <div className="text-xs text-gray-500 mt-1">Market Avg</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
           {/* ══════ FORWARD OUTLOOK (dark) ══════ */}
           <section className="py-14 bg-gray-900">
             <div className="container mx-auto px-6 lg:px-8">
@@ -479,9 +582,9 @@ export default function MarketIntelPage() {
                   </div>
                   <div className="rounded-2xl bg-amber-50 p-6 ring-1 ring-amber-100">
                     <Star className="h-5 w-5 text-amber-600 fill-amber-400 mb-2" />
-                    <div className="text-3xl font-bold text-amber-700">{data.ratings.market_avg ?? "4.86"}★</div>
-                    <div className="text-sm font-semibold text-amber-800 mt-1">Market Avg Rating</div>
-                    <p className="mt-2 text-xs text-amber-600">ESA: {data.ratings.esa_avg}★ across {data.ratings.esa_reviews?.toLocaleString()} reviews.</p>
+                    <div className="text-3xl font-bold text-amber-700">{data.ratings.market_avg ?? "4.85"}★</div>
+                    <div className="text-sm font-semibold text-amber-800 mt-1">Weighted Market Rating</div>
+                    <p className="mt-2 text-xs text-amber-600">ESA: {data.ratings.esa_avg}★ across {data.ratings.esa_reviews?.toLocaleString()} verified reviews.</p>
                   </div>
                   <div className="rounded-2xl bg-purple-50 p-6 ring-1 ring-purple-100">
                     <Clock className="h-5 w-5 text-purple-600 mb-2" />
