@@ -278,20 +278,20 @@ function LeadCaptureForm() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">I am a...</label>
-          <select name="role" required className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm bg-white"><option value="">Select one</option><option value="property_owner">Property Owner</option><option value="property_manager">Property Manager / Host</option><option value="developer">Property Developer</option><option value="investor">Investor</option><option value="researcher">Researcher / Analyst</option><option value="other">Other</option></select>
+          <select name="role" required className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base bg-white"><option value="">Select one</option><option value="property_owner">Property Owner</option><option value="property_manager">Property Manager / Host</option><option value="developer">Property Developer</option><option value="investor">Investor</option><option value="researcher">Researcher / Analyst</option><option value="other">Other</option></select>
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">How many units?</label>
-          <select name="units" required className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm bg-white"><option value="">Select</option><option value="0">None yet</option><option value="1-5">1–5</option><option value="6-20">6–20</option><option value="20-50">20–50</option><option value="50+">50+</option></select>
+          <select name="units" required className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base bg-white"><option value="">Select</option><option value="0">None yet</option><option value="1-5">1–5</option><option value="6-20">6–20</option><option value="20-50">20–50</option><option value="50+">50+</option></select>
         </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Neighborhoods of interest</label>
-        <input type="text" name="neighborhoods" placeholder="e.g. Westlands, Kilimani, Lavington" className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm" />
+        <input type="text" name="neighborhoods" placeholder="e.g. Westlands, Kilimani, Lavington" className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base" />
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-        <input type="email" name="email" required placeholder="you@example.com" className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm" />
+        <input type="email" name="email" required placeholder="you@example.com" className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base" />
       </div>
       <Button type="submit" size="lg" className="w-full" disabled={loading}>
         {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Mail className="h-4 w-4 mr-2" />}
