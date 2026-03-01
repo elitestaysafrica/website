@@ -25,7 +25,12 @@ import {
   AlertTriangle,
 } from "lucide-react"
 
+import { useCurrency } from "@/components/CurrencySelector"
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://staff.elitestaysafrica.com/api/website"
+
+// USD to KES approximate rate (fallback)
+const USD_TO_KES = 129
 
 interface MarketData {
   generated_at: string
@@ -329,6 +334,13 @@ export default function MarketIntelPage() {
   const [data, setData] = useState<MarketData | null>(null)
   const [error, setError] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const { convert } = useCurrency()
+
+  // Convert USD amount to display currency via KES
+  const fmtUSD = (usd: number | null | undefined) => {
+    if (usd == null) return "—"
+    return convert(usd * USD_TO_KES)
+  }
 
   useEffect(() => {
     fetch(`${API_URL}/market-intel`)
@@ -514,7 +526,7 @@ export default function MarketIntelPage() {
                   </div>
                   <div className="rounded-xl bg-white/5 border border-white/10 p-5">
                     <div className="text-sm text-gray-400 mb-2">Median Rate</div>
-                    <div className="text-3xl font-bold text-white">${data.overview.median_rate ?? "—"}</div>
+                    <div className="text-3xl font-bold text-white">{fmtUSD(data.overview.median_rate)}</div>
                     <span className="text-xs text-gray-500">per night</span>
                   </div>
                   <div className="rounded-xl bg-white/5 border border-white/10 p-5">
@@ -631,7 +643,7 @@ export default function MarketIntelPage() {
                           </div>
                           <div>
                             <div className="text-xs text-gray-400">Med. Rate</div>
-                            <div className="text-lg font-bold text-gray-900">${area.median_rate ?? "—"}</div>
+                            <div className="text-lg font-bold text-gray-900">{fmtUSD(area.median_rate)}</div>
                           </div>
                           <div>
                             <div className="text-xs text-gray-400">Rating</div>
