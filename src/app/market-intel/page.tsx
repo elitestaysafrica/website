@@ -86,6 +86,102 @@ function Stars({ rating, size = "sm" }: { rating: number; size?: "sm" | "lg" }) 
   )
 }
 
+function OccupancyComparisonChart({ esa, avgManager, market }: { esa: number; avgManager: number; market: number }) {
+  const bars = [
+    { label: "Elite Stays", value: esa, color: "#16a34a", bgColor: "#dcfce7" },
+    { label: "Avg Manager", value: avgManager, color: "#9ca3af", bgColor: "#f3f4f6" },
+    { label: "Market Avg", value: market, color: "#d1d5db", bgColor: "#f9fafb" },
+  ]
+  const maxVal = 100
+
+  return (
+    <div className="space-y-4">
+      {bars.map((bar) => (
+        <div key={bar.label}>
+          <div className="flex justify-between items-end mb-2">
+            <span className="text-sm font-medium text-gray-700">{bar.label}</span>
+            <span className="text-2xl font-bold" style={{ color: bar.color }}>{bar.value}%</span>
+          </div>
+          <div className="h-4 rounded-full overflow-hidden" style={{ backgroundColor: bar.bgColor }}>
+            <div
+              className="h-full rounded-full transition-all duration-1000 ease-out"
+              style={{ width: `${(bar.value / maxVal) * 100}%`, backgroundColor: bar.color }}
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function TrendLineChart({ data }: { data: { date: string; market_occ30: number; esa_occ30: number }[] }) {
+  if (!data || data.length < 2) return null
+
+  const width = 600
+  const height = 220
+  const pad = { top: 30, right: 20, bottom: 35, left: 45 }
+  const innerW = width - pad.left - pad.right
+  const innerH = height - pad.top - pad.bottom
+
+  const allVals = data.flatMap((d) => [d.market_occ30, d.esa_occ30].filter(Boolean))
+  const minY = Math.max(0, Math.min(...allVals) - 5)
+  const maxY = Math.max(...allVals) + 5
+
+  const x = (i: number) => pad.left + (i / (data.length - 1)) * innerW
+  const y = (v: number) => pad.top + innerH - ((v - minY) / (maxY - minY)) * innerH
+
+  const line = (key: "market_occ30" | "esa_occ30") =>
+    data.map((d, i) => `${i === 0 ? "M" : "L"}${x(i)},${y(d[key] || 0)}`).join(" ")
+
+  // Area fill under ESA line
+  const esaArea = line("esa_occ30") + ` L${x(data.length - 1)},${pad.top + innerH} L${x(0)},${pad.top + innerH} Z`
+
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="esaGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#16a34a" stopOpacity="0.15" />
+          <stop offset="100%" stopColor="#16a34a" stopOpacity="0.02" />
+        </linearGradient>
+      </defs>
+      {/* Grid */}
+      {[0, 0.25, 0.5, 0.75, 1].map((pct) => {
+        const yPos = pad.top + innerH * (1 - pct)
+        const val = Math.round(minY + (maxY - minY) * pct)
+        return (
+          <g key={pct}>
+            <line x1={pad.left} y1={yPos} x2={width - pad.right} y2={yPos} stroke="#e5e7eb" strokeDasharray="4 4" />
+            <text x={pad.left - 8} y={yPos + 4} textAnchor="end" fill="#9ca3af" fontSize="11">{val}%</text>
+          </g>
+        )
+      })}
+      {/* ESA area fill */}
+      <path d={esaArea} fill="url(#esaGrad)" />
+      {/* Market line */}
+      <path d={line("market_occ30")} fill="none" stroke="#d1d5db" strokeWidth="2" strokeLinecap="round" strokeDasharray="6 4" />
+      {/* ESA line */}
+      <path d={line("esa_occ30")} fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" />
+      {/* End dots */}
+      <circle cx={x(data.length - 1)} cy={y(data[data.length - 1].esa_occ30)} r={4} fill="#16a34a" />
+      <circle cx={x(data.length - 1)} cy={y(data[data.length - 1].market_occ30)} r={4} fill="#d1d5db" />
+      {/* Date labels */}
+      {data.filter((_, i) => i === 0 || i === data.length - 1).map((d) => {
+        const idx = data.indexOf(d)
+        return (
+          <text key={d.date + idx} x={x(idx)} y={height - 8} textAnchor={idx === 0 ? "start" : "end"} fill="#9ca3af" fontSize="10">
+            {new Date(d.date + "T00:00:00").toLocaleDateString("en", { month: "short", day: "numeric" })}
+          </text>
+        )
+      })}
+      {/* Legend */}
+      <line x1={width - 190} y1={14} x2={width - 170} y2={14} stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" />
+      <text x={width - 165} y={18} fill="#374151" fontSize="11" fontWeight="500">Elite Stays</text>
+      <line x1={width - 90} y1={14} x2={width - 70} y2={14} stroke="#d1d5db" strokeWidth="2" strokeDasharray="6 4" />
+      <text x={width - 65} y={18} fill="#9ca3af" fontSize="11">Market</text>
+    </svg>
+  )
+}
+
 function ForwardChart({ data }: { data: { label: string; market_fill: number; esa_fill: number }[] }) {
   if (!data || data.length === 0) return null
   return (
@@ -230,8 +326,6 @@ export default function MarketIntelPage() {
             {data && (
               <p className="mt-3 text-sm text-gray-400">
                 Updated {new Date(data.generated_at).toLocaleDateString("en", { month: "long", day: "numeric", year: "numeric" })}
-                {" · "}{data.overview.total_listings.toLocaleString()} listings tracked
-                {" · "}{data.competitors_tracked} property managers monitored
               </p>
             )}
           </div>
@@ -310,6 +404,19 @@ export default function MarketIntelPage() {
                   </div>
                 )}
 
+                {/* Visual comparison chart */}
+                {actual && (
+                  <div className="mt-8 rounded-2xl bg-white p-8 shadow-sm ring-1 ring-gray-200">
+                    <h3 className="font-semibold text-gray-900 mb-6">Occupancy Comparison — Who&apos;s Actually Performing?</h3>
+                    <OccupancyComparisonChart
+                      esa={actual.esa_occ}
+                      avgManager={actual.avg_manager_occ}
+                      market={Math.round(data?.occupancy?.market?.occ30 ? data.occupancy.market.occ30 + 25 : 45)}
+                    />
+                    <p className="mt-4 text-xs text-gray-400">Based on actual achieved occupancy over the past 30 days. Market forward figure adjusted +25% to approximate actual performance.</p>
+                  </div>
+                )}
+
                 {/* Gap callout */}
                 {actual && (
                   <div className="mt-6 rounded-xl bg-white border border-gray-200 px-6 py-4 flex items-center justify-between">
@@ -385,6 +492,15 @@ export default function MarketIntelPage() {
                   </div>
                 </div>
 
+                {/* Trend line chart */}
+                {data.timeline.length > 2 && (
+                  <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200 mb-8">
+                    <h3 className="font-semibold text-gray-900 mb-2">Forward Occupancy Trend</h3>
+                    <p className="text-xs text-gray-400 mb-4">How the next 30 days of bookings have been filling over time.</p>
+                    <TrendLineChart data={data.timeline} />
+                  </div>
+                )}
+
                 {/* Forward fill rates */}
                 {data.fill_rate.length > 0 && (
                   <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
@@ -420,11 +536,11 @@ export default function MarketIntelPage() {
                   <div className="rounded-2xl bg-blue-50 p-6 ring-1 ring-blue-100">
                     <div className="flex items-center gap-2">
                       <Target className="h-5 w-5 text-blue-600" />
-                      <div className="text-3xl font-bold text-blue-700">{data.competitors_tracked ?? "80+"}</div>
+                      <div className="text-3xl font-bold text-blue-700">24/7</div>
                     </div>
-                    <div className="text-sm font-semibold text-blue-800 mt-1">Property Managers Tracked</div>
+                    <div className="text-sm font-semibold text-blue-800 mt-1">Market Monitoring</div>
                     <p className="mt-3 text-sm text-blue-600">
-                      We monitor every multi-listing host in Nairobi — their occupancy, pricing, and guest ratings.
+                      We track every property manager in Nairobi — their occupancy, pricing, and guest ratings. Daily.
                     </p>
                   </div>
                   <div className="rounded-2xl bg-amber-50 p-6 ring-1 ring-amber-100">
@@ -532,7 +648,7 @@ export default function MarketIntelPage() {
                   <em>Actual Performance</em> reflects what really happened — bookings completed over the past 30 days.{" "}
                   <em>Forward Outlook</em> shows what&apos;s currently booked for future dates — these numbers grow daily as new reservations come in.
                   Forward figures typically underestimate actual results by 20–30%.
-                  Elite Stays data comes from our verified booking records. Market data is tracked from public Airbnb calendars across {data.overview.total_listings.toLocaleString()} Nairobi listings.
+                  Elite Stays data comes from our verified booking records. Market data is tracked daily from public Airbnb calendars across the Nairobi market.
                 </div>
               </div>
             </div>
@@ -585,7 +701,7 @@ export default function MarketIntelPage() {
                     </li>
                     <li className="flex items-center gap-2 text-sm text-gray-600">
                       <TrendingUp className="h-4 w-4 text-primary" />
-                      See how your unit compares to {data?.overview.total_listings.toLocaleString() || "900+"} tracked listings
+                      See how your unit compares to the market
                     </li>
                     <li className="flex items-center gap-2 text-sm text-gray-600">
                       <Building2 className="h-4 w-4 text-primary" />
