@@ -72,8 +72,7 @@ function TrendBadge({ trend }: { trend: "up" | "down" | "stable" }) {
 function WeekTrend({ value }: { value: number | null | undefined }) {
   if (value == null) return null
   if (value > 0.5) return <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700"><TrendingUp className="h-3 w-3" />Rising</span>
-  if (value < -0.5) return <span className="inline-flex items-center gap-1 text-xs font-medium text-red-500"><TrendingDown className="h-3 w-3" />Falling</span>
-  return <span className="inline-flex items-center gap-1 text-xs font-medium text-gray-400"><Minus className="h-3 w-3" />Flat</span>
+  return <span className="inline-flex items-center gap-1 text-xs font-medium text-gray-400"><Minus className="h-3 w-3" />Stable</span>
 }
 
 function Stars({ rating, size = "sm" }: { rating: number; size?: "sm" | "lg" }) {
@@ -111,74 +110,6 @@ function OccupancyComparisonChart({ esa, avgManager, market }: { esa: number; av
         </div>
       ))}
     </div>
-  )
-}
-
-function TrendLineChart({ data }: { data: { date: string; market_occ30: number; esa_occ30: number }[] }) {
-  if (!data || data.length < 2) return null
-
-  const width = 600
-  const height = 220
-  const pad = { top: 30, right: 20, bottom: 35, left: 45 }
-  const innerW = width - pad.left - pad.right
-  const innerH = height - pad.top - pad.bottom
-
-  const allVals = data.flatMap((d) => [d.market_occ30, d.esa_occ30].filter(Boolean))
-  const minY = Math.max(0, Math.min(...allVals) - 5)
-  const maxY = Math.max(...allVals) + 5
-
-  const x = (i: number) => pad.left + (i / (data.length - 1)) * innerW
-  const y = (v: number) => pad.top + innerH - ((v - minY) / (maxY - minY)) * innerH
-
-  const line = (key: "market_occ30" | "esa_occ30") =>
-    data.map((d, i) => `${i === 0 ? "M" : "L"}${x(i)},${y(d[key] || 0)}`).join(" ")
-
-  // Area fill under ESA line
-  const esaArea = line("esa_occ30") + ` L${x(data.length - 1)},${pad.top + innerH} L${x(0)},${pad.top + innerH} Z`
-
-  return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
-      <defs>
-        <linearGradient id="esaGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#16a34a" stopOpacity="0.15" />
-          <stop offset="100%" stopColor="#16a34a" stopOpacity="0.02" />
-        </linearGradient>
-      </defs>
-      {/* Grid */}
-      {[0, 0.25, 0.5, 0.75, 1].map((pct) => {
-        const yPos = pad.top + innerH * (1 - pct)
-        const val = Math.round(minY + (maxY - minY) * pct)
-        return (
-          <g key={pct}>
-            <line x1={pad.left} y1={yPos} x2={width - pad.right} y2={yPos} stroke="#e5e7eb" strokeDasharray="4 4" />
-            <text x={pad.left - 8} y={yPos + 4} textAnchor="end" fill="#9ca3af" fontSize="11">{val}%</text>
-          </g>
-        )
-      })}
-      {/* ESA area fill */}
-      <path d={esaArea} fill="url(#esaGrad)" />
-      {/* Market line */}
-      <path d={line("market_occ30")} fill="none" stroke="#d1d5db" strokeWidth="2" strokeLinecap="round" strokeDasharray="6 4" />
-      {/* ESA line */}
-      <path d={line("esa_occ30")} fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" />
-      {/* End dots */}
-      <circle cx={x(data.length - 1)} cy={y(data[data.length - 1].esa_occ30)} r={4} fill="#16a34a" />
-      <circle cx={x(data.length - 1)} cy={y(data[data.length - 1].market_occ30)} r={4} fill="#d1d5db" />
-      {/* Date labels */}
-      {data.filter((_, i) => i === 0 || i === data.length - 1).map((d) => {
-        const idx = data.indexOf(d)
-        return (
-          <text key={d.date + idx} x={x(idx)} y={height - 8} textAnchor={idx === 0 ? "start" : "end"} fill="#9ca3af" fontSize="10">
-            {new Date(d.date + "T00:00:00").toLocaleDateString("en", { month: "short", day: "numeric" })}
-          </text>
-        )
-      })}
-      {/* Legend */}
-      <line x1={width - 190} y1={14} x2={width - 170} y2={14} stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" />
-      <text x={width - 165} y={18} fill="#374151" fontSize="11" fontWeight="500">Elite Stays</text>
-      <line x1={width - 90} y1={14} x2={width - 70} y2={14} stroke="#d1d5db" strokeWidth="2" strokeDasharray="6 4" />
-      <text x={width - 65} y={18} fill="#9ca3af" fontSize="11">Market</text>
-    </svg>
   )
 }
 
@@ -306,8 +237,27 @@ export default function MarketIntelPage() {
   const fwd = data?.occupancy
   const weekDelta = data?.occupancy?.deltas?.week?.occ30
 
+  // Structured data for SEO
+  const jsonLd = data ? {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    name: "Nairobi Airbnb Market Intelligence",
+    description: "Daily-updated occupancy rates, pricing trends, and performance data for Nairobi short-term rental market.",
+    url: "https://elitestaysafrica.com/market-intel",
+    provider: {
+      "@type": "Organization",
+      name: "Elite Stays Africa",
+      url: "https://elitestaysafrica.com",
+    },
+    temporalCoverage: new Date(data.generated_at).toISOString().split("T")[0] + "/..",
+    spatialCoverage: { "@type": "Place", name: "Nairobi, Kenya" },
+  } : null
+
   return (
     <div className="pt-24">
+      {jsonLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      )}
       {/* Hero */}
       <section className="py-12 sm:py-16 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-6 lg:px-8">
@@ -317,11 +267,12 @@ export default function MarketIntelPage() {
               Live Market Data · Updated Daily
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-              Nairobi Airbnb Market Intelligence
+              Nairobi Airbnb Market Data &amp; Occupancy Rates
             </h1>
             <p className="mt-6 text-lg text-gray-600">
-              We track every short-term rental in Nairobi and publish what other operators keep secret.
-              Real occupancy data, real ratings, real performance — not estimates from third-party tools.
+              Live occupancy rates, pricing trends, and neighborhood performance for
+              Nairobi&apos;s short-term rental market. We track every serviced apartment and Airbnb listing
+              in Nairobi — and publish what other property managers keep secret.
             </p>
             {data && (
               <p className="mt-3 text-sm text-gray-400">
@@ -488,18 +439,9 @@ export default function MarketIntelPage() {
                       <span className="text-sm text-gray-500">Last-Minute</span>
                     </div>
                     <div className="text-3xl font-bold text-gray-900">{data.last_minute_pct ?? "—"}%</div>
-                    <div className="text-xs text-gray-400 mt-2">booked within 14 days</div>
+                    <div className="text-xs text-gray-400 mt-2">booked within 7 days</div>
                   </div>
                 </div>
-
-                {/* Trend line chart */}
-                {data.timeline.length > 2 && (
-                  <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200 mb-8">
-                    <h3 className="font-semibold text-gray-900 mb-2">Forward Occupancy Trend</h3>
-                    <p className="text-xs text-gray-400 mb-4">How the next 30 days of bookings have been filling over time.</p>
-                    <TrendLineChart data={data.timeline} />
-                  </div>
-                )}
 
                 {/* Forward fill rates */}
                 {data.fill_rate.length > 0 && (
@@ -523,7 +465,7 @@ export default function MarketIntelPage() {
               <div className="mx-auto max-w-5xl">
                 <h2 className="text-2xl font-bold text-gray-900 mb-8">Market Insights</h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                   {data.dead_pct != null && data.dead_pct > 0 && (
                     <div className="rounded-2xl bg-red-50 p-6 ring-1 ring-red-100">
                       <div className="text-3xl font-bold text-red-700">{data.dead_pct}%</div>
@@ -553,6 +495,18 @@ export default function MarketIntelPage() {
                       Elite Stays: {data.ratings.esa_avg}★ across {data.ratings.esa_reviews?.toLocaleString()} verified reviews. Consistency at scale.
                     </p>
                   </div>
+                  {data.last_minute_pct != null && (
+                  <div className="rounded-2xl bg-purple-50 p-6 ring-1 ring-purple-100">
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-5 w-5 text-purple-600" />
+                      <div className="text-3xl font-bold text-purple-700">{data.last_minute_pct}%</div>
+                    </div>
+                    <div className="text-sm font-semibold text-purple-800 mt-1">Same-Week Bookings</div>
+                    <p className="mt-3 text-sm text-purple-600">
+                      Nearly 1 in 10 bookings are made within 7 days of check-in. Nairobi is a last-minute market — dynamic pricing and instant availability win.
+                    </p>
+                  </div>
+                  )}
                 </div>
               </div>
             </div>
