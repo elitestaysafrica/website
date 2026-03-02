@@ -409,42 +409,42 @@ export default function MarketIntelPage() {
 
       {data && (
         <>
-          {/* ══════ FORWARD OUTLOOK (dark) ══════ */}
-          <section className="py-14 bg-gray-900">
+          {/* ══════ FORWARD OUTLOOK (light) ══════ */}
+          <section className="py-14">
             <div className="container mx-auto px-6 lg:px-8">
               <div className="mx-auto max-w-5xl">
-                <h2 className="text-2xl font-bold text-white mb-2">Forward Outlook — Next 30 Days</h2>
-                <p className="text-sm text-gray-400 mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Forward Outlook — Next 30 Days</h2>
+                <p className="text-sm text-gray-500 mb-8">
                   What&apos;s currently booked. These numbers grow daily — actual results end up 20–30% higher.
                 </p>
 
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                  <div className="rounded-xl bg-white/5 border border-white/10 p-5">
-                    <div className="text-sm text-gray-400 mb-2">Market (30d)</div>
-                    <div className="text-3xl font-bold text-white">{fwd?.market?.occ30 ?? "—"}%</div>
+                  <div className="rounded-xl bg-gray-50 border border-gray-200 p-5">
+                    <div className="text-sm text-gray-500 mb-2">Market (30d)</div>
+                    <div className="text-3xl font-bold text-gray-900">{fwd?.market?.occ30 ?? "—"}%</div>
                     <WeekTrend value={weekDelta} />
                   </div>
-                  <div className="rounded-xl bg-green-500/10 border border-green-500/20 p-5">
-                    <div className="text-sm text-green-400 mb-2">Elite Stays (30d)</div>
-                    <div className="text-3xl font-bold text-green-400">{fwd?.esa?.occ30 ?? "—"}%</div>
+                  <div className="rounded-xl bg-green-50 border border-green-200 p-5">
+                    <div className="text-sm text-green-700 mb-2">Elite Stays (30d)</div>
+                    <div className="text-3xl font-bold text-green-700">{fwd?.esa?.occ30 ?? "—"}%</div>
                     <WeekTrend value={data.occupancy?.esa_deltas?.week?.occ30} />
                   </div>
-                  <div className="rounded-xl bg-white/5 border border-white/10 p-5">
-                    <div className="text-sm text-gray-400 mb-2">Median Rate</div>
-                    <div className="text-3xl font-bold text-white">{fmtUSD(data.overview.median_rate)}</div>
-                    <span className="text-xs text-gray-500">per night</span>
+                  <div className="rounded-xl bg-gray-50 border border-gray-200 p-5">
+                    <div className="text-sm text-gray-500 mb-2">Median Rate</div>
+                    <div className="text-3xl font-bold text-gray-900">{fmtUSD(data.overview.median_rate)}</div>
+                    <span className="text-xs text-gray-400">per night</span>
                   </div>
-                  <div className="rounded-xl bg-white/5 border border-white/10 p-5">
-                    <div className="text-sm text-gray-400 mb-2">Same-Week</div>
-                    <div className="text-3xl font-bold text-white">{data.last_minute_pct ?? "—"}%</div>
-                    <span className="text-xs text-gray-500">booked within 7d</span>
+                  <div className="rounded-xl bg-gray-50 border border-gray-200 p-5">
+                    <div className="text-sm text-gray-500 mb-2">Same-Week</div>
+                    <div className="text-3xl font-bold text-gray-900">{data.last_minute_pct ?? "—"}%</div>
+                    <span className="text-xs text-gray-400">booked within 7d</span>
                   </div>
                 </div>
 
                 {/* Forward curve chart */}
                 {data.forward_curve && data.forward_curve.length > 2 && (
-                  <div className="rounded-xl bg-white/5 border border-white/10 p-6 mb-8">
-                    <h3 className="font-semibold text-white mb-1">Booking Curve — Today → 30 Days Out</h3>
+                  <div className="rounded-xl bg-white p-6 ring-1 ring-gray-200 shadow-sm mb-8">
+                    <h3 className="font-semibold text-gray-900 mb-1">Booking Curve — Today → 30 Days Out</h3>
                     <p className="text-xs text-gray-500 mb-4">What percentage of listings are booked on each future date.</p>
                     <ForwardCurveChart data={data.forward_curve} />
                   </div>
@@ -452,20 +452,20 @@ export default function MarketIntelPage() {
 
                 {/* Fill rates - 3 months */}
                 {data.fill_rate.length > 0 && (
-                  <div className="rounded-xl bg-white/5 border border-white/10 p-6">
-                    <h3 className="font-semibold text-white mb-4">How Fast Are Months Filling?</h3>
+                  <div className="rounded-xl bg-white p-6 ring-1 ring-gray-200 shadow-sm">
+                    <h3 className="font-semibold text-gray-900 mb-4">How Fast Are Months Filling?</h3>
                     <div className="space-y-6">
                       {data.fill_rate.map(month => (
                         <div key={month.label}>
-                          <h4 className="text-sm font-medium text-gray-300 mb-3">{month.label}</h4>
+                          <h4 className="text-sm font-medium text-gray-600 mb-3">{month.label}</h4>
                           <div className="space-y-2">
                             <div>
-                              <div className="flex justify-between text-sm mb-1"><span className="text-gray-400">Market</span><span className="text-gray-300">{month.market_fill}%</span></div>
-                              <div className="h-2.5 rounded-full bg-white/10 overflow-hidden"><div className="h-full rounded-full bg-gray-500" style={{ width: `${Math.min(month.market_fill, 100)}%` }} /></div>
+                              <div className="flex justify-between text-sm mb-1"><span className="text-gray-500">Market</span><span className="text-gray-700">{month.market_fill}%</span></div>
+                              <div className="h-2.5 rounded-full bg-gray-100 overflow-hidden"><div className="h-full rounded-full bg-gray-400" style={{ width: `${Math.min(month.market_fill, 100)}%` }} /></div>
                             </div>
                             <div>
-                              <div className="flex justify-between text-sm mb-1"><span className="text-green-400">Elite Stays</span><span className="font-medium text-green-400">{month.esa_fill}%</span></div>
-                              <div className="h-2.5 rounded-full bg-green-500/10 overflow-hidden"><div className="h-full rounded-full bg-green-500" style={{ width: `${Math.min(month.esa_fill, 100)}%` }} /></div>
+                              <div className="flex justify-between text-sm mb-1"><span className="text-green-700">Elite Stays</span><span className="font-medium text-green-700">{month.esa_fill}%</span></div>
+                              <div className="h-2.5 rounded-full bg-green-50 overflow-hidden"><div className="h-full rounded-full bg-green-500" style={{ width: `${Math.min(month.esa_fill, 100)}%` }} /></div>
                             </div>
                           </div>
                         </div>
@@ -477,46 +477,46 @@ export default function MarketIntelPage() {
             </div>
           </section>
 
-          {/* ══════ ACTUAL PERFORMANCE (light) ══════ */}
-          <section className="py-14">
+          {/* ══════ ACTUAL PERFORMANCE (dark) ══════ */}
+          <section className="py-14 bg-gray-900">
             <div className="container mx-auto px-6 lg:px-8">
               <div className="mx-auto max-w-5xl">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Actual Performance — Past 30 Days</h2>
-                <p className="text-sm text-gray-500 mb-8">Real results, not forward-looking estimates.</p>
+                <h2 className="text-2xl font-bold text-white mb-2">Actual Performance — Past 30 Days</h2>
+                <p className="text-sm text-gray-400 mb-8">Real results, not forward-looking estimates.</p>
 
                 {actual && (
                   <>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {/* ESA */}
-                      <div className="rounded-2xl bg-green-50/80 p-8 ring-1 ring-green-200">
-                        <div className="flex items-center gap-2 mb-1"><div className="h-3 w-3 rounded-full bg-green-500" /><span className="text-sm font-medium text-green-800">Elite Stays Africa</span></div>
+                      <div className="rounded-2xl bg-green-500/10 border border-green-500/20 p-8">
+                        <div className="flex items-center gap-2 mb-1"><div className="h-3 w-3 rounded-full bg-green-500" /><span className="text-sm font-medium text-green-400">Elite Stays Africa</span></div>
                         <div className="mt-4 flex items-end gap-4">
-                          <div><div className="text-5xl font-bold text-green-900">{actual.esa_occ}%</div><div className="text-sm text-green-700 mt-1">occupancy</div></div>
-                          <div className="mb-2"><Stars rating={actual.esa_rating} size="lg" /><div className="text-xs text-gray-500 mt-0.5">{actual.esa_reviews.toLocaleString()} reviews</div></div>
+                          <div><div className="text-5xl font-bold text-green-400">{actual.esa_occ}%</div><div className="text-sm text-green-500 mt-1">occupancy</div></div>
+                          <div className="mb-2"><Stars rating={actual.esa_rating} size="lg" /><div className="text-xs text-gray-400 mt-0.5">{actual.esa_reviews.toLocaleString()} reviews</div></div>
                         </div>
                       </div>
                       {/* Avg Manager */}
-                      <div className="rounded-2xl bg-gray-50 p-8 ring-1 ring-gray-200">
-                        <div className="flex items-center gap-2 mb-1"><div className="h-3 w-3 rounded-full bg-gray-400" /><span className="text-sm font-medium text-gray-600">Avg Nairobi Property Manager</span></div>
+                      <div className="rounded-2xl bg-white/5 border border-white/10 p-8">
+                        <div className="flex items-center gap-2 mb-1"><div className="h-3 w-3 rounded-full bg-gray-400" /><span className="text-sm font-medium text-gray-400">Avg Nairobi Property Manager</span></div>
                         <div className="mt-4 flex items-end gap-4">
-                          <div><div className="text-5xl font-bold text-gray-600">~{actual.avg_manager_occ}%</div><div className="text-sm text-gray-500 mt-1">occupancy</div></div>
-                          <div className="mb-2"><Stars rating={actual.avg_manager_rating} size="lg" /><div className="text-xs text-gray-400 mt-0.5">market average</div></div>
+                          <div><div className="text-5xl font-bold text-gray-300">~{actual.avg_manager_occ}%</div><div className="text-sm text-gray-500 mt-1">occupancy</div></div>
+                          <div className="mb-2"><Stars rating={actual.avg_manager_rating} size="lg" /><div className="text-xs text-gray-500 mt-0.5">market average</div></div>
                         </div>
-                        {actual.estimated && <p className="mt-3 text-xs text-gray-400">Estimated from tracked managers. Exact figures in full report.</p>}
+                        {actual.estimated && <p className="mt-3 text-xs text-gray-500">Estimated from tracked managers. Exact figures in full report.</p>}
                       </div>
                     </div>
 
                     {/* Occupancy comparison bar chart */}
-                    <div className="mt-6 rounded-2xl bg-white p-8 ring-1 ring-gray-200">
-                      <h3 className="font-semibold text-gray-900 mb-6">Who&apos;s Actually Performing?</h3>
+                    <div className="mt-6 rounded-2xl bg-white/5 border border-white/10 p-8">
+                      <h3 className="font-semibold text-white mb-6">Who&apos;s Actually Performing?</h3>
                       {[
-                        { label: "Elite Stays", value: actual.esa_occ, color: "#16a34a", bg: "#dcfce7" },
-                        { label: "Avg Manager", value: actual.avg_manager_occ, color: "#9ca3af", bg: "#f3f4f6" },
-                        { label: "Market Average", value: Math.round((fwd?.market?.occ30 ?? 27) + 25), color: "#d1d5db", bg: "#f9fafb" },
+                        { label: "Elite Stays", value: actual.esa_occ, color: "#4ade80", bg: "rgba(74,222,128,0.1)" },
+                        { label: "Avg Manager", value: actual.avg_manager_occ, color: "#9ca3af", bg: "rgba(255,255,255,0.05)" },
+                        { label: "Market Average", value: Math.round((fwd?.market?.occ30 ?? 27) + 25), color: "#6b7280", bg: "rgba(255,255,255,0.03)" },
                       ].map(bar => (
                         <div key={bar.label} className="mb-4 last:mb-0">
                           <div className="flex justify-between items-end mb-1.5">
-                            <span className="text-sm font-medium text-gray-700">{bar.label}</span>
+                            <span className="text-sm font-medium text-gray-400">{bar.label}</span>
                             <span className="text-2xl font-bold" style={{ color: bar.color }}>{bar.value}%</span>
                           </div>
                           <div className="h-4 rounded-full overflow-hidden" style={{ backgroundColor: bar.bg }}>
@@ -526,14 +526,14 @@ export default function MarketIntelPage() {
                       ))}
                     </div>
 
-                    <div className="mt-6 rounded-xl bg-white border border-gray-200 px-6 py-4 flex items-center justify-between">
+                    <div className="mt-6 rounded-xl bg-white/5 border border-white/10 px-6 py-4 flex items-center justify-between">
                       <div>
-                        <span className="text-sm text-gray-500">Performance gap: </span>
-                        <span className="text-lg font-bold text-green-700">+{actual.esa_occ - actual.avg_manager_occ}% higher occupancy</span>
+                        <span className="text-sm text-gray-400">Performance gap: </span>
+                        <span className="text-lg font-bold text-green-400">+{actual.esa_occ - actual.avg_manager_occ}% higher occupancy</span>
                         <span className="text-sm text-gray-500"> · </span>
-                        <span className="font-semibold text-gray-900">{actual.esa_rating}★ rating</span>
+                        <span className="font-semibold text-white">{actual.esa_rating}★ rating</span>
                       </div>
-                      <ArrowUpRight className="h-5 w-5 text-green-600 hidden sm:block" />
+                      <ArrowUpRight className="h-5 w-5 text-green-400 hidden sm:block" />
                     </div>
                   </>
                 )}
@@ -571,43 +571,6 @@ export default function MarketIntelPage() {
               </div>
             </section>
           )}
-
-          {/* ══════ MARKET INSIGHTS (light) ══════ */}
-          <section className="py-14">
-            <div className="container mx-auto px-6 lg:px-8">
-              <div className="mx-auto max-w-5xl">
-                <h2 className="text-2xl font-bold text-gray-900 mb-8">Market Insights</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {data.dead_pct != null && (
-                    <div className="rounded-2xl bg-red-50 p-6 ring-1 ring-red-100">
-                      <AlertTriangle className="h-5 w-5 text-red-600 mb-2" />
-                      <div className="text-3xl font-bold text-red-700">{data.dead_pct}%</div>
-                      <div className="text-sm font-semibold text-red-800 mt-1">Dead Listings</div>
-                      <p className="mt-2 text-xs text-red-600">Under 5% occupancy. The market looks crowded — most operators aren&apos;t competing.</p>
-                    </div>
-                  )}
-                  <div className="rounded-2xl bg-blue-50 p-6 ring-1 ring-blue-100">
-                    <Target className="h-5 w-5 text-blue-600 mb-2" />
-                    <div className="text-3xl font-bold text-blue-700">24/7</div>
-                    <div className="text-sm font-semibold text-blue-800 mt-1">Market Monitoring</div>
-                    <p className="mt-2 text-xs text-blue-600">We track every property manager in Nairobi — occupancy, pricing, ratings. Daily.</p>
-                  </div>
-                  <div className="rounded-2xl bg-amber-50 p-6 ring-1 ring-amber-100">
-                    <Star className="h-5 w-5 text-amber-600 fill-amber-400 mb-2" />
-                    <div className="text-3xl font-bold text-amber-700">{data.ratings.market_avg ?? "4.85"}★</div>
-                    <div className="text-sm font-semibold text-amber-800 mt-1">Weighted Market Rating</div>
-                    <p className="mt-2 text-xs text-amber-600">ESA: {data.ratings.esa_avg}★ across {data.ratings.esa_reviews?.toLocaleString()} verified reviews.</p>
-                  </div>
-                  <div className="rounded-2xl bg-purple-50 p-6 ring-1 ring-purple-100">
-                    <Clock className="h-5 w-5 text-purple-600 mb-2" />
-                    <div className="text-3xl font-bold text-purple-700">{data.last_minute_pct ?? "—"}%</div>
-                    <div className="text-sm font-semibold text-purple-800 mt-1">Same-Week Bookings</div>
-                    <p className="mt-2 text-xs text-purple-600">Booked within 7 days. Dynamic pricing wins in a last-minute market.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
 
           {/* ══════ OCCUPANCY BY PROPERTY SIZE (dark) ══════ */}
           {data.by_bedroom.length > 0 && (
@@ -658,7 +621,44 @@ export default function MarketIntelPage() {
             </section>
           )}
 
-          {/* ══════ DISCLAIMER ══════ */}
+          {/* ══════ MARKET INSIGHTS (dark) ══════ */}
+          <section className="py-14 bg-gray-900">
+            <div className="container mx-auto px-6 lg:px-8">
+              <div className="mx-auto max-w-5xl">
+                <h2 className="text-2xl font-bold text-white mb-8">Market Insights</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {data.dead_pct != null && (
+                    <div className="rounded-2xl bg-red-500/10 border border-red-500/20 p-6">
+                      <AlertTriangle className="h-5 w-5 text-red-400 mb-2" />
+                      <div className="text-3xl font-bold text-red-400">{data.dead_pct}%</div>
+                      <div className="text-sm font-semibold text-red-300 mt-1">Dead Listings</div>
+                      <p className="mt-2 text-xs text-red-400/70">Under 5% occupancy. The market looks crowded — most operators aren&apos;t competing.</p>
+                    </div>
+                  )}
+                  <div className="rounded-2xl bg-blue-500/10 border border-blue-500/20 p-6">
+                    <Target className="h-5 w-5 text-blue-400 mb-2" />
+                    <div className="text-3xl font-bold text-blue-400">24/7</div>
+                    <div className="text-sm font-semibold text-blue-300 mt-1">Market Monitoring</div>
+                    <p className="mt-2 text-xs text-blue-400/70">We track every property manager in Nairobi — occupancy, pricing, ratings. Daily.</p>
+                  </div>
+                  <div className="rounded-2xl bg-amber-500/10 border border-amber-500/20 p-6">
+                    <Star className="h-5 w-5 text-amber-400 fill-amber-400 mb-2" />
+                    <div className="text-3xl font-bold text-amber-400">{data.ratings.market_avg ?? "4.85"}★</div>
+                    <div className="text-sm font-semibold text-amber-300 mt-1">Weighted Market Rating</div>
+                    <p className="mt-2 text-xs text-amber-400/70">ESA: {data.ratings.esa_avg}★ across {data.ratings.esa_reviews?.toLocaleString()} verified reviews.</p>
+                  </div>
+                  <div className="rounded-2xl bg-purple-500/10 border border-purple-500/20 p-6">
+                    <Clock className="h-5 w-5 text-purple-400 mb-2" />
+                    <div className="text-3xl font-bold text-purple-400">{data.last_minute_pct ?? "—"}%</div>
+                    <div className="text-sm font-semibold text-purple-300 mt-1">Same-Week Bookings</div>
+                    <p className="mt-2 text-xs text-purple-400/70">Booked within 7 days. Dynamic pricing wins in a last-minute market.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ══════ DISCLAIMER (light) ══════ */}
           <section className="py-4">
             <div className="container mx-auto px-6 lg:px-8">
               <div className="mx-auto max-w-5xl">
