@@ -409,6 +409,74 @@ export default function MarketIntelPage() {
 
       {data && (
         <>
+          {/* ══════ FORWARD OUTLOOK (dark) ══════ */}
+          <section className="py-14 bg-gray-900">
+            <div className="container mx-auto px-6 lg:px-8">
+              <div className="mx-auto max-w-5xl">
+                <h2 className="text-2xl font-bold text-white mb-2">Forward Outlook — Next 30 Days</h2>
+                <p className="text-sm text-gray-400 mb-8">
+                  What&apos;s currently booked. These numbers grow daily — actual results end up 20–30% higher.
+                </p>
+
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                  <div className="rounded-xl bg-white/5 border border-white/10 p-5">
+                    <div className="text-sm text-gray-400 mb-2">Market (30d)</div>
+                    <div className="text-3xl font-bold text-white">{fwd?.market?.occ30 ?? "—"}%</div>
+                    <WeekTrend value={weekDelta} />
+                  </div>
+                  <div className="rounded-xl bg-green-500/10 border border-green-500/20 p-5">
+                    <div className="text-sm text-green-400 mb-2">Elite Stays (30d)</div>
+                    <div className="text-3xl font-bold text-green-400">{fwd?.esa?.occ30 ?? "—"}%</div>
+                    <WeekTrend value={data.occupancy?.esa_deltas?.week?.occ30} />
+                  </div>
+                  <div className="rounded-xl bg-white/5 border border-white/10 p-5">
+                    <div className="text-sm text-gray-400 mb-2">Median Rate</div>
+                    <div className="text-3xl font-bold text-white">{fmtUSD(data.overview.median_rate)}</div>
+                    <span className="text-xs text-gray-500">per night</span>
+                  </div>
+                  <div className="rounded-xl bg-white/5 border border-white/10 p-5">
+                    <div className="text-sm text-gray-400 mb-2">Same-Week</div>
+                    <div className="text-3xl font-bold text-white">{data.last_minute_pct ?? "—"}%</div>
+                    <span className="text-xs text-gray-500">booked within 7d</span>
+                  </div>
+                </div>
+
+                {/* Forward curve chart */}
+                {data.forward_curve && data.forward_curve.length > 2 && (
+                  <div className="rounded-xl bg-white/5 border border-white/10 p-6 mb-8">
+                    <h3 className="font-semibold text-white mb-1">Booking Curve — Today → 30 Days Out</h3>
+                    <p className="text-xs text-gray-500 mb-4">What percentage of listings are booked on each future date.</p>
+                    <ForwardCurveChart data={data.forward_curve} />
+                  </div>
+                )}
+
+                {/* Fill rates - 3 months */}
+                {data.fill_rate.length > 0 && (
+                  <div className="rounded-xl bg-white/5 border border-white/10 p-6">
+                    <h3 className="font-semibold text-white mb-4">How Fast Are Months Filling?</h3>
+                    <div className="space-y-6">
+                      {data.fill_rate.map(month => (
+                        <div key={month.label}>
+                          <h4 className="text-sm font-medium text-gray-300 mb-3">{month.label}</h4>
+                          <div className="space-y-2">
+                            <div>
+                              <div className="flex justify-between text-sm mb-1"><span className="text-gray-400">Market</span><span className="text-gray-300">{month.market_fill}%</span></div>
+                              <div className="h-2.5 rounded-full bg-white/10 overflow-hidden"><div className="h-full rounded-full bg-gray-500" style={{ width: `${Math.min(month.market_fill, 100)}%` }} /></div>
+                            </div>
+                            <div>
+                              <div className="flex justify-between text-sm mb-1"><span className="text-green-400">Elite Stays</span><span className="font-medium text-green-400">{month.esa_fill}%</span></div>
+                              <div className="h-2.5 rounded-full bg-green-500/10 overflow-hidden"><div className="h-full rounded-full bg-green-500" style={{ width: `${Math.min(month.esa_fill, 100)}%` }} /></div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+
           {/* ══════ ACTUAL PERFORMANCE (light) ══════ */}
           <section className="py-14">
             <div className="container mx-auto px-6 lg:px-8">
@@ -503,74 +571,6 @@ export default function MarketIntelPage() {
               </div>
             </section>
           )}
-
-          {/* ══════ FORWARD OUTLOOK (dark) ══════ */}
-          <section className="py-14 bg-gray-900">
-            <div className="container mx-auto px-6 lg:px-8">
-              <div className="mx-auto max-w-5xl">
-                <h2 className="text-2xl font-bold text-white mb-2">Forward Outlook — Next 30 Days</h2>
-                <p className="text-sm text-gray-400 mb-8">
-                  What&apos;s currently booked. These numbers grow daily — actual results end up 20–30% higher.
-                </p>
-
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                  <div className="rounded-xl bg-white/5 border border-white/10 p-5">
-                    <div className="text-sm text-gray-400 mb-2">Market (30d)</div>
-                    <div className="text-3xl font-bold text-white">{fwd?.market?.occ30 ?? "—"}%</div>
-                    <WeekTrend value={weekDelta} />
-                  </div>
-                  <div className="rounded-xl bg-green-500/10 border border-green-500/20 p-5">
-                    <div className="text-sm text-green-400 mb-2">Elite Stays (30d)</div>
-                    <div className="text-3xl font-bold text-green-400">{fwd?.esa?.occ30 ?? "—"}%</div>
-                    <WeekTrend value={data.occupancy?.esa_deltas?.week?.occ30} />
-                  </div>
-                  <div className="rounded-xl bg-white/5 border border-white/10 p-5">
-                    <div className="text-sm text-gray-400 mb-2">Median Rate</div>
-                    <div className="text-3xl font-bold text-white">{fmtUSD(data.overview.median_rate)}</div>
-                    <span className="text-xs text-gray-500">per night</span>
-                  </div>
-                  <div className="rounded-xl bg-white/5 border border-white/10 p-5">
-                    <div className="text-sm text-gray-400 mb-2">Same-Week</div>
-                    <div className="text-3xl font-bold text-white">{data.last_minute_pct ?? "—"}%</div>
-                    <span className="text-xs text-gray-500">booked within 7d</span>
-                  </div>
-                </div>
-
-                {/* Forward curve chart */}
-                {data.forward_curve && data.forward_curve.length > 2 && (
-                  <div className="rounded-xl bg-white/5 border border-white/10 p-6 mb-8">
-                    <h3 className="font-semibold text-white mb-1">Booking Curve — Today → 30 Days Out</h3>
-                    <p className="text-xs text-gray-500 mb-4">What percentage of listings are booked on each future date.</p>
-                    <ForwardCurveChart data={data.forward_curve} />
-                  </div>
-                )}
-
-                {/* Fill rates - 3 months */}
-                {data.fill_rate.length > 0 && (
-                  <div className="rounded-xl bg-white/5 border border-white/10 p-6">
-                    <h3 className="font-semibold text-white mb-4">How Fast Are Months Filling?</h3>
-                    <div className="space-y-6">
-                      {data.fill_rate.map(month => (
-                        <div key={month.label}>
-                          <h4 className="text-sm font-medium text-gray-300 mb-3">{month.label}</h4>
-                          <div className="space-y-2">
-                            <div>
-                              <div className="flex justify-between text-sm mb-1"><span className="text-gray-400">Market</span><span className="text-gray-300">{month.market_fill}%</span></div>
-                              <div className="h-2.5 rounded-full bg-white/10 overflow-hidden"><div className="h-full rounded-full bg-gray-500" style={{ width: `${Math.min(month.market_fill, 100)}%` }} /></div>
-                            </div>
-                            <div>
-                              <div className="flex justify-between text-sm mb-1"><span className="text-green-400">Elite Stays</span><span className="font-medium text-green-400">{month.esa_fill}%</span></div>
-                              <div className="h-2.5 rounded-full bg-green-500/10 overflow-hidden"><div className="h-full rounded-full bg-green-500" style={{ width: `${Math.min(month.esa_fill, 100)}%` }} /></div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </section>
 
           {/* ══════ MARKET INSIGHTS (light) ══════ */}
           <section className="py-14">
