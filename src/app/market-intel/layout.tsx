@@ -33,6 +33,7 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://elitestaysafrica.com/market-intel",
     siteName: "Elite Stays Africa",
+    images: [{ url: "/market-intel/opengraph-image", width: 1200, height: 630, alt: "Nairobi Airbnb Market Data — Live Occupancy Rates" }],
   },
   twitter: {
     card: "summary_large_image",
