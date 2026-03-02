@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og"
 
-export const runtime = "edge"
+export const runtime = "nodejs"
 export const alt = "Nairobi Airbnb Market Data — Live Occupancy Rates & Trends | Elite Stays Africa"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
@@ -29,7 +29,6 @@ export default async function Image() {
             backgroundColor: "rgba(34, 197, 94, 0.15)",
             borderRadius: "999px",
             padding: "8px 20px",
-            width: "fit-content",
             marginBottom: "24px",
           }}
         >
@@ -42,7 +41,7 @@ export default async function Image() {
           Nairobi Airbnb Market Data
         </div>
         <div style={{ color: "#ffffff", fontSize: 52, fontWeight: 800, lineHeight: 1.15, marginBottom: "32px", display: "flex" }}>
-          &amp; Occupancy Rates
+          & Occupancy Rates
         </div>
 
         {/* Subtitle */}
@@ -57,8 +56,8 @@ export default async function Image() {
             <span style={{ color: "#6b7280", fontSize: 16 }}>Elite Stays Occupancy</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <span style={{ color: "#fbbf24", fontSize: 48, fontWeight: 800 }}>4.92★</span>
-            <span style={{ color: "#6b7280", fontSize: 16 }}>Guest Rating</span>
+            <span style={{ color: "#fbbf24", fontSize: 48, fontWeight: 800 }}>4.92</span>
+            <span style={{ color: "#6b7280", fontSize: 16 }}>Guest Rating (5-star)</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <span style={{ color: "#ffffff", fontSize: 48, fontWeight: 800 }}>1,137</span>
