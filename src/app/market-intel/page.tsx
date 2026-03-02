@@ -568,8 +568,8 @@ export default function MarketIntelPage() {
           <section className="py-14 bg-gray-900">
             <div className="container mx-auto px-6 lg:px-8">
               <div className="mx-auto max-w-5xl">
-                <h2 className="text-2xl font-bold text-white mb-2">Actual Performance — Past 30 Days</h2>
-                <p className="text-sm text-gray-400 mb-8">Real results, not forward-looking estimates.</p>
+                <h2 className="text-2xl font-bold text-white mb-2">Verified Performance — Nairobi Short-Term Rental Track Record</h2>
+                <p className="text-sm text-gray-400 mb-8">Lifetime occupancy and guest ratings from verified Airbnb booking data across Nairobi&apos;s short-term rental market.</p>
 
                 {actual && (
                   <>
@@ -701,7 +701,7 @@ export default function MarketIntelPage() {
             <div className="container mx-auto px-6 lg:px-8">
               <div className="mx-auto max-w-5xl">
                 <div className="rounded-xl bg-amber-50 border border-amber-200 px-6 py-4 text-sm text-amber-800">
-                  <strong>How to read this data:</strong> <em>Actual Performance</em> = bookings completed in the past 30 days.{" "}
+                  <strong>How to read this data:</strong> <em>Verified Performance</em> = lifetime occupancy and ratings from actual bookings.{" "}
                   <em>Current Market Pulse</em> = what&apos;s currently booked for future dates (grows daily as new bookings come in).
                   Forward figures typically underestimate actual results by 20–30%.
                   Elite Stays data comes from verified booking records. Market data is tracked daily from public Airbnb calendars.
