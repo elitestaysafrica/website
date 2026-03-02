@@ -140,9 +140,9 @@ function ForwardCurveChart({ data }: { data: { date: string; day: number; market
       ))}
       {/* Legend */}
       <line x1={w - 200} y1={14} x2={w - 180} y2={14} stroke="#22c55e" strokeWidth="2.5" />
-      <text x={w - 175} y={18} fill="rgba(255,255,255,0.7)" fontSize="11" fontWeight="500">Elite Stays</text>
-      <line x1={w - 95} y1={14} x2={w - 75} y2={14} stroke="rgba(255,255,255,0.3)" strokeWidth="2" strokeDasharray="6 4" />
-      <text x={w - 70} y={18} fill="rgba(255,255,255,0.4)" fontSize="11">Market</text>
+      <text x={w - 175} y={18} fill="rgba(0,0,0,0.7)" fontSize="11" fontWeight="500">Elite Stays</text>
+      <line x1={w - 95} y1={14} x2={w - 75} y2={14} stroke="rgba(0,0,0,0.25)" strokeWidth="2" strokeDasharray="6 4" />
+      <text x={w - 70} y={18} fill="rgba(0,0,0,0.4)" fontSize="11">Market</text>
     </svg>
   )
 }
