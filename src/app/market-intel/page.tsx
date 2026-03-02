@@ -77,11 +77,25 @@ function Stars({ rating, size = "sm", light = false }: { rating: number; size?: 
   )
 }
 
+// Hook: detect mobile viewport
+function useIsMobile(breakpoint = 640) {
+  const [mobile, setMobile] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpoint}px)`)
+    setMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setMobile(e.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [breakpoint])
+  return mobile
+}
+
 // Forward-looking line chart: today → 30 days out
 function ForwardCurveChart({ data }: { data: { date: string; day: number; market_pct: number | null; esa_pct: number | null }[] }) {
   if (!data || data.length < 2) return null
-  const w = 640, h = 260
-  const pad = { top: 30, right: 25, bottom: 40, left: 50 }
+  const mobile = useIsMobile()
+  const w = 640, h = mobile ? 300 : 260
+  const pad = mobile ? { top: 30, right: 15, bottom: 45, left: 40 } : { top: 30, right: 25, bottom: 40, left: 50 }
   const iW = w - pad.left - pad.right
   const iH = h - pad.top - pad.bottom
 
@@ -119,22 +133,22 @@ function ForwardCurveChart({ data }: { data: { date: string; day: number; market
         return (
           <g key={pct}>
             <line x1={pad.left} y1={yPos} x2={w - pad.right} y2={yPos} stroke="rgba(0,0,0,0.08)" />
-            <text x={pad.left - 8} y={yPos + 4} textAnchor="end" fill="rgba(0,0,0,0.45)" fontSize="11">{val}%</text>
+            <text x={pad.left - 8} y={yPos + 4} textAnchor="end" fill="rgba(0,0,0,0.45)" fontSize={mobile ? 13 : 11}>{val}%</text>
           </g>
         )
       })}
       {/* Area fill */}
       {esaArea && <path d={esaArea} fill="url(#esaFill)" />}
       {/* Market line */}
-      <path d={mktLine} fill="none" stroke="rgba(0,0,0,0.25)" strokeWidth="2" strokeLinecap="round" strokeDasharray="6 4" />
+      <path d={mktLine} fill="none" stroke="rgba(0,0,0,0.25)" strokeWidth={mobile ? 2.5 : 2} strokeLinecap="round" strokeDasharray="6 4" />
       {/* ESA line */}
-      <path d={esaLine} fill="none" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" />
+      <path d={esaLine} fill="none" stroke="#22c55e" strokeWidth={mobile ? 3.5 : 2.5} strokeLinecap="round" />
       {/* End dots */}
-      {data[0].esa_pct != null && <circle cx={x(0)} cy={y(data[0].esa_pct)} r={4} fill="#22c55e" />}
-      {data[data.length-1].market_pct != null && <circle cx={x(data.length-1)} cy={y(data[data.length-1].market_pct!)} r={3} fill="rgba(0,0,0,0.3)" />}
-      {/* Date labels */}
-      {[0, 7, 14, 21, 29].filter(i => i < data.length).map(i => (
-        <text key={i} x={x(i)} y={h - 8} textAnchor="middle" fill="rgba(0,0,0,0.4)" fontSize="10">
+      {data[0].esa_pct != null && <circle cx={x(0)} cy={y(data[0].esa_pct)} r={mobile ? 6 : 4} fill="#22c55e" />}
+      {data[data.length-1].market_pct != null && <circle cx={x(data.length-1)} cy={y(data[data.length-1].market_pct!)} r={mobile ? 5 : 3} fill="rgba(0,0,0,0.3)" />}
+      {/* Date labels — fewer on mobile */}
+      {(mobile ? [0, 14, 29] : [0, 7, 14, 21, 29]).filter(i => i < data.length).map(i => (
+        <text key={i} x={x(i)} y={h - 8} textAnchor="middle" fill="rgba(0,0,0,0.4)" fontSize={mobile ? 12 : 10}>
           {i === 0 ? "Today" : `+${data[i].day}d`}
         </text>
       ))}
@@ -150,8 +164,9 @@ function ForwardCurveChart({ data }: { data: { date: string; day: number; market
 // Trailing 30-day occupancy chart: ESA real, market estimated, avg manager band
 function TrailingOccupancyChart({ data }: { data: { date: string; esa: number; market: number; avg_manager: number }[] }) {
   if (!data || data.length < 2) return null
-  const w = 640, h = 280
-  const pad = { top: 30, right: 25, bottom: 40, left: 50 }
+  const mobile = useIsMobile()
+  const w = 640, h = mobile ? 320 : 280
+  const pad = mobile ? { top: 30, right: 15, bottom: 45, left: 40 } : { top: 30, right: 25, bottom: 40, left: 50 }
   const iW = w - pad.left - pad.right
   const iH = h - pad.top - pad.bottom
   const minY = 0, maxY = 100
@@ -186,7 +201,7 @@ function TrailingOccupancyChart({ data }: { data: { date: string; esa: number; m
       {[0, 25, 50, 75, 100].map(val => (
         <g key={val}>
           <line x1={pad.left} y1={y(val)} x2={w - pad.right} y2={y(val)} stroke="rgba(0,0,0,0.06)" />
-          <text x={pad.left - 8} y={y(val) + 4} textAnchor="end" fill="rgba(0,0,0,0.35)" fontSize="11">{val}%</text>
+          <text x={pad.left - 8} y={y(val) + 4} textAnchor="end" fill="rgba(0,0,0,0.35)" fontSize={mobile ? 13 : 11}>{val}%</text>
         </g>
       ))}
       {/* Manager band */}
@@ -194,18 +209,19 @@ function TrailingOccupancyChart({ data }: { data: { date: string; esa: number; m
       {/* ESA area fill */}
       <path d={esaArea} fill="url(#esaTrailFill)" />
       {/* Market line */}
-      <path d={mkLine("market")} fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="1.5" strokeDasharray="6 4" />
+      <path d={mkLine("market")} fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth={mobile ? 2 : 1.5} strokeDasharray="6 4" />
       {/* Avg manager line */}
-      <path d={mkLine("avg_manager")} fill="none" stroke="#f97316" strokeWidth="1.5" strokeDasharray="4 3" />
+      <path d={mkLine("avg_manager")} fill="none" stroke="#f97316" strokeWidth={mobile ? 2 : 1.5} strokeDasharray="4 3" />
       {/* ESA line */}
-      <path d={mkLine("esa")} fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" />
+      <path d={mkLine("esa")} fill="none" stroke="#16a34a" strokeWidth={mobile ? 3.5 : 2.5} strokeLinecap="round" />
       {/* End dots */}
-      <circle cx={x(data.length-1)} cy={y(data[data.length-1].esa)} r={4} fill="#16a34a" />
-      <circle cx={x(data.length-1)} cy={y(data[data.length-1].avg_manager)} r={3} fill="#f97316" />
-      {/* Date labels */}
-      {dateLabels.map(i => {
+      <circle cx={x(data.length-1)} cy={y(data[data.length-1].esa)} r={mobile ? 6 : 4} fill="#16a34a" />
+      <circle cx={x(data.length-1)} cy={y(data[data.length-1].avg_manager)} r={mobile ? 5 : 3} fill="#f97316" />
+      {/* Date labels — fewer on mobile */}
+      {(mobile ? [0, Math.floor(data.length / 2), data.length - 1] : dateLabels).map(i => {
+        if (i >= data.length) return null
         const d = new Date(data[i].date)
-        return <text key={i} x={x(i)} y={h - 8} textAnchor="middle" fill="rgba(0,0,0,0.35)" fontSize="10">{d.toLocaleDateString("en", { month: "short", day: "numeric" })}</text>
+        return <text key={i} x={x(i)} y={h - 8} textAnchor="middle" fill="rgba(0,0,0,0.35)" fontSize={mobile ? 12 : 10}>{d.toLocaleDateString("en", { month: "short", day: "numeric" })}</text>
       })}
       {/* Legend */}
       <line x1={pad.left} y1={14} x2={pad.left + 20} y2={14} stroke="#16a34a" strokeWidth="2.5" />
@@ -447,6 +463,27 @@ export default function MarketIntelPage() {
                   <div className="rounded-xl bg-white p-6 ring-1 ring-gray-200 shadow-sm mb-8">
                     <h3 className="font-semibold text-gray-900 mb-1">Booking Curve — Today → 30 Days Out</h3>
                     <p className="text-xs text-gray-500 mb-4">What percentage of listings are booked on each future date.</p>
+                    {/* Mobile: key stat above chart for quick readability */}
+                    {(() => {
+                      const esaPts = data.forward_curve.filter(d => d.esa_pct != null)
+                      const avgEsa = esaPts.length ? Math.round(esaPts.reduce((s, d) => s + d.esa_pct!, 0) / esaPts.length) : null
+                      const mktPts = data.forward_curve.filter(d => d.market_pct != null)
+                      const avgMkt = mktPts.length ? Math.round(mktPts.reduce((s, d) => s + d.market_pct!, 0) / mktPts.length) : null
+                      return avgEsa != null ? (
+                        <div className="sm:hidden flex gap-3 mb-4">
+                          <div className="flex-1 rounded-lg bg-green-50 p-3 text-center ring-1 ring-green-100">
+                            <div className="text-xl font-bold text-green-700">{avgEsa}%</div>
+                            <div className="text-[10px] text-green-600">Elite Stays</div>
+                          </div>
+                          {avgMkt != null && (
+                            <div className="flex-1 rounded-lg bg-gray-50 p-3 text-center ring-1 ring-gray-200">
+                              <div className="text-xl font-bold text-gray-600">{avgMkt}%</div>
+                              <div className="text-[10px] text-gray-500">Market Avg</div>
+                            </div>
+                          )}
+                        </div>
+                      ) : null
+                    })()}
                     <ForwardCurveChart data={data.forward_curve} />
                   </div>
                 )}
@@ -562,7 +599,7 @@ export default function MarketIntelPage() {
                       {[
                         { label: "Elite Stays", value: actual.esa_occ, color: "#4ade80", bg: "rgba(74,222,128,0.1)" },
                         { label: "Avg Manager", value: actual.avg_manager_occ, color: "#9ca3af", bg: "rgba(255,255,255,0.05)" },
-                        { label: "Market Average", value: Math.round((fwd?.market?.occ30 ?? 27) + 25), color: "#6b7280", bg: "rgba(255,255,255,0.03)" },
+                        { label: "Market Average", value: Math.round((fwd?.market?.occ30 ?? 27) + 20), color: "#6b7280", bg: "rgba(255,255,255,0.03)" },
                       ].map(bar => (
                         <div key={bar.label} className="mb-4 last:mb-0">
                           <div className="flex justify-between items-end mb-1.5">
