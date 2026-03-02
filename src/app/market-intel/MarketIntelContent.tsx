@@ -336,7 +336,7 @@ const faqItems: { q: string; a: string; aJsx?: React.ReactNode }[] = [
   {
     q: "How much can I earn from Airbnb in Nairobi?",
     a: "Earnings vary by location, property size, and management quality. A well-managed 1-bedroom apartment in Westlands or Kilimani can generate KES 150,000–200,000+ per month. 2-bedroom units in premium locations can exceed KES 250,000/month. These figures assume professional management with 75%+ occupancy.",
-    aJsx: <>Earnings vary by location, <a href="#occupancy-by-size" className="text-green-400 underline">property size</a>, and management quality. A well-managed 1-bedroom apartment in Westlands or Kilimani can generate KES 150,000–200,000+ per month. 2-bedroom units in premium locations can exceed KES 250,000/month. These figures assume professional management with 75%+ occupancy.</>,
+    aJsx: <>Earnings vary by location, <a href="#occupancy-by-size" className="text-green-400 underline">property size</a>, and management quality. A well-managed 1-bedroom apartment in Westlands or Kilimani can generate KES 150,000–200,000+ per month. 2-bedroom units in premium locations can exceed KES 250,000/month. These figures assume professional management with 75%+ occupancy. See <a href="/properties" className="text-green-400 underline">our current listings</a> for real examples.</>,
   },
   {
     q: "What is the average nightly rate for Airbnb in Nairobi?",
@@ -346,6 +346,7 @@ const faqItems: { q: string; a: string; aJsx?: React.ReactNode }[] = [
   {
     q: "How does Elite Stays Africa track market data?",
     a: "We monitor every short-term rental listing in Nairobi daily, tracking calendar availability, pricing, ratings, and booking patterns. Our data comes from direct calendar monitoring — not estimates or third-party projections. This gives us the most accurate real-time view of the Nairobi STR market.",
+    aJsx: <>We monitor every short-term rental listing in Nairobi daily, tracking calendar availability, pricing, ratings, and booking patterns. Our data comes from direct calendar monitoring — not estimates or third-party projections. This gives us the most accurate real-time view of the Nairobi STR market. <a href="/contact" className="text-green-400 underline">Get in touch</a> for custom market reports.</>,
   },
   {
     q: "How many Airbnb listings are there in Nairobi?",
@@ -393,7 +394,7 @@ export default function MarketIntelContent({ initialData }: { initialData: Marke
             </p>
             {data && (
               <p className="mt-3 text-sm text-gray-400">
-                Updated {new Date(data.generated_at).toLocaleDateString("en", { month: "long", day: "numeric", year: "numeric" })}
+                Updated <time dateTime={data.generated_at}>{new Date(data.generated_at).toLocaleDateString("en", { month: "long", day: "numeric", year: "numeric" })}</time>
               </p>
             )}
           </div>
@@ -409,9 +410,13 @@ export default function MarketIntelContent({ initialData }: { initialData: Marke
             <div className="container mx-auto px-6 lg:px-8">
               <div className="mx-auto max-w-5xl">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">Current Market Pulse — Nairobi Short-Term Rentals</h2>
-                <p className="text-sm text-gray-500 mb-8">
-                  Live forward-looking occupancy and pricing data for Nairobi&apos;s Airbnb market.
+                <p className="text-sm text-gray-500 mb-4">
+                  Live forward-looking occupancy and pricing data for Nairobi&apos;s Airbnb and serviced apartment market.
                   These numbers reflect what&apos;s booked today — actual results typically finish 20–30% higher as last-minute bookings fill in.
+                </p>
+                <p className="text-sm text-gray-400 mb-8">
+                  Whether you&apos;re evaluating Nairobi rental yield, exploring short-term rental investment in Kenya, or benchmarking your
+                  property against the market — this is the most comprehensive real-time dataset available for the Nairobi STR industry.
                 </p>
 
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -500,7 +505,8 @@ export default function MarketIntelContent({ initialData }: { initialData: Marke
               <div className="container mx-auto px-6 lg:px-8">
                 <div className="mx-auto max-w-3xl">
                   <h2 className="text-2xl font-bold text-white mb-2">Nairobi Airbnb Occupancy Rates by Property Size</h2>
-                  <p className="text-sm text-gray-400 mb-8">How bedroom count affects short-term rental occupancy in Nairobi — forward 30-day calendar data across all tracked listings.</p>
+                  <p className="text-sm text-gray-400 mb-4">How bedroom count affects short-term rental occupancy in Nairobi — forward 30-day calendar data across all tracked listings.</p>
+                  <p className="text-sm text-gray-500 mb-8">Investors looking to buy property in Nairobi for Airbnb often ask whether a 1-bedroom or 2-bedroom unit is more profitable. The answer depends on your target market and location — here&apos;s what the data shows right now.</p>
                   <BedroomChart data={data.by_bedroom} />
                 </div>
               </div>
@@ -513,7 +519,8 @@ export default function MarketIntelContent({ initialData }: { initialData: Marke
               <div className="container mx-auto px-6 lg:px-8">
                 <div className="mx-auto max-w-5xl">
                   <h2 className="text-2xl font-bold text-gray-900 mb-2">Nairobi Neighborhood Performance — Airbnb Occupancy &amp; Rates</h2>
-                  <p className="text-sm text-gray-500 mb-8">Live short-term rental data by neighborhood. See which Nairobi areas have the highest occupancy rates and nightly pricing.</p>
+                  <p className="text-sm text-gray-500 mb-4">Live short-term rental data by neighborhood. See which Nairobi areas have the highest occupancy rates and nightly pricing.</p>
+                  <p className="text-sm text-gray-400 mb-8">From Westlands serviced apartments to Lavington and Karen Airbnbs — each neighborhood has a different guest profile, pricing ceiling, and competitive landscape. Use this data to find the best areas for Airbnb investment in Nairobi.</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {data.by_area.map(area => (
                       <div key={area.name} className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
@@ -548,7 +555,8 @@ export default function MarketIntelContent({ initialData }: { initialData: Marke
             <div className="container mx-auto px-6 lg:px-8">
               <div className="mx-auto max-w-5xl">
                 <h2 className="text-2xl font-bold text-white mb-2">Verified Performance — Nairobi Short-Term Rental Track Record</h2>
-                <p className="text-sm text-gray-400 mb-8">Lifetime occupancy and guest ratings from verified Airbnb booking data across Nairobi&apos;s short-term rental market.</p>
+                <p className="text-sm text-gray-400 mb-4">Lifetime occupancy and guest ratings from verified Airbnb booking data across Nairobi&apos;s short-term rental market.</p>
+                <p className="text-sm text-gray-500 mb-8">Professional property management in Nairobi makes a measurable difference. Compare Elite Stays Africa&apos;s track record against the average Nairobi property manager and the broader market to see what&apos;s actually achievable with the right strategy.</p>
 
                 {actual && (
                   <>
@@ -612,9 +620,12 @@ export default function MarketIntelContent({ initialData }: { initialData: Marke
             <section id="trailing-occupancy" className="py-14">
               <div className="container mx-auto px-6 lg:px-8">
                 <div className="mx-auto max-w-5xl">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Occupancy — Past 30 Days</h2>
-                  <p className="text-sm text-gray-500 mb-8">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Nairobi Airbnb Occupancy Trends — Past 30 Days</h2>
+                  <p className="text-sm text-gray-500 mb-4">
                     Daily occupancy rates across Nairobi&apos;s short-term rental market. Elite Stays data from verified booking records.
+                  </p>
+                  <p className="text-sm text-gray-400 mb-8">
+                    This chart tracks how Nairobi&apos;s Airbnb occupancy has moved day-by-day over the past month — useful for spotting seasonal trends, demand spikes, and understanding real-time market dynamics for short-term rental investment in Kenya.
                   </p>
                   <div className="rounded-2xl bg-white p-6 ring-1 ring-gray-200 shadow-sm">
                     <TrailingOccupancyChart data={data.trailing_occupancy} />
@@ -642,7 +653,8 @@ export default function MarketIntelContent({ initialData }: { initialData: Marke
           <section id="market-insights" className="py-14 bg-gray-900">
             <div className="container mx-auto px-6 lg:px-8">
               <div className="mx-auto max-w-5xl">
-                <h2 className="text-2xl font-bold text-white mb-8">Market Insights</h2>
+                <h2 className="text-2xl font-bold text-white mb-2">Nairobi Short-Term Rental Market Insights</h2>
+                <p className="text-sm text-gray-400 mb-8">Key signals from our daily monitoring of every Airbnb and serviced apartment listing in Nairobi. These metrics reveal the real health of the market beyond surface-level occupancy numbers.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                   {data.dead_pct != null && (
                     <div className="rounded-2xl bg-red-500/10 border border-red-500/20 p-6">
@@ -693,7 +705,8 @@ export default function MarketIntelContent({ initialData }: { initialData: Marke
           <section id="faq" className="py-14 bg-gray-900">
             <div className="container mx-auto px-6 lg:px-8">
               <div className="mx-auto max-w-3xl">
-                <h2 className="text-2xl font-bold text-white mb-8">Frequently Asked Questions</h2>
+                <h2 className="text-2xl font-bold text-white mb-2">Nairobi Airbnb & Short-Term Rental FAQs</h2>
+                <p className="text-sm text-gray-400 mb-8">Common questions about Airbnb hosting, property investment, and the short-term rental market in Nairobi, Kenya.</p>
                 <div className="space-y-3">
                   {faqItems.map((faq, i) => (
                     <div key={i} className="rounded-xl bg-white/5 border border-white/10 overflow-hidden">

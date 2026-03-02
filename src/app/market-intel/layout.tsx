@@ -40,6 +40,7 @@ export const metadata: Metadata = {
     title: "Nairobi Airbnb Market Data — Updated Daily",
     description:
       "Live occupancy rates, pricing trends, and neighborhood performance for Nairobi short-term rentals.",
+    images: ["/market-intel/opengraph-image"],
   },
   alternates: {
     canonical: "https://elitestaysafrica.com/market-intel",
