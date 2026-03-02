@@ -614,8 +614,8 @@ export default function MarketIntelPage() {
             <section className="py-14 bg-gray-900">
               <div className="container mx-auto px-6 lg:px-8">
                 <div className="mx-auto max-w-3xl">
-                  <h2 className="text-2xl font-bold text-white mb-2">Occupancy by Property Size</h2>
-                  <p className="text-sm text-gray-400 mb-8">Forward 30-day calendar occupancy by bedroom count.</p>
+                  <h2 className="text-2xl font-bold text-white mb-2">Nairobi Market Occupancy by Property Size</h2>
+                  <p className="text-sm text-gray-400 mb-8">Forward 30-day calendar occupancy across all tracked Nairobi listings, by bedroom count.</p>
                   <BedroomChart data={data.by_bedroom} />
                 </div>
               </div>
