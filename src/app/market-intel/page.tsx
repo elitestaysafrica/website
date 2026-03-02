@@ -118,23 +118,23 @@ function ForwardCurveChart({ data }: { data: { date: string; day: number; market
         const val = Math.round(minY + (maxY - minY) * pct)
         return (
           <g key={pct}>
-            <line x1={pad.left} y1={yPos} x2={w - pad.right} y2={yPos} stroke="rgba(255,255,255,0.08)" />
-            <text x={pad.left - 8} y={yPos + 4} textAnchor="end" fill="rgba(255,255,255,0.4)" fontSize="11">{val}%</text>
+            <line x1={pad.left} y1={yPos} x2={w - pad.right} y2={yPos} stroke="rgba(0,0,0,0.08)" />
+            <text x={pad.left - 8} y={yPos + 4} textAnchor="end" fill="rgba(0,0,0,0.45)" fontSize="11">{val}%</text>
           </g>
         )
       })}
       {/* Area fill */}
       {esaArea && <path d={esaArea} fill="url(#esaFill)" />}
       {/* Market line */}
-      <path d={mktLine} fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2" strokeLinecap="round" strokeDasharray="6 4" />
+      <path d={mktLine} fill="none" stroke="rgba(0,0,0,0.25)" strokeWidth="2" strokeLinecap="round" strokeDasharray="6 4" />
       {/* ESA line */}
       <path d={esaLine} fill="none" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" />
       {/* End dots */}
       {data[0].esa_pct != null && <circle cx={x(0)} cy={y(data[0].esa_pct)} r={4} fill="#22c55e" />}
-      {data[data.length-1].market_pct != null && <circle cx={x(data.length-1)} cy={y(data[data.length-1].market_pct!)} r={3} fill="rgba(255,255,255,0.4)" />}
+      {data[data.length-1].market_pct != null && <circle cx={x(data.length-1)} cy={y(data[data.length-1].market_pct!)} r={3} fill="rgba(0,0,0,0.3)" />}
       {/* Date labels */}
       {[0, 7, 14, 21, 29].filter(i => i < data.length).map(i => (
-        <text key={i} x={x(i)} y={h - 8} textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="10">
+        <text key={i} x={x(i)} y={h - 8} textAnchor="middle" fill="rgba(0,0,0,0.4)" fontSize="10">
           {i === 0 ? "Today" : `+${data[i].day}d`}
         </text>
       ))}
@@ -409,13 +409,14 @@ export default function MarketIntelPage() {
 
       {data && (
         <>
-          {/* ══════ FORWARD OUTLOOK (light) ══════ */}
+          {/* ══════ CURRENT MARKET PULSE (light) ══════ */}
           <section className="py-14">
             <div className="container mx-auto px-6 lg:px-8">
               <div className="mx-auto max-w-5xl">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Forward Outlook — Next 30 Days</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Current Market Pulse — Nairobi Short-Term Rentals</h2>
                 <p className="text-sm text-gray-500 mb-8">
-                  What&apos;s currently booked. These numbers grow daily — actual results end up 20–30% higher.
+                  Live forward-looking occupancy and pricing data for Nairobi&apos;s Airbnb market.
+                  These numbers reflect what&apos;s booked today — actual results typically finish 20–30% higher as last-minute bookings fill in.
                 </p>
 
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -476,6 +477,55 @@ export default function MarketIntelPage() {
               </div>
             </div>
           </section>
+
+          {/* ══════ OCCUPANCY BY PROPERTY SIZE (dark) ══════ */}
+          {data.by_bedroom.length > 0 && (
+            <section className="py-14 bg-gray-900">
+              <div className="container mx-auto px-6 lg:px-8">
+                <div className="mx-auto max-w-3xl">
+                  <h2 className="text-2xl font-bold text-white mb-2">Nairobi Airbnb Occupancy Rates by Property Size</h2>
+                  <p className="text-sm text-gray-400 mb-8">How bedroom count affects short-term rental occupancy in Nairobi — forward 30-day calendar data across all tracked listings.</p>
+                  <BedroomChart data={data.by_bedroom} />
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* ══════ NEIGHBORHOOD PERFORMANCE (light) ══════ */}
+          {data.by_area.length > 0 && (
+            <section className="py-14">
+              <div className="container mx-auto px-6 lg:px-8">
+                <div className="mx-auto max-w-5xl">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Nairobi Neighborhood Performance — Airbnb Occupancy &amp; Rates</h2>
+                  <p className="text-sm text-gray-500 mb-8">Live short-term rental data by neighborhood. See which Nairobi areas have the highest occupancy rates and nightly pricing.</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {data.by_area.map(area => (
+                      <div key={area.name} className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+                        <div className="flex items-center gap-2 mb-3">
+                          <MapPin className="h-4 w-4 text-primary" />
+                          <h3 className="font-semibold text-gray-900">{area.name}</h3>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4 border-t pt-4">
+                          <div>
+                            <div className="text-xs text-gray-400">Occupancy</div>
+                            <div className="text-lg font-bold text-gray-900">{area.avg_occ30 ?? "—"}%</div>
+                          </div>
+                          <div>
+                            <div className="text-xs text-gray-400">Med. Rate</div>
+                            <div className="text-lg font-bold text-gray-900">{fmtUSD(area.median_rate)}</div>
+                          </div>
+                          <div>
+                            <div className="text-xs text-gray-400">Rating</div>
+                            <div className="text-lg font-bold text-gray-900">{area.avg_rating ?? "—"}★</div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
 
           {/* ══════ ACTUAL PERFORMANCE (dark) ══════ */}
           <section className="py-14 bg-gray-900">
@@ -572,55 +622,6 @@ export default function MarketIntelPage() {
             </section>
           )}
 
-          {/* ══════ OCCUPANCY BY PROPERTY SIZE (dark) ══════ */}
-          {data.by_bedroom.length > 0 && (
-            <section className="py-14 bg-gray-900">
-              <div className="container mx-auto px-6 lg:px-8">
-                <div className="mx-auto max-w-3xl">
-                  <h2 className="text-2xl font-bold text-white mb-2">Nairobi Market Occupancy by Property Size</h2>
-                  <p className="text-sm text-gray-400 mb-8">Forward 30-day calendar occupancy across all tracked Nairobi listings, by bedroom count.</p>
-                  <BedroomChart data={data.by_bedroom} />
-                </div>
-              </div>
-            </section>
-          )}
-
-          {/* ══════ NEIGHBORHOOD PERFORMANCE (light) ══════ */}
-          {data.by_area.length > 0 && (
-            <section className="py-14">
-              <div className="container mx-auto px-6 lg:px-8">
-                <div className="mx-auto max-w-5xl">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Neighborhood Performance</h2>
-                  <p className="text-sm text-gray-500 mb-8">Live data from tracked listings. Excludes inactive properties.</p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {data.by_area.map(area => (
-                      <div key={area.name} className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
-                        <div className="flex items-center gap-2 mb-3">
-                          <MapPin className="h-4 w-4 text-primary" />
-                          <h3 className="font-semibold text-gray-900">{area.name}</h3>
-                        </div>
-                        <div className="grid grid-cols-3 gap-4 border-t pt-4">
-                          <div>
-                            <div className="text-xs text-gray-400">Occupancy</div>
-                            <div className="text-lg font-bold text-gray-900">{area.avg_occ30 ?? "—"}%</div>
-                          </div>
-                          <div>
-                            <div className="text-xs text-gray-400">Med. Rate</div>
-                            <div className="text-lg font-bold text-gray-900">{fmtUSD(area.median_rate)}</div>
-                          </div>
-                          <div>
-                            <div className="text-xs text-gray-400">Rating</div>
-                            <div className="text-lg font-bold text-gray-900">{area.avg_rating ?? "—"}★</div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </section>
-          )}
-
           {/* ══════ MARKET INSIGHTS (dark) ══════ */}
           <section className="py-14 bg-gray-900">
             <div className="container mx-auto px-6 lg:px-8">
@@ -664,7 +665,7 @@ export default function MarketIntelPage() {
               <div className="mx-auto max-w-5xl">
                 <div className="rounded-xl bg-amber-50 border border-amber-200 px-6 py-4 text-sm text-amber-800">
                   <strong>How to read this data:</strong> <em>Actual Performance</em> = bookings completed in the past 30 days.{" "}
-                  <em>Forward Outlook</em> = what&apos;s currently booked for future dates (grows daily as new bookings come in).
+                  <em>Current Market Pulse</em> = what&apos;s currently booked for future dates (grows daily as new bookings come in).
                   Forward figures typically underestimate actual results by 20–30%.
                   Elite Stays data comes from verified booking records. Market data is tracked daily from public Airbnb calendars.
                 </div>
