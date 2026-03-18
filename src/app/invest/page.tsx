@@ -294,8 +294,8 @@ export default function InvestPage() {
                   <div className="text-sm text-gray-400">Guest Rating</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-white">50+</div>
-                  <div className="text-sm text-gray-400">Units Managed</div>
+                  <div className="text-3xl font-bold text-white">4+</div>
+                  <div className="text-sm text-gray-400">Years in Nairobi</div>
                 </div>
               </div>
 
