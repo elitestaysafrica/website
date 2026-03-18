@@ -1,12 +1,27 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { PropertyCard } from "@/components/PropertyCard";
 import { getProperties, Property } from "@/lib/api";
 import { Suspense } from "react";
+import { PropertyFilter } from "./PropertyFilter";
 
 export const metadata = {
-  title: "Properties | Elite Stays Africa",
-  description: "Browse our premium short-term rental properties in Nairobi. Fully-furnished apartments in Westlands, Kilimani, Kileleshwa and more.",
+  title: 'Short-Term Rental Properties in Nairobi | Elite Stays Africa',
+  description: 'Browse professionally-managed Airbnb apartments in Nairobi — Westlands, Kilimani, Lavington, Kileleshwa. 4.92★ rated, fully furnished, instant booking.',
+  alternates: {
+    canonical: 'https://www.elitestaysafrica.com/properties',
+  },
+  keywords: [
+    'short-term rentals Nairobi',
+    'Airbnb Nairobi',
+    'furnished apartments Nairobi',
+    'serviced apartments Nairobi',
+    'Westlands apartment rental',
+    'Kilimani short stay',
+    'Lavington furnished apartment',
+    'Kileleshwa Airbnb',
+    'Nairobi vacation rental',
+    'elite stays Africa',
+  ],
 };
 
 // Extract unique locations from properties
@@ -20,11 +35,10 @@ function extractLocations(properties: Property[]): string[] {
   return ['All', ...Array.from(locations).sort()];
 }
 
-// Property grid component (can be made client-side for filtering)
 async function PropertyGrid() {
   const properties = await getProperties();
   const locations = extractLocations(properties);
-  
+
   if (properties.length === 0) {
     return (
       <div className="text-center py-12">
@@ -33,40 +47,7 @@ async function PropertyGrid() {
     );
   }
 
-  return (
-    <>
-      {/* Filters */}
-      <section className="pb-8">
-        <div className="container mx-auto px-6 lg:px-8">
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            {locations.map((location, idx) => (
-              <button
-                key={location}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                  idx === 0
-                    ? "bg-primary text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {location}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Property Grid */}
-      <section className="py-8 pb-24">
-        <div className="container mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {properties.map((property) => (
-              <PropertyCard key={property.id} property={property} />
-            ))}
-          </div>
-        </div>
-      </section>
-    </>
-  );
+  return <PropertyFilter properties={properties} locations={locations} />;
 }
 
 function LoadingSkeleton() {
@@ -98,11 +79,11 @@ export default function PropertiesPage() {
         <div className="container mx-auto px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-              Our Properties
+              Short-Term Rental Apartments in Nairobi
             </h1>
             <p className="mt-4 text-lg text-gray-600">
-              Premium short-term rentals across Nairobi&apos;s best neighborhoods. 
-              Every property is professionally managed and guest-ready.
+              Professionally managed, fully furnished Airbnb apartments in Westlands, Kilimani, Lavington, and Kileleshwa.
+              Rated 4.92★ — every property is guest-ready from day one.
             </p>
           </div>
         </div>
@@ -122,10 +103,16 @@ export default function PropertiesPage() {
             <p className="mt-4 text-gray-600">
               Contact us with your requirements and we&apos;ll help you find the perfect stay.
             </p>
-            <div className="mt-6">
+            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button asChild>
                 <Link href="/contact">Get in Touch</Link>
               </Button>
+              <a
+                href="https://wa.me/254111695444"
+                className="text-sm text-gray-600 hover:text-primary transition-colors"
+              >
+                Or message us on WhatsApp
+              </a>
             </div>
           </div>
         </div>

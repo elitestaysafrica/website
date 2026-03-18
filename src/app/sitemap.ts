@@ -1,8 +1,17 @@
 import { MetadataRoute } from 'next'
+import { getProperties } from '@/lib/api'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://elitestaysafrica.com'
-  
+
+  const properties = await getProperties()
+  const propertyUrls: MetadataRoute.Sitemap = properties.map((p) => ({
+    url: `${baseUrl}/properties/${p.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  }))
+
   return [
     {
       url: baseUrl,
@@ -46,5 +55,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.7,
     },
+    ...propertyUrls,
   ]
 }

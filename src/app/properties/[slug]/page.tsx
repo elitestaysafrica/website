@@ -1,18 +1,15 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getProperty, getProperties, getPropertyAvailability } from "@/lib/api";
-
-// Force dynamic rendering so env vars are available at runtime
-export const dynamic = 'force-dynamic';
 import { PhotoGallery } from "@/components/PhotoGallery";
 import { BookingWidget } from "@/components/BookingWidget";
 import { AmenitiesList } from "@/components/AmenitiesList";
 import { PropertyMap } from "@/components/PropertyMap";
-import { 
-  MapPin, 
-  Bed, 
-  Bath, 
-  Users, 
+import {
+  MapPin,
+  Bed,
+  Bath,
+  Users,
   ChevronLeft,
 } from "lucide-react";
 
@@ -28,14 +25,29 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const property = await getProperty(slug);
-  
+
   if (!property) {
     return { title: "Property Not Found | Elite Stays Africa" };
   }
-  
+
+  const description = property.cardBlurb
+    || property.description?.split(/[.!?]/)[0] + '.'
+    || `${property.name} — a fully furnished ${property.bedrooms}-bedroom apartment in ${property.location}, Nairobi.`;
+
   return {
-    title: `${property.name} | Elite Stays Africa`,
-    description: property.cardBlurb || property.description?.slice(0, 160),
+    title: `${property.name} | Short-Term Rental in ${property.location}, Nairobi | Elite Stays Africa`,
+    description,
+    alternates: {
+      canonical: `https://www.elitestaysafrica.com/properties/${slug}`,
+    },
+    keywords: [
+      `${property.name}`,
+      `short-term rental ${property.location}`,
+      `furnished apartment ${property.location} Nairobi`,
+      `Airbnb ${property.location}`,
+      `${property.bedrooms} bedroom apartment Nairobi`,
+      'elite stays Africa',
+    ],
     openGraph: {
       images: property.photos[0]?.main ? [property.photos[0].main] : [],
     },
@@ -48,22 +60,87 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
     getProperty(slug),
     getPropertyAvailability(slug),
   ]);
-  
+
   if (!property) {
     notFound();
   }
 
+  const lodgingSchema = {
+    "@context": "https://schema.org",
+    "@type": "LodgingBusiness",
+    "name": property.name,
+    "description": property.cardBlurb || property.description?.split(/[.!?]/)[0] + '.',
+    "image": property.photos[0]?.main || "",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": property.address,
+      "addressLocality": property.location,
+      "addressRegion": "Nairobi",
+      "addressCountry": "KE",
+    },
+    ...(property.coordinates ? {
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": property.coordinates.lat,
+        "longitude": property.coordinates.lng,
+      },
+    } : {}),
+    "priceRange": property.price ? `KES ${property.price}/night` : "Contact for pricing",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.92",
+      "bestRating": "5",
+      "ratingCount": "100",
+    },
+    "url": `https://www.elitestaysafrica.com/properties/${property.slug}`,
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.elitestaysafrica.com",
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Properties",
+        "item": "https://www.elitestaysafrica.com/properties",
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": property.name,
+        "item": `https://www.elitestaysafrica.com/properties/${property.slug}`,
+      },
+    ],
+  };
+
   return (
     <div className="pt-24 pb-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(lodgingSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <div className="container mx-auto px-6 lg:px-8">
-        {/* Back link */}
-        <Link 
-          href="/properties" 
-          className="inline-flex items-center text-gray-600 hover:text-primary mb-6"
-        >
-          <ChevronLeft className="h-4 w-4 mr-1" />
-          Back to Properties
-        </Link>
+        {/* Breadcrumb / Back link */}
+        <nav aria-label="Breadcrumb">
+          <Link
+            href="/properties"
+            className="inline-flex items-center text-gray-600 hover:text-primary mb-6"
+          >
+            <ChevronLeft className="h-4 w-4 mr-1" />
+            Back to Properties
+          </Link>
+        </nav>
 
         {/* Photo Gallery with Lightbox */}
         <PhotoGallery photos={property.photos} name={property.name} />
@@ -122,8 +199,8 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
             <AmenitiesList amenities={property.amenities || []} />
 
             {/* Map */}
-            <PropertyMap 
-              coordinates={property.coordinates} 
+            <PropertyMap
+              coordinates={property.coordinates}
               address={property.address}
               gmapsUrl={property.gmapsUrl}
             />
