@@ -401,6 +401,21 @@ export default function MarketIntelContent({ initialData }: { initialData: Marke
         </div>
       </section>
 
+      {/* ══════ ADVISORY BANNER ══════ */}
+      <div className="bg-amber-50 border-y border-amber-200">
+        <div className="container mx-auto px-6 lg:px-8 py-4">
+          <div className="flex items-start gap-3 max-w-4xl mx-auto">
+            <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-amber-900">Market Advisory — Regional Impact Notice</p>
+              <p className="text-sm text-amber-800 mt-1">
+                Due to ongoing geopolitical tensions in the Middle East, Nairobi&apos;s short-term rental market is experiencing elevated cancellations and booking reschedules. Current occupancy data may reflect temporary disruptions rather than long-term market trends.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {error && <div className="py-20 text-center bg-gray-50"><p className="text-gray-500">Market data temporarily unavailable.</p></div>}
 
       {data && (
