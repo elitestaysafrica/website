@@ -409,7 +409,7 @@ export default function MarketIntelContent({ initialData }: { initialData: Marke
             <div>
               <p className="text-sm font-semibold text-amber-900">Market Advisory — Regional Impact Notice</p>
               <p className="text-sm text-amber-800 mt-1">
-                Due to ongoing geopolitical tensions in the Middle East, Nairobi&apos;s short-term rental market is experiencing elevated cancellations and booking reschedules. Current occupancy data may reflect temporary disruptions rather than long-term market trends.
+                Due to ongoing geopolitical tensions in the Middle East and recent flooding in Nairobi, the short-term rental market is experiencing elevated cancellations and booking reschedules. Current occupancy data may reflect temporary disruptions rather than long-term market trends.
               </p>
             </div>
           </div>
