@@ -22,7 +22,7 @@ import {
 
 const stats = [
   { value: "85%+", label: "Average Occupancy", subtext: "vs 45% market average" },
-  { value: "50+", label: "Properties Managed", subtext: "across Nairobi" },
+  { value: "4.92★", label: "Guest Rating", subtext: "across all properties" },
   { kesAmount: 165000, label: "1-Bed Owner Net", subtext: "per month after fees" },
   { kesAmount: 225000, label: "2-Bed Owner Net", subtext: "per month after fees" },
 ]

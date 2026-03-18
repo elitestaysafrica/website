@@ -8,10 +8,10 @@ export const metadata = {
 }
 
 const stats = [
-  { label: "Properties Managed", value: "50+" },
+  { label: "Guest Rating", value: "4.92★" },
   { label: "Guests Hosted", value: "5,000+" },
   { label: "Average Occupancy", value: "85%+" },
-  { label: "Years in Nairobi", value: "4" },
+  { label: "Years in Nairobi", value: "4+" },
 ]
 
 const values = [

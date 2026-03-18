@@ -204,7 +204,7 @@ async function ForInvestors() {
                 stats={[
                   { kesAmount: 175000, label: "1-bed owner net/mo", compact: true },
                   { kesAmount: 245000, label: "2-bed owner net/mo", compact: true },
-                  { value: "50+", label: "properties managed" },
+                  { value: "4+", label: "years in Nairobi" },
                 ]}
               />
               <ul className="mt-12 space-y-4">
