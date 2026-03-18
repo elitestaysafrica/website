@@ -1,5 +1,3 @@
-"use client"
-
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Price } from "@/components/Price"
@@ -15,9 +13,8 @@ import {
   Zap,
   Target,
   Phone,
-  ChevronDown,
 } from "lucide-react"
-import { useState, FormEvent } from "react"
+import { LeadForm, FAQItem } from "./InvestClientComponents"
 
 /* ─── Competitive comparison data ─── */
 const comparison = [
@@ -136,126 +133,6 @@ const faqs = [
   },
 ]
 
-function FAQItem({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false)
-  return (
-    <div className="border-b border-gray-200 last:border-0">
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between py-5 text-left"
-      >
-        <span className="font-semibold text-gray-900 pr-4">{q}</span>
-        <ChevronDown
-          className={`h-5 w-5 shrink-0 text-gray-400 transition-transform ${
-            open ? "rotate-180" : ""
-          }`}
-        />
-      </button>
-      {open && <p className="pb-5 text-gray-600 leading-relaxed">{a}</p>}
-    </div>
-  )
-}
-
-function LeadForm({ variant = "light" }: { variant?: "light" | "dark" }) {
-  const [submitted, setSubmitted] = useState(false)
-  const [loading, setLoading] = useState(false)
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setLoading(true)
-    const form = e.currentTarget
-    const data = {
-      name: (form.elements.namedItem("name") as HTMLInputElement).value,
-      email: (form.elements.namedItem("email") as HTMLInputElement).value,
-      phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
-      units: (form.elements.namedItem("units") as HTMLSelectElement).value,
-    }
-
-    try {
-      const res = await fetch("/api/invest-lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
-      if (res.ok) setSubmitted(true)
-      else setSubmitted(true) // Still show success to user
-    } catch {
-      setSubmitted(true) // Graceful fallback
-    }
-    setLoading(false)
-  }
-
-  if (submitted) {
-    return (
-      <div className="rounded-2xl bg-green-50 border border-green-200 p-8 text-center">
-        <CheckCircle2 className="h-12 w-12 text-green-600 mx-auto" />
-        <h3 className="mt-4 text-xl font-bold text-green-900">
-          We&apos;ll be in touch!
-        </h3>
-        <p className="mt-2 text-green-700">
-          Check your email for our investor guide. We&apos;ll reach out within 24
-          hours.
-        </p>
-      </div>
-    )
-  }
-
-  const isDark = variant === "dark"
-  const inputClasses = isDark
-    ? "w-full rounded-lg border border-gray-600 bg-gray-700 px-4 py-3 text-white placeholder-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-    : "w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        type="text"
-        name="name"
-        placeholder="Full Name"
-        required
-        className={inputClasses}
-      />
-      <input
-        type="email"
-        name="email"
-        placeholder="Email Address"
-        required
-        className={inputClasses}
-      />
-      <input
-        type="tel"
-        name="phone"
-        placeholder="Phone / WhatsApp Number"
-        className={inputClasses}
-      />
-      <select
-        name="units"
-        className={inputClasses}
-        defaultValue=""
-      >
-        <option value="" disabled>
-          How many units are you considering?
-        </option>
-        <option value="1">1 unit</option>
-        <option value="2-5">2-5 units</option>
-        <option value="5-10">5-10 units</option>
-        <option value="10+">10+ units</option>
-      </select>
-      <Button
-        type="submit"
-        size="lg"
-        className="w-full text-lg"
-        disabled={loading}
-      >
-        {loading ? "Sending..." : "Get the Investor Guide"}
-        {!loading && <ArrowRight className="ml-2 h-5 w-5" />}
-      </Button>
-      <p className={`text-xs text-center ${isDark ? "text-gray-400" : "text-gray-500"}`}>
-        Free guide + personalized revenue projection. No spam, ever.
-      </p>
-    </form>
-  )
-}
-
 export default function InvestPage() {
   return (
     <div className="pt-24">
@@ -274,9 +151,11 @@ export default function InvestPage() {
                 <Building2 className="h-4 w-4" />
                 Gemini Residences, Westlands
               </div>
+              <p className="text-primary font-semibold text-lg mb-3">
+                Buy. Stay. Earn. Repeat.
+              </p>
               <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl leading-tight">
-                Buy. Stay.{" "}
-                <span className="text-primary">Earn.</span> Repeat.
+                Invest in Nairobi Short-Term Rentals
               </h1>
               <p className="mt-6 text-xl leading-8 text-gray-300">
                 Invest in Nairobi&apos;s booming short-term rental market. We furnish,
@@ -405,7 +284,11 @@ export default function InvestPage() {
 
           <p className="mt-8 text-center text-sm text-gray-500 max-w-xl mx-auto">
             Competitor data sourced from live Airbnb listings in premium Westlands
-            buildings with rooftop amenities. ESA data from our actual portfolio performance.
+            buildings with rooftop amenities. ESA data from our actual portfolio performance. See our{" "}
+            <Link href="/market-intel" className="underline hover:text-gray-700">
+              live market data
+            </Link>{" "}
+            for methodology.
           </p>
         </div>
       </section>
@@ -536,7 +419,7 @@ export default function InvestPage() {
 
           <p className="mt-8 text-center text-sm text-gray-500 max-w-xl mx-auto">
             Net figures after management fee, before rent &amp; utilities. Actual results
-            vary by unit, location, and season. Based on our 2025 portfolio data.
+            vary by unit, location, and season. Based on our 2025–2026 portfolio data.
           </p>
         </div>
       </section>
@@ -732,7 +615,7 @@ export default function InvestPage() {
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                   <span className="text-gray-300">
-                    Our 2025 performance data — no fluff, real numbers
+                    Our 2025–2026 performance data — no fluff, real numbers
                   </span>
                 </div>
               </div>

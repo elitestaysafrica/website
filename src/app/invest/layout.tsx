@@ -36,6 +36,25 @@ export const metadata: Metadata = {
   },
 }
 
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://www.elitestaysafrica.com",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Invest in Nairobi",
+      item: "https://www.elitestaysafrica.com/invest",
+    },
+  ],
+}
+
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -106,6 +125,10 @@ export default function InvestLayout({
 }) {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
