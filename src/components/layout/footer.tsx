@@ -18,7 +18,7 @@ const navigation = {
   forOwners: [
     { name: "Partner With Us", href: "/investors" },
     { name: "Owner Portal", href: "/owner-portal" },
-    { name: "Market Reports", href: "/market-intel" },
+    // { name: "Market Reports", href: "/market-intel" }, // Temporarily hidden
   ],
   legal: [
     { name: "Terms & Conditions", href: "/terms" },

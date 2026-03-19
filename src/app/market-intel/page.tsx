@@ -1,3 +1,7 @@
+import { redirect } from "next/navigation"
+
+// TEMPORARILY HIDDEN — restore original from page.tsx.bak when ready
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import MarketIntelContent, { type MarketData } from "./MarketIntelContent"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://staff.elitestaysafrica.com/api/website"
@@ -49,6 +53,9 @@ async function fetchMarketData(): Promise<MarketData | null> {
 }
 
 export default async function MarketIntelPage() {
+  // Temporarily redirect to home — remove this line to restore
+  redirect("/")
+
   const data = await fetchMarketData()
 
   // JSON-LD: Dataset schema

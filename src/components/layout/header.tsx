@@ -9,7 +9,7 @@ import { CurrencySelector } from "@/components/CurrencySelector"
 
 const navigation = [
   { name: "Properties", href: "/properties" },
-  { name: "Market Intel", href: "/market-intel" },
+  // { name: "Market Intel", href: "/market-intel" }, // Temporarily hidden
   { name: "For Investors", href: "/investors" },
   { name: "Blog", href: "/blog" },
   { name: "About", href: "/about" },
