@@ -11,19 +11,10 @@ const navigation = {
   ],
   company: [
     { name: "About Us", href: "/about" },
-    { name: "Blog", href: "/blog" },
     { name: "Contact", href: "/contact" },
-    { name: "Careers", href: "/careers" },
   ],
   forOwners: [
-    { name: "Partner With Us", href: "/investors" },
-    { name: "Owner Portal", href: "/owner-portal" },
-    // { name: "Market Reports", href: "/market-intel" }, // Temporarily hidden
-  ],
-  legal: [
-    { name: "Terms & Conditions", href: "/terms" },
-    { name: "Privacy Policy", href: "/privacy" },
-    { name: "Cancellation Policy", href: "/cancellation" },
+    { name: "Partner With Us", href: "/invest" },
   ],
   social: [
     { name: "Instagram", href: "https://instagram.com/elitestaysafrica", icon: Instagram },
@@ -119,19 +110,6 @@ export function Footer() {
                 </ul>
               </div>
               <div className="mt-10 md:mt-0">
-                <h3 className="text-sm font-semibold text-white">Legal</h3>
-                <ul role="list" className="mt-6 space-y-4">
-                  {navigation.legal.map((item) => (
-                    <li key={item.name}>
-                      <Link
-                        href={item.href}
-                        className="text-sm text-gray-300 hover:text-white transition-colors"
-                      >
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
               </div>
             </div>
           </div>
