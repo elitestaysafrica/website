@@ -13,6 +13,9 @@ import {
   Zap,
   Target,
   Phone,
+  Sofa,
+  CreditCard,
+  Eye,
 } from "lucide-react"
 import { LeadForm, FAQItem } from "./InvestClientComponents"
 
@@ -20,21 +23,21 @@ import { LeadForm, FAQItem } from "./InvestClientComponents"
 const comparison = [
   {
     label: "2-Bed Nightly Rate",
-    esa: "KES 18,700",
-    competitor: "KES 12,000",
-    diff: "+56%",
+    esa: "$120 (KES 15,120)",
+    competitor: "$80 (KES 10,080)",
+    diff: "+50%",
   },
   {
     label: "Average Occupancy",
-    esa: "85%+",
-    competitor: "~60%",
-    diff: "+25pts",
+    esa: "75–85%",
+    competitor: "~55–65%",
+    diff: "+15–20pts",
   },
   {
-    label: "Monthly Revenue (2-Bed)",
-    esa: "KES 476,000+",
-    competitor: "KES 216,000",
-    diff: "+120%",
+    label: "Monthly Net to Owner (2-Bed)",
+    esa: "KES 226,000+",
+    competitor: "~KES 120,000",
+    diff: "+88%",
   },
   {
     label: "Guest Rating",
@@ -67,57 +70,57 @@ const whyBetter = [
     icon: BarChart3,
     title: "Transparent Reporting",
     description:
-      "Monthly statements with full breakdowns. You see every booking, every expense, every shilling. No surprises.",
+      "Monthly statements with full breakdowns. You see every booking, every expense, every shilling through our owner portal.",
   },
 ]
 
 const steps = [
   {
     num: "01",
-    title: "Sign the Agreement",
-    desc: "Simple management contract. You keep full ownership.",
+    title: "Site Visit & Quote",
+    desc: "We visit your property, assess the space, and provide a detailed furnishing list with costs.",
   },
   {
     num: "02",
-    title: "We Furnish & Stage",
-    desc: "Custom interiors by local craftsmen. 4-6 weeks from bare unit to bookable.",
+    title: "Furnishing & Setup",
+    desc: "Custom interiors, professional photography, account setup, TV app — 4-6 weeks from bare unit to bookable.",
   },
   {
     num: "03",
-    title: "Professional Photography",
-    desc: "Magazine-quality photos that stop the scroll.",
+    title: "Go Live",
+    desc: "Your listing goes live on Airbnb & Booking.com. First booking typically within 7-14 days.",
   },
   {
     num: "04",
-    title: "Go Live & Earn",
-    desc: "First booking typically within 7-14 days. Monthly payouts by the 15th.",
+    title: "Earn & Track",
+    desc: "Airbnb pays you directly. Track everything through our owner portal.",
   },
 ]
 
 const faqs = [
   {
     q: "Is Airbnb profitable in Nairobi?",
-    a: "Yes — when managed well. Our portfolio averages 85%+ occupancy with nightly rates 40-56% above market average. A well-furnished 1-bedroom in a good area can net the owner KES 165,000+ per month after management fees. Location, furnishing quality, and professional management are the three biggest factors.",
+    a: "Yes — when managed well. Our portfolio averages 75-85% occupancy with nightly rates well above market average. A well-furnished 1-bedroom in a good area can net the owner approximately KES 167,000 per month after Airbnb fees and management fee. Location, furnishing quality, and professional management are the three biggest factors. These figures are based on past performance and are not guarantees.",
   },
   {
     q: "How much does it cost to furnish an Airbnb in Nairobi?",
-    a: "We recommend budgeting KES 1M-1.4M for a 1-bedroom and KES 1.4M-1.7M for a 2-bedroom. Some hosts claim they can furnish for KES 200-500K, but those units severely lack the wow factor — and that's everything when it comes to standing out and attracting high-paying guests consistently. A single 85\" TV (a huge selling point) can cost KES 200K alone. We can't stress enough: don't skimp on furnishing, but stick to a budget — overspending increases your payback period. We leverage local craftsmen and dealer partnerships to maximize quality within budget.",
+    a: "We estimate KES 1.2M–1.4M for a 1-bedroom and KES 1.5M–1.7M for a 2-bedroom for the furnishing itself. On top of this is our furnishing service fee, which covers sourcing, workmen coordination, account setup, professional photos and video, hard copy house manuals, and TV app setup. For a detailed breakdown specific to your property, we offer a site visit and comprehensive furnishing plan for KES 10,000 — credited back in full if you hire us to do the furnishing. Furnishing is a standalone service and does not require a management contract.",
   },
   {
-    q: "What does a property management company charge in Kenya?",
-    a: "Typical Airbnb management fees in Nairobi range from 20-30% of gross revenue. Our fee covers everything operational: guest communication, cleaning coordination, maintenance management, listing optimization, dynamic pricing, and monthly reporting. You only cover utilities and major repairs.",
+    q: "What does your management fee cover?",
+    a: "Our management fee is 20% of booking revenue. Overhead costs — cleaning, supplies, utilities, and property managers — are billed monthly based on actual usage. You get paid directly by Airbnb. We never hold your money.",
   },
   {
     q: "How much can I earn from an Airbnb in Kenya?",
-    a: "It depends on location, unit size, and management quality. Our 1-bedroom units gross KES 280,000+/month at 75% occupancy. 2-bedrooms gross KES 420,000+/month. After management fees, owners typically net KES 165,000-250,000+ per month before rent and utilities.",
+    a: "It depends on location, unit size, and management quality. Based on our portfolio performance, a 1-bedroom can net the owner approximately KES 167,000/month and a 2-bedroom approximately KES 226,000/month at 75% occupancy, after Airbnb fees and our management fee. Overhead costs are billed separately. These figures are based on past performance in specific neighborhoods and are not guarantees.",
   },
   {
     q: "What are the best areas for Airbnb in Nairobi?",
-    a: "Westlands, Kilimani, Kileleshwa, and Lavington consistently perform best for short-term rentals. These areas attract both international tourists and business travelers, with strong demand year-round. We operate across all four neighborhoods.",
+    a: "Westlands, Kilimani, Kileleshwa, and Lavington consistently perform best for short-term rentals. These areas attract both international tourists and business travelers, with strong demand year-round. We operate across all four neighborhoods and do not take on properties in all areas.",
   },
   {
     q: "Do I need to pay taxes on Airbnb income in Kenya?",
-    a: "Yes. Airbnb income is subject to Withholding Tax (5% on gross) and VAT considerations. We handle KRA compliance including WHT deductions and provide all documentation you need for tax filing, so you stay compliant without the headache.",
+    a: "Airbnb income is subject to taxes including Withholding Tax, which Airbnb deducts automatically from your payouts. Your specific tax obligations depend on your residency status, KRA registration, and how the property is held. We recommend consulting a qualified tax advisor or the lawyer who handled your property purchase for personalized guidance.",
   },
   {
     q: "Can I use my property sometimes?",
@@ -125,11 +128,15 @@ const faqs = [
   },
   {
     q: "How long before my property starts earning?",
-    a: "From signing to first booking is typically 4-6 weeks. That includes furnishing (4-6 weeks with local craftsmen), professional photography, listing creation, and optimization. First booking usually comes within 7-14 days of going live.",
+    a: "From signing to first booking is typically 4-6 weeks. That includes furnishing, professional photography, listing creation, and optimization. First booking usually comes within 7-14 days of going live.",
   },
   {
-    q: "When do I get paid?",
-    a: "Monthly payouts by the 15th of each month, covering the previous month's bookings. Direct bank transfer or M-PESA — your choice.",
+    q: "How do I get paid?",
+    a: "Airbnb pays you directly to your account — we never hold your money. Our management fee and monthly overhead are billed separately. Off-platform bookings (rare, approximately 1% of total) are credited to your monthly bill or paid out at month's end. 99% of bookings come through Airbnb or Booking.com.",
+  },
+  {
+    q: "Can I get my unit furnished without signing a management contract?",
+    a: "Yes. Our furnishing and setup service is completely standalone. We'll furnish your unit, set up your listings, take professional photos, create house manuals, and configure the TV app — whether or not you use our management services.",
   },
 ]
 
@@ -158,14 +165,15 @@ export default function InvestPage() {
                 Invest in Nairobi Short-Term Rentals
               </h1>
               <p className="mt-6 text-xl leading-8 text-gray-300">
-                Invest in Nairobi&apos;s booming short-term rental market. We furnish,
-                manage, and maximize your returns — you collect monthly payouts.
+                Explore Nairobi&apos;s booming short-term rental market. We help
+                property owners furnish, launch, and earn — with transparent
+                numbers and proven results.
               </p>
 
               {/* Quick stats */}
               <div className="mt-10 grid grid-cols-3 gap-6">
                 <div>
-                  <div className="text-3xl font-bold text-white">85%+</div>
+                  <div className="text-3xl font-bold text-white">75-85%</div>
                   <div className="text-sm text-gray-400">Avg. Occupancy</div>
                 </div>
                 <div>
@@ -211,19 +219,19 @@ export default function InvestPage() {
             </h2>
             <p className="mt-6 text-lg text-gray-600 leading-relaxed">
               A great unit in a great location is a strong start. But without
-              expert management, even premium properties underperform. Our
-              portfolio consistently earns{" "}
+              expert setup and management, even premium properties underperform.
+              Our portfolio consistently earns{" "}
               <span className="font-semibold text-primary">
-                56% higher nightly rates
+                50% higher nightly rates
               </span>{" "}
               and{" "}
               <span className="font-semibold text-primary">
-                25% more booked nights
+                15-20% more booked nights
               </span>{" "}
               than comparable listings in the same neighborhoods.
             </p>
             <p className="mt-4 text-lg font-semibold text-gray-900">
-              The right management turns a good investment into a great one.
+              The right setup and management turns a good investment into a great one.
             </p>
           </div>
         </div>
@@ -283,13 +291,148 @@ export default function InvestPage() {
           </div>
 
           <p className="mt-8 text-center text-sm text-gray-500 max-w-xl mx-auto">
-            Competitor data sourced from live Airbnb listings in premium Westlands
-            buildings with rooftop amenities. ESA data from our actual portfolio performance. See our{" "}
+            Based on our portfolio performance in Westlands, Kilimani, Kileleshwa,
+            and Lavington. Past performance is not a guarantee of future results.
+            Results vary by unit, location, and season. See our{" "}
             <Link href="/market-intel" className="underline hover:text-gray-700">
               live market data
             </Link>{" "}
             for methodology.
           </p>
+        </div>
+      </section>
+
+      {/* ═══ OUR SERVICES ═══ */}
+      <section className="py-16 sm:py-20 bg-white">
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              How We Help Property Owners
+            </h2>
+            <p className="mt-4 text-gray-600">
+              Two services. Use one or both — it&apos;s up to you.
+            </p>
+          </div>
+
+          <div className="mx-auto max-w-5xl grid grid-cols-1 gap-8 lg:grid-cols-2">
+            {/* Furnishing Card */}
+            <div className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-8">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mb-4">
+                <Sofa className="h-6 w-6 text-primary" />
+              </div>
+              <div className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800 mb-3">
+                Standalone — no management required
+              </div>
+              <h3 className="text-xl font-bold text-gray-900">
+                Furnishing & Setup
+              </h3>
+              <p className="mt-3 text-gray-600 leading-relaxed">
+                We take your empty unit to a fully bookable, guest-ready property.
+              </p>
+              <ul className="mt-4 space-y-2">
+                {[
+                  "Full furnishing sourcing & purchasing",
+                  "Coordinating workmen & installation",
+                  "Airbnb & Booking.com account setup",
+                  "Professional photography & video",
+                  "Hard copy house manuals",
+                  "TV app setup with your property info",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-primary mt-1 shrink-0" />
+                    <span className="text-sm text-gray-700">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 rounded-lg bg-white border border-gray-200 p-4">
+                <div className="text-sm text-gray-500">Estimated furnishing cost</div>
+                <div className="font-semibold text-gray-900">KES 1.2M (1-Bed) / KES 1.5M (2-Bed)</div>
+                <div className="text-xs text-gray-500 mt-1">Plus our furnishing service fee</div>
+              </div>
+              <p className="mt-4 text-sm text-gray-600">
+                <span className="font-medium">Site visit & detailed quote:</span>{" "}
+                KES 10,000 — credited back in full if you hire us to furnish.
+              </p>
+            </div>
+
+            {/* Management Card */}
+            <div className="rounded-2xl border border-gray-200 bg-white p-8">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mb-4">
+                <BarChart3 className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900">
+                Property Management
+              </h3>
+              <p className="mt-3 text-gray-600 leading-relaxed">
+                We handle the day-to-day so you collect passive income.
+              </p>
+              <ul className="mt-4 space-y-2">
+                {[
+                  "Guest communication & support",
+                  "Cleaning coordination & quality control",
+                  "Dynamic pricing & listing optimization",
+                  "Maintenance management",
+                  "Monthly reporting via owner portal",
+                  "99% of bookings via Airbnb & Booking.com",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-primary mt-1 shrink-0" />
+                    <span className="text-sm text-gray-700">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 rounded-lg bg-gray-50 border border-gray-200 p-4">
+                <div className="text-sm text-gray-500">Management fee</div>
+                <div className="font-semibold text-gray-900">20% of booking revenue</div>
+                <div className="text-xs text-gray-500 mt-1">
+                  Overhead (cleaning, supplies, utilities, managers) billed monthly
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ HOW YOU GET PAID ═══ */}
+      <section className="py-16 sm:py-20 bg-gray-50">
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              How You Get Paid
+            </h2>
+            <p className="mt-4 text-gray-600">
+              Your money goes straight to you. Always.
+            </p>
+          </div>
+          <div className="mx-auto max-w-4xl grid grid-cols-1 gap-6 sm:grid-cols-3">
+            <div className="rounded-2xl bg-white p-6 text-center shadow-sm">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
+                <CreditCard className="h-6 w-6 text-green-700" />
+              </div>
+              <h3 className="font-bold text-gray-900">Direct Payouts</h3>
+              <p className="mt-2 text-sm text-gray-600">
+                Airbnb pays you directly to your account. We never hold your money.
+              </p>
+            </div>
+            <div className="rounded-2xl bg-white p-6 text-center shadow-sm">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
+                <Eye className="h-6 w-6 text-green-700" />
+              </div>
+              <h3 className="font-bold text-gray-900">Full Transparency</h3>
+              <p className="mt-2 text-sm text-gray-600">
+                Our management fee and overhead are billed separately with full breakdowns via your owner portal.
+              </p>
+            </div>
+            <div className="rounded-2xl bg-white p-6 text-center shadow-sm">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
+                <CheckCircle2 className="h-6 w-6 text-green-700" />
+              </div>
+              <h3 className="font-bold text-gray-900">Off-Platform Bookings</h3>
+              <p className="mt-2 text-sm text-gray-600">
+                The rare off-platform booking (~1%) is credited to your monthly bill or paid out at month&apos;s end.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -330,7 +473,7 @@ export default function InvestPage() {
               What Your Investment Could Earn
             </h2>
             <p className="mt-4 text-gray-400">
-              Conservative projections at 75% occupancy. Our portfolio averages 85%+.
+              Projections at 75% occupancy based on our portfolio performance.
             </p>
           </div>
 
@@ -339,37 +482,28 @@ export default function InvestPage() {
             <div className="rounded-2xl bg-gray-800 border border-gray-700 p-8">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-bold text-white">1-Bedroom</h3>
-                <span className="rounded-full bg-primary/20 px-3 py-1 text-sm font-medium text-primary">
-                  12-15% yield
-                </span>
               </div>
               <div className="space-y-4">
                 <div className="flex justify-between border-b border-gray-700 pb-3">
-                  <span className="text-gray-400">Furnishing Investment</span>
-                  <span className="font-semibold text-white">
-                    <Price amount={1200000} />
-                  </span>
+                  <span className="text-gray-400">Furnishing Estimate</span>
+                  <span className="font-semibold text-white">~KES 1,200,000</span>
                 </div>
                 <div className="flex justify-between border-b border-gray-700 pb-3">
                   <span className="text-gray-400">Nightly Rate</span>
-                  <span className="font-semibold text-white">
-                    <Price amount={12500} />
-                  </span>
+                  <span className="font-semibold text-white">$89</span>
                 </div>
                 <div className="flex justify-between border-b border-gray-700 pb-3">
-                  <span className="text-gray-400">Monthly Gross (75% occ.)</span>
-                  <span className="font-semibold text-white">
-                    <Price amount={280000} />
-                  </span>
+                  <span className="text-gray-400">Occupancy</span>
+                  <span className="font-semibold text-white">75%</span>
                 </div>
                 <div className="rounded-lg bg-green-900/30 border border-green-800/50 p-4">
-                  <div className="text-sm text-green-400">Net to Owner / Month</div>
+                  <div className="text-sm text-green-400">Estimated Net to Owner / Month</div>
                   <div className="text-2xl font-bold text-green-400">
-                    <Price amount={165000} />+
+                    ~KES 167,000
                   </div>
                 </div>
                 <div className="text-center text-sm text-gray-400 pt-2">
-                  Payback on furnishing: <span className="text-white font-medium">~8 months</span>
+                  Estimated payback on furnishing: <span className="text-white font-medium">~7 months</span>
                 </div>
               </div>
             </div>
@@ -381,46 +515,49 @@ export default function InvestPage() {
               </div>
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-bold text-white">2-Bedroom</h3>
-                <span className="rounded-full bg-primary/20 px-3 py-1 text-sm font-medium text-primary">
-                  14-17% yield
-                </span>
               </div>
               <div className="space-y-4">
                 <div className="flex justify-between border-b border-gray-700 pb-3">
-                  <span className="text-gray-400">Furnishing Investment</span>
-                  <span className="font-semibold text-white">
-                    <Price amount={1500000} />
-                  </span>
+                  <span className="text-gray-400">Furnishing Estimate</span>
+                  <span className="font-semibold text-white">~KES 1,500,000</span>
                 </div>
                 <div className="flex justify-between border-b border-gray-700 pb-3">
                   <span className="text-gray-400">Nightly Rate</span>
-                  <span className="font-semibold text-white">
-                    <Price amount={18700} />
-                  </span>
+                  <span className="font-semibold text-white">$120</span>
                 </div>
                 <div className="flex justify-between border-b border-gray-700 pb-3">
-                  <span className="text-gray-400">Monthly Gross (75% occ.)</span>
-                  <span className="font-semibold text-white">
-                    <Price amount={420000} />
-                  </span>
+                  <span className="text-gray-400">Occupancy</span>
+                  <span className="font-semibold text-white">75%</span>
                 </div>
                 <div className="rounded-lg bg-green-900/30 border border-green-800/50 p-4">
-                  <div className="text-sm text-green-400">Net to Owner / Month</div>
+                  <div className="text-sm text-green-400">Estimated Net to Owner / Month</div>
                   <div className="text-2xl font-bold text-green-400">
-                    <Price amount={250000} />+
+                    ~KES 226,000
                   </div>
                 </div>
                 <div className="text-center text-sm text-gray-400 pt-2">
-                  Payback on furnishing: <span className="text-white font-medium">~6 months</span>
+                  Estimated payback on furnishing: <span className="text-white font-medium">~7 months</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <p className="mt-8 text-center text-sm text-gray-500 max-w-xl mx-auto">
-            Net figures after management fee, before rent &amp; utilities. Actual results
-            vary by unit, location, and season. Based on our 2025–2026 portfolio data.
-          </p>
+          <div className="mt-8 mx-auto max-w-2xl space-y-3">
+            <p className="text-center text-sm text-gray-500">
+              Net figures shown after Airbnb platform fees and 20% management fee.
+              Overhead costs (cleaning, supplies, utilities, property managers)
+              are billed monthly and vary based on booking volume.
+            </p>
+            <p className="text-center text-sm text-gray-500">
+              Furnishing costs are estimates. A detailed site visit with full
+              furnishing list and pricing is available for KES 10,000 — credited
+              back in full if you hire us to furnish.
+            </p>
+            <p className="text-center text-sm text-gray-500">
+              These projections are based on past performance in specific Nairobi
+              neighborhoods and are not guarantees. We do not operate in all areas.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -593,11 +730,11 @@ export default function InvestPage() {
           <div className="mx-auto max-w-4xl grid gap-12 lg:grid-cols-2 items-center">
             <div>
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Ready to Earn From Your Property?
+                Ready to Get Started?
               </h2>
               <p className="mt-4 text-lg text-gray-300">
-                Get our free investor guide with detailed revenue projections,
-                ROI breakdowns, and our full track record.
+                Whether you need furnishing, management, or both — get our free
+                investor guide with detailed projections and our full track record.
               </p>
               <div className="mt-8 space-y-4">
                 <div className="flex items-start gap-3">
@@ -615,7 +752,7 @@ export default function InvestPage() {
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                   <span className="text-gray-300">
-                    Our 2025–2026 performance data — no fluff, real numbers
+                    Our portfolio performance data — no fluff, real numbers
                   </span>
                 </div>
               </div>
@@ -645,8 +782,8 @@ export default function InvestPage() {
               <span className="text-sm text-gray-600">Airbnb Superhost</span>
             </div>
             <div className="flex items-center justify-center gap-2">
-              <Building2 className="h-5 w-5 text-gray-400" />
-              <span className="text-sm text-gray-600">KRA Tax Compliant</span>
+              <CreditCard className="h-5 w-5 text-gray-400" />
+              <span className="text-sm text-gray-600">Direct Airbnb Payouts</span>
             </div>
             <div className="flex items-center justify-center gap-2">
               <TrendingUp className="h-5 w-5 text-gray-400" />
