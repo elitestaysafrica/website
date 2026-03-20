@@ -154,10 +154,6 @@ export default function InvestPage() {
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
             {/* Left: Copy */}
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-primary/20 px-4 py-1.5 text-sm font-medium text-primary mb-6">
-                <Building2 className="h-4 w-4" />
-                Gemini Residences, Westlands
-              </div>
               <p className="text-primary font-semibold text-lg mb-3">
                 Buy. Stay. Earn. Repeat.
               </p>
@@ -173,7 +169,7 @@ export default function InvestPage() {
               {/* Quick stats */}
               <div className="mt-10 grid grid-cols-3 gap-6">
                 <div>
-                  <div className="text-3xl font-bold text-white">75-85%</div>
+                  <div className="text-3xl font-bold text-white">85%+</div>
                   <div className="text-sm text-gray-400">Avg. Occupancy</div>
                 </div>
                 <div>
