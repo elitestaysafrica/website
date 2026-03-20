@@ -46,7 +46,7 @@ export default async function Image() {
 
         {/* Subtitle */}
         <div style={{ color: "#9ca3af", fontSize: 24, lineHeight: 1.5, marginBottom: "48px", maxWidth: "800px", display: "flex" }}>
-          Fully managed Airbnb investment. We furnish, list, and optimize — you collect monthly payouts.
+          Furnishing, setup, and management services for Nairobi Airbnb properties. Schedule a free consultation.
         </div>
 
         {/* Stats row */}
@@ -60,8 +60,8 @@ export default async function Image() {
             <span style={{ color: "#6b7280", fontSize: 16 }}>Guest Rating</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <span style={{ color: "#ffffff", fontSize: 48, fontWeight: 800 }}>12–17%</span>
-            <span style={{ color: "#6b7280", fontSize: 16 }}>Annual Yields</span>
+            <span style={{ color: "#ffffff", fontSize: 48, fontWeight: 800 }}>4+</span>
+            <span style={{ color: "#6b7280", fontSize: 16 }}>Years in Nairobi</span>
           </div>
         </div>
 
