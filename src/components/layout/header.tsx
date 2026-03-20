@@ -68,7 +68,7 @@ export function Header() {
           </Link>
 
           {/* Mobile: currency + hamburger */}
-          <div className="lg:hidden" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <div className="flex items-center gap-1 lg:hidden">
             <CurrencySelector />
             <button
               type="button"
