@@ -53,8 +53,7 @@ export function LeadForm({ variant = "light" }: { variant?: "light" | "dark" }) 
           We&apos;ll be in touch!
         </h3>
         <p className="mt-2 text-green-700">
-          Check your email for our investor guide. We&apos;ll reach out within 24
-          hours.
+          We&apos;ll reach out within 24 hours to schedule your consultation.
         </p>
       </div>
     )
@@ -106,11 +105,11 @@ export function LeadForm({ variant = "light" }: { variant?: "light" | "dark" }) 
         className="w-full text-lg"
         disabled={loading}
       >
-        {loading ? "Sending..." : "Get the Investor Guide"}
+        {loading ? "Sending..." : "Schedule a Consultation"}
         {!loading && <ArrowRight className="ml-2 h-5 w-5" />}
       </Button>
       <p className={`text-xs text-center ${isDark ? "text-gray-400" : "text-gray-500"}`}>
-        Free guide + personalized revenue projection. No spam, ever.
+        Free consultation. No obligations, no spam.
       </p>
     </form>
   )

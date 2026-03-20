@@ -185,7 +185,7 @@ export default function InvestPage() {
               {/* Mobile CTA */}
               <div className="mt-8 lg:hidden">
                 <Button size="lg" asChild className="w-full">
-                  <a href="#get-started">Get the Investor Guide</a>
+                  <a href="#get-started">Schedule a Consultation</a>
                 </Button>
               </div>
             </div>
@@ -194,10 +194,10 @@ export default function InvestPage() {
             <div className="hidden lg:block">
               <div className="rounded-2xl bg-gray-800/50 backdrop-blur border border-gray-700 p-8">
                 <h2 className="text-xl font-bold text-white mb-1">
-                  Get Your Free Investor Guide
+                  Schedule a Free Consultation
                 </h2>
                 <p className="text-gray-400 text-sm mb-6">
-                  Revenue projections, ROI breakdown, and our full track record.
+                  We&apos;ll discuss your property, answer your questions, and provide a personalized revenue projection.
                 </p>
                 <LeadForm variant="dark" />
               </div>
@@ -729,26 +729,26 @@ export default function InvestPage() {
                 Ready to Get Started?
               </h2>
               <p className="mt-4 text-lg text-gray-300">
-                Whether you need furnishing, management, or both — get our free
-                investor guide with detailed projections and our full track record.
+                Whether you need furnishing, management, or both — schedule a
+                free consultation and we&apos;ll walk you through everything.
               </p>
               <div className="mt-8 space-y-4">
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                   <span className="text-gray-300">
-                    Personalized revenue projection for your unit
+                    Discuss your property and goals
                   </span>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                   <span className="text-gray-300">
-                    Full breakdown of costs, fees, and net returns
+                    Get a personalized revenue projection
                   </span>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                   <span className="text-gray-300">
-                    Our portfolio performance data — no fluff, real numbers
+                    No obligations — just real numbers and honest advice
                   </span>
                 </div>
               </div>

@@ -45,9 +45,9 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({
           sender: { name: "Elite Stays Website", email: "noreply@elitestaysafrica.com" },
           to: [{ email: NOTIFICATION_EMAIL }],
-          subject: `🏠 New Investor Lead: ${name || email}`,
+          subject: `🏠 New Consultation Request: ${name || email}`,
           htmlContent: `
-            <h2>New Investment Inquiry</h2>
+            <h2>New Consultation Request</h2>
             <p><strong>Name:</strong> ${name || "Not provided"}</p>
             <p><strong>Email:</strong> ${email}</p>
             <p><strong>Phone:</strong> ${phone || "Not provided"}</p>
