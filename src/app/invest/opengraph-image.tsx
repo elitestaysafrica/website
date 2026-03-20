@@ -56,7 +56,7 @@ export default async function Image() {
             <span style={{ color: "#6b7280", fontSize: 16 }}>Occupancy</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <span style={{ color: "#fbbf24", fontSize: 48, fontWeight: 800 }}>4.92★</span>
+            <span style={{ color: "#fbbf24", fontSize: 48, fontWeight: 800 }}>4.92/5</span>
             <span style={{ color: "#6b7280", fontSize: 16 }}>Guest Rating</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
@@ -65,9 +65,16 @@ export default async function Image() {
           </div>
         </div>
 
-        {/* Brand */}
-        <div style={{ position: "absolute", bottom: 40, right: 80, color: "#4b5563", fontSize: 18, fontWeight: 600, display: "flex" }}>
-          elitestaysafrica.com
+        {/* CTA + Brand */}
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 80px", backgroundColor: "rgba(0,0,0,0.3)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div style={{ backgroundColor: "#22c55e", borderRadius: "8px", padding: "10px 24px", color: "#ffffff", fontSize: 18, fontWeight: 700, display: "flex" }}>
+              Schedule a Free Consultation
+            </div>
+          </div>
+          <div style={{ color: "#9ca3af", fontSize: 18, fontWeight: 600, display: "flex" }}>
+            elitestaysafrica.com/invest
+          </div>
         </div>
       </div>
     ),
