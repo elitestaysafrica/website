@@ -20,32 +20,7 @@ import {
 import { LeadForm, FAQItem } from "./InvestClientComponents"
 
 /* ─── Competitive comparison data ─── */
-const comparison = [
-  {
-    label: "2-Bed Nightly Rate",
-    esa: "$120 (KES 15,120)",
-    competitor: "$80 (KES 10,080)",
-    diff: "+50%",
-  },
-  {
-    label: "Average Occupancy",
-    esa: "75–85%",
-    competitor: "~55–65%",
-    diff: "+15–20pts",
-  },
-  {
-    label: "Monthly Net to Owner (2-Bed)",
-    esa: "KES 226,000+",
-    competitor: "~KES 120,000",
-    diff: "+88%",
-  },
-  {
-    label: "Guest Rating",
-    esa: "4.92★",
-    competitor: "4.86★",
-    diff: "Higher",
-  },
-]
+/* Prices use <Price> component in JSX below for currency conversion */
 
 const whyBetter = [
   {
@@ -262,28 +237,45 @@ export default function InvestPage() {
               </div>
             </div>
 
-            {/* Rows */}
-            {comparison.map((row, i) => (
-              <div
-                key={row.label}
-                className={`grid grid-cols-4 gap-4 py-4 items-center ${
-                  i !== comparison.length - 1 ? "border-b border-gray-200" : ""
-                }`}
-              >
-                <div className="text-sm font-medium text-gray-700">
-                  {row.label}
-                </div>
-                <div className="text-center font-semibold text-gray-900">
-                  {row.esa}
-                </div>
-                <div className="text-center text-gray-500">{row.competitor}</div>
-                <div className="text-center">
-                  <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-sm font-semibold text-green-800">
-                    {row.diff}
-                  </span>
-                </div>
+            {/* Row: Nightly Rate */}
+            <div className="grid grid-cols-4 gap-4 py-4 items-center border-b border-gray-200">
+              <div className="text-sm font-medium text-gray-700">2-Bed Nightly Rate</div>
+              <div className="text-center font-semibold text-gray-900"><Price amount={15120} /></div>
+              <div className="text-center text-gray-500"><Price amount={10080} /></div>
+              <div className="text-center">
+                <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-sm font-semibold text-green-800">+50%</span>
               </div>
-            ))}
+            </div>
+
+            {/* Row: Occupancy */}
+            <div className="grid grid-cols-4 gap-4 py-4 items-center border-b border-gray-200">
+              <div className="text-sm font-medium text-gray-700">Average Occupancy</div>
+              <div className="text-center font-semibold text-gray-900">75–85%</div>
+              <div className="text-center text-gray-500">~55–65%</div>
+              <div className="text-center">
+                <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-sm font-semibold text-green-800">+15–20pts</span>
+              </div>
+            </div>
+
+            {/* Row: Monthly Net */}
+            <div className="grid grid-cols-4 gap-4 py-4 items-center border-b border-gray-200">
+              <div className="text-sm font-medium text-gray-700">Monthly Net to Owner (2-Bed)</div>
+              <div className="text-center font-semibold text-gray-900"><Price amount={226000} />+</div>
+              <div className="text-center text-gray-500">~<Price amount={120000} /></div>
+              <div className="text-center">
+                <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-sm font-semibold text-green-800">+88%</span>
+              </div>
+            </div>
+
+            {/* Row: Rating */}
+            <div className="grid grid-cols-4 gap-4 py-4 items-center">
+              <div className="text-sm font-medium text-gray-700">Guest Rating</div>
+              <div className="text-center font-semibold text-gray-900">4.92★</div>
+              <div className="text-center text-gray-500">4.86★</div>
+              <div className="text-center">
+                <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-sm font-semibold text-green-800">Higher</span>
+              </div>
+            </div>
           </div>
 
           <p className="mt-8 text-center text-sm text-gray-500 max-w-xl mx-auto">
@@ -342,12 +334,12 @@ export default function InvestPage() {
               </ul>
               <div className="mt-6 rounded-lg bg-white border border-gray-200 p-4">
                 <div className="text-sm text-gray-500">Estimated furnishing cost</div>
-                <div className="font-semibold text-gray-900">KES 1.2M (1-Bed) / KES 1.5M (2-Bed)</div>
+                <div className="font-semibold text-gray-900"><Price amount={1200000} compact /> (1-Bed) / <Price amount={1500000} compact /> (2-Bed)</div>
                 <div className="text-xs text-gray-500 mt-1">Plus our furnishing service fee</div>
               </div>
               <p className="mt-4 text-sm text-gray-600">
                 <span className="font-medium">Site visit & detailed quote:</span>{" "}
-                KES 10,000 — credited back in full if you hire us to furnish.
+                <Price amount={10000} /> — credited back in full if you hire us to furnish.
               </p>
             </div>
 
@@ -482,11 +474,11 @@ export default function InvestPage() {
               <div className="space-y-4">
                 <div className="flex justify-between border-b border-gray-700 pb-3">
                   <span className="text-gray-400">Furnishing Estimate</span>
-                  <span className="font-semibold text-white">~KES 1,200,000</span>
+                  <span className="font-semibold text-white">~<Price amount={1200000} /></span>
                 </div>
                 <div className="flex justify-between border-b border-gray-700 pb-3">
                   <span className="text-gray-400">Nightly Rate</span>
-                  <span className="font-semibold text-white">$89</span>
+                  <span className="font-semibold text-white"><Price amount={11214} /></span>
                 </div>
                 <div className="flex justify-between border-b border-gray-700 pb-3">
                   <span className="text-gray-400">Occupancy</span>
@@ -495,7 +487,7 @@ export default function InvestPage() {
                 <div className="rounded-lg bg-green-900/30 border border-green-800/50 p-4">
                   <div className="text-sm text-green-400">Estimated Net to Owner / Month</div>
                   <div className="text-2xl font-bold text-green-400">
-                    ~KES 167,000
+                    ~<Price amount={167000} />
                   </div>
                 </div>
                 <div className="text-center text-sm text-gray-400 pt-2">
@@ -515,11 +507,11 @@ export default function InvestPage() {
               <div className="space-y-4">
                 <div className="flex justify-between border-b border-gray-700 pb-3">
                   <span className="text-gray-400">Furnishing Estimate</span>
-                  <span className="font-semibold text-white">~KES 1,500,000</span>
+                  <span className="font-semibold text-white">~<Price amount={1500000} /></span>
                 </div>
                 <div className="flex justify-between border-b border-gray-700 pb-3">
                   <span className="text-gray-400">Nightly Rate</span>
-                  <span className="font-semibold text-white">$120</span>
+                  <span className="font-semibold text-white"><Price amount={15120} /></span>
                 </div>
                 <div className="flex justify-between border-b border-gray-700 pb-3">
                   <span className="text-gray-400">Occupancy</span>
@@ -528,7 +520,7 @@ export default function InvestPage() {
                 <div className="rounded-lg bg-green-900/30 border border-green-800/50 p-4">
                   <div className="text-sm text-green-400">Estimated Net to Owner / Month</div>
                   <div className="text-2xl font-bold text-green-400">
-                    ~KES 226,000
+                    ~<Price amount={226000} />
                   </div>
                 </div>
                 <div className="text-center text-sm text-gray-400 pt-2">
@@ -546,7 +538,7 @@ export default function InvestPage() {
             </p>
             <p className="text-center text-sm text-gray-500">
               Furnishing costs are estimates. A detailed site visit with full
-              furnishing list and pricing is available for KES 10,000 — credited
+              furnishing list and pricing is available for <Price amount={10000} /> — credited
               back in full if you hire us to furnish.
             </p>
             <p className="text-center text-sm text-gray-500">

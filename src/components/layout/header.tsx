@@ -10,7 +10,7 @@ import { CurrencySelector } from "@/components/CurrencySelector"
 const navigation = [
   { name: "Properties", href: "/properties" },
   // { name: "Market Intel", href: "/market-intel" }, // Temporarily hidden
-  { name: "For Investors", href: "/investors" },
+  { name: "For Investors", href: "/invest" },
   { name: "Blog", href: "/blog" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
@@ -67,27 +67,29 @@ export function Header() {
             />
           </Link>
 
-          {/* Mobile menu button */}
-          <button
-            type="button"
-            onClick={() => setIsOpen(true)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '48px',
-              height: '48px',
-              borderRadius: '8px',
-              border: 'none',
-              background: 'transparent',
-              cursor: 'pointer',
-              WebkitTapHighlightColor: 'transparent',
-            }}
-            className="lg:hidden"
-            aria-label="Open menu"
-          >
-            <Menu style={{ width: '24px', height: '24px', color: '#374151' }} />
-          </button>
+          {/* Mobile: currency + hamburger */}
+          <div className="lg:hidden" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <CurrencySelector />
+            <button
+              type="button"
+              onClick={() => setIsOpen(true)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '48px',
+                height: '48px',
+                borderRadius: '8px',
+                border: 'none',
+                background: 'transparent',
+                cursor: 'pointer',
+                WebkitTapHighlightColor: 'transparent',
+              }}
+              aria-label="Open menu"
+            >
+              <Menu style={{ width: '24px', height: '24px', color: '#374151' }} />
+            </button>
+          </div>
 
           {/* Desktop nav */}
           <div className="hidden lg:flex lg:gap-x-8">
