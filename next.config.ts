@@ -17,6 +17,11 @@ const nextConfig: NextConfig = {
         destination: '/invest',
         permanent: true,
       },
+      {
+        source: '/thankyou',
+        destination: '/properties',
+        permanent: false, // temporary until reward page is built
+      },
     ];
   },
   async rewrites() {
