@@ -11,9 +11,10 @@ import { useCurrency } from "@/components/CurrencySelector";
 interface PropertyCardProps {
   property: Property;
   showBookButton?: boolean;
+  priority?: boolean;
 }
 
-export function PropertyCard({ property, showBookButton = true }: PropertyCardProps) {
+export function PropertyCard({ property, showBookButton = true, priority = false }: PropertyCardProps) {
   const mainPhoto = property.photos[0];
   const { convert } = useCurrency();
   
@@ -29,6 +30,7 @@ export function PropertyCard({ property, showBookButton = true }: PropertyCardPr
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              priority={priority}
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
