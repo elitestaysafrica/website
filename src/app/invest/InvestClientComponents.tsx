@@ -20,6 +20,7 @@ export function FAQItem({ q, a }: { q: string; a: string }) {
 export function AuditForm({ variant = "light" }: { variant?: "light" | "dark" }) {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [showOtherInput, setShowOtherInput] = useState(false)
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -33,7 +34,9 @@ export function AuditForm({ variant = "light" }: { variant?: "light" | "dark" })
       listingUrl: (form.elements.namedItem("listingUrl") as HTMLInputElement).value,
       avgBookings: (form.elements.namedItem("avgBookings") as HTMLSelectElement).value,
       nightlyRate: (form.elements.namedItem("nightlyRate") as HTMLInputElement).value,
-      biggestChallenge: (form.elements.namedItem("biggestChallenge") as HTMLSelectElement).value,
+      biggestChallenge: (form.elements.namedItem("biggestChallenge") as HTMLSelectElement).value === "other"
+        ? `Other: ${(form.elements.namedItem("otherChallenge") as HTMLInputElement)?.value || "Not specified"}`
+        : (form.elements.namedItem("biggestChallenge") as HTMLSelectElement).value,
     }
 
     try {
@@ -94,7 +97,13 @@ export function AuditForm({ variant = "light" }: { variant?: "light" | "dark" })
           className={inputClasses}
         />
       </div>
-      <select name="biggestChallenge" className={inputClasses} defaultValue="" required>
+      <select
+        name="biggestChallenge"
+        className={inputClasses}
+        defaultValue=""
+        required
+        onChange={(e) => setShowOtherInput(e.target.value === "other")}
+      >
         <option value="" disabled>Biggest challenge right now</option>
         <option value="not-enough-bookings">Not enough bookings</option>
         <option value="rates-too-low">Rates feel too low</option>
@@ -102,6 +111,14 @@ export function AuditForm({ variant = "light" }: { variant?: "light" | "dark" })
         <option value="just-starting">Just getting started</option>
         <option value="other">Other</option>
       </select>
+      {showOtherInput && (
+        <input
+          type="text"
+          name="otherChallenge"
+          placeholder="Tell us more about your challenge..."
+          className={inputClasses}
+        />
+      )}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <input
           type="text"

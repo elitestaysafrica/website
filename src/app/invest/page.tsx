@@ -83,7 +83,7 @@ const faqs = [
   },
   {
     q: "How much does it cost to furnish an Airbnb in Nairobi?",
-    a: "We estimate KES 1.2M–1.4M for a 1-bedroom and KES 1.5M–1.7M for a 2-bedroom for the furnishing itself. On top of this is our service fee, which covers interior design, sourcing, workmen coordination, account setup, professional photography, house manuals, cleaner recruitment and training, and launch strategy. For a detailed breakdown specific to your property, we offer a site visit for KES 10,000 — credited back in full if you hire us.",
+    a: "Furniture and materials typically run KES 800K–1.3M for a 1-bedroom and KES 1M–1.6M for a 2-bedroom — quoted at actual cost with full line-item transparency. On top of this is our flat setup fee (KES 250K for 1-bed, KES 350K for 2-bed), which covers interior design, sourcing, coordination, account setup, cleaner training, house manuals, launch strategy, and more. Photography and physical items are billed at cost with no markup. For a detailed breakdown, we offer a site visit for KES 10,000 — credited back in full if you hire us.",
   },
   {
     q: "How much can I earn from an Airbnb in Kenya?",
@@ -296,58 +296,83 @@ export default function InvestPage() {
 
           <div className="mx-auto max-w-5xl grid grid-cols-1 gap-8 lg:grid-cols-3">
             {/* Full Furnishing Package */}
-            <div className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-8 lg:col-span-3 lg:grid lg:grid-cols-2 lg:gap-8">
-              <div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mb-4">
-                  <Sofa className="h-6 w-6 text-primary" />
-                </div>
-                <div className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800 mb-3">
-                  Most Popular — Empty Unit to First Booking
-                </div>
-                <h3 className="text-xl font-bold text-gray-900">
-                  Full Furnishing Package
-                </h3>
-                <p className="mt-3 text-gray-600 leading-relaxed">
-                  We take your empty unit to a fully bookable, guest-ready property in 4-6 weeks.
-                </p>
-                <ul className="mt-4 space-y-2">
-                  {[
-                    "Interior design & space planning",
-                    "Full furnishing sourcing & purchasing",
-                    "Coordinating workmen & installation",
-                    "Airbnb & Booking.com account setup",
-                    "Professional photography & video",
-                    "Hard & soft copy house manuals",
-                    "Find and train a dedicated cleaner",
-                    "Cleaning checklists & SOPs",
-                    "Guest message templates",
-                    "Launch pricing strategy",
-                    "Listing SEO optimization",
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-primary mt-1 shrink-0" />
-                      <span className="text-sm text-gray-700">{item}</span>
-                    </li>
-                  ))}
-                </ul>
+            <div className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-8 lg:col-span-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mb-4">
+                <Sofa className="h-6 w-6 text-primary" />
               </div>
-              <div className="mt-6 lg:mt-0 flex flex-col justify-between">
+              <div className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800 mb-3">
+                Most Popular — Empty Unit to First Booking
+              </div>
+              <h3 className="text-xl font-bold text-gray-900">
+                Full Furnishing Package
+              </h3>
+              <p className="mt-3 text-gray-600 leading-relaxed">
+                We take your empty unit to a fully bookable, guest-ready property in 4-6 weeks.
+              </p>
+
+              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Left: What's included */}
                 <div>
-                  <div className="rounded-lg bg-white border border-gray-200 p-4">
-                    <div className="text-sm text-gray-500">Estimated furnishing cost</div>
-                    <div className="font-semibold text-gray-900"><Price amount={1200000} compact /> (1-Bed) / <Price amount={1500000} compact /> (2-Bed)</div>
-                    <div className="text-xs text-gray-500 mt-1">Plus our service fee</div>
+                  <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3">What&apos;s included</h4>
+                  <ul className="space-y-2">
+                    {[
+                      "Interior design & space planning",
+                      "Full furnishing sourcing & purchasing",
+                      "Coordinating workmen & installation",
+                      "Airbnb & Booking.com account setup",
+                      "Hard & soft copy house manuals",
+                      "Find and train a dedicated cleaner",
+                      "Cleaning checklists & SOPs",
+                      "Guest message templates",
+                      "Launch pricing strategy",
+                      "Listing SEO optimization",
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-primary mt-1 shrink-0" />
+                        <span className="text-sm text-gray-700">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-4 text-xs text-gray-500">
+                    Photography, hardcopy manuals, and all physical items billed at cost — no markup.
+                  </p>
+                </div>
+
+                {/* Right: Pricing */}
+                <div className="space-y-4">
+                  <div className="rounded-lg bg-white border border-gray-200 p-5">
+                    <div className="text-sm font-medium text-gray-500 mb-3">ESA Setup Fee</div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <div className="text-2xl font-bold text-gray-900"><Price amount={250000} /></div>
+                        <div className="text-sm text-gray-500">1-Bedroom</div>
+                      </div>
+                      <div>
+                        <div className="text-2xl font-bold text-gray-900"><Price amount={350000} /></div>
+                        <div className="text-sm text-gray-500">2-Bedroom</div>
+                      </div>
+                    </div>
                   </div>
-                  <p className="mt-4 text-sm text-gray-600">
+                  <div className="rounded-lg bg-gray-50 border border-gray-200 p-5">
+                    <div className="text-sm font-medium text-gray-500 mb-2">Estimated furniture & materials</div>
+                    <div className="text-sm text-gray-900">
+                      <span className="font-semibold"><Price amount={800000} /> – <Price amount={1300000} /></span> (1-Bed)
+                    </div>
+                    <div className="text-sm text-gray-900 mt-1">
+                      <span className="font-semibold"><Price amount={1000000} /> – <Price amount={1600000} /></span> (2-Bed)
+                    </div>
+                    <div className="text-xs text-gray-500 mt-2">Quoted separately at actual cost — you see every line item.</div>
+                  </div>
+                  <p className="text-sm text-gray-600">
                     <span className="font-medium">Site visit & detailed quote:</span>{" "}
                     <Price amount={10000} /> — credited back in full if you hire us.
                   </p>
-                </div>
-                <div className="mt-6 rounded-lg bg-gray-100 border border-gray-200 p-4">
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">Need ongoing management?</span>{" "}
-                    We selectively partner with property owners who are the right fit. Ask us during your consultation.
-                  </p>
+                  <div className="rounded-lg bg-gray-100 border border-gray-200 p-4">
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">Need ongoing management?</span>{" "}
+                      We selectively partner with property owners who are the right fit. Ask us during your consultation.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -570,9 +595,8 @@ export default function InvestPage() {
           </div>
 
           <div className="mt-8 mx-auto max-w-2xl space-y-3">
-            <p className="text-center text-sm text-gray-500">
-              Net figures shown after Airbnb platform fees. Management fees apply
-              separately if you opt for ongoing management.
+            <p className="text-center text-sm text-gray-400 font-semibold">
+              Net figures include Airbnb platform fees and 20% professional management.
             </p>
             <p className="text-center text-sm text-gray-500">
               Furnishing costs are estimates. A detailed site visit with full

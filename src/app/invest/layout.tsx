@@ -77,7 +77,7 @@ const faqSchema = {
       name: "How much does it cost to furnish an Airbnb in Nairobi?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "We estimate KES 1.2M–1.4M for a 1-bedroom and KES 1.5M–1.7M for a 2-bedroom. Our service fee covers interior design, sourcing, workmen coordination, account setup, professional photography, house manuals, cleaner recruitment and training, and launch strategy. A site visit with detailed quote is available for KES 10,000, credited back if you hire us.",
+        text: "Furniture and materials typically run KES 800K–1.3M for a 1-bedroom and KES 1M–1.6M for a 2-bedroom, quoted at actual cost. Our flat setup fee is KES 250K (1-bed) or KES 350K (2-bed), covering interior design, sourcing, coordination, account setup, cleaner training, house manuals, and launch strategy. A site visit is available for KES 10,000, credited back if you hire us.",
       },
     },
     {
