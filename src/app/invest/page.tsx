@@ -16,12 +16,16 @@ import {
   Sofa,
   CreditCard,
   Eye,
+  Camera,
+  RefreshCw,
+  GraduationCap,
+  Search,
+  ClipboardCheck,
+  Paintbrush,
 } from "lucide-react"
-import { LeadForm, FAQItem } from "./InvestClientComponents"
+import { AuditForm, AcademySignup, FAQItem } from "./InvestClientComponents"
 
-/* ─── Competitive comparison data ─── */
-/* Prices use <Price> component in JSX below for currency conversion */
-
+/* ─── Why we outperform ─── */
 const whyBetter = [
   {
     icon: Target,
@@ -43,9 +47,9 @@ const whyBetter = [
   },
   {
     icon: BarChart3,
-    title: "Transparent Reporting",
+    title: "Data-Driven Decisions",
     description:
-      "Monthly statements with full breakdowns. You see every booking, every expense, every shilling through our owner portal.",
+      "We track 500+ Nairobi listings daily. Every recommendation we make is backed by real market data, not guesswork.",
   },
 ]
 
@@ -57,37 +61,33 @@ const steps = [
   },
   {
     num: "02",
-    title: "Furnishing & Setup",
-    desc: "Custom interiors, professional photography, account setup, TV app — 4-6 weeks from bare unit to bookable.",
+    title: "Design & Furnish",
+    desc: "Custom interiors, sourcing, workmen coordination — 4-6 weeks from bare unit to guest-ready.",
   },
   {
     num: "03",
-    title: "Go Live",
-    desc: "Your listing goes live on Airbnb & Booking.com. First booking typically within 7-14 days.",
+    title: "Launch",
+    desc: "Professional photos, listing optimization, account setup. Your property goes live on Airbnb & Booking.com.",
   },
   {
     num: "04",
-    title: "Earn & Track",
-    desc: "Airbnb pays you directly. Track everything through our owner portal.",
+    title: "First Booking",
+    desc: "First booking typically within 7-14 days of going live. You get paid directly by Airbnb.",
   },
 ]
 
 const faqs = [
   {
     q: "Is Airbnb profitable in Nairobi?",
-    a: "Yes — when managed well. Our portfolio averages 75-85% occupancy with nightly rates well above market average. A well-furnished 1-bedroom in a good area can net the owner approximately KES 167,000 per month after Airbnb fees and management fee. Location, furnishing quality, and professional management are the three biggest factors. These figures are based on past performance and are not guarantees.",
+    a: "Yes — when set up well. Our portfolio averages 75-85% occupancy with nightly rates well above market average. A well-furnished 1-bedroom in a good area can net the owner approximately KES 167,000 per month after Airbnb fees. Location, furnishing quality, and professional setup are the three biggest factors. These figures are based on past performance and are not guarantees.",
   },
   {
     q: "How much does it cost to furnish an Airbnb in Nairobi?",
-    a: "We estimate KES 1.2M–1.4M for a 1-bedroom and KES 1.5M–1.7M for a 2-bedroom for the furnishing itself. On top of this is our furnishing service fee, which covers sourcing, workmen coordination, account setup, professional photos and video, hard copy house manuals, and TV app setup. For a detailed breakdown specific to your property, we offer a site visit and comprehensive furnishing plan for KES 10,000 — credited back in full if you hire us to do the furnishing. Furnishing is a standalone service and does not require a management contract.",
-  },
-  {
-    q: "What does your management fee cover?",
-    a: "Our management fee is 20% of booking revenue. Overhead costs — cleaning, supplies, utilities, and property managers — are billed monthly based on actual usage. You get paid directly by Airbnb. We never hold your money.",
+    a: "We estimate KES 1.2M–1.4M for a 1-bedroom and KES 1.5M–1.7M for a 2-bedroom for the furnishing itself. On top of this is our service fee, which covers interior design, sourcing, workmen coordination, account setup, professional photography, house manuals, cleaner recruitment and training, and launch strategy. For a detailed breakdown specific to your property, we offer a site visit for KES 10,000 — credited back in full if you hire us.",
   },
   {
     q: "How much can I earn from an Airbnb in Kenya?",
-    a: "It depends on location, unit size, and management quality. Based on our portfolio performance, a 1-bedroom can net the owner approximately KES 167,000/month and a 2-bedroom approximately KES 226,000/month at 75% occupancy, after Airbnb fees and our management fee. Overhead costs are billed separately. These figures are based on past performance in specific neighborhoods and are not guarantees.",
+    a: "It depends on location, unit size, and setup quality. Based on our portfolio performance, a 1-bedroom can net the owner approximately KES 167,000/month and a 2-bedroom approximately KES 226,000/month at 75% occupancy, after Airbnb platform fees. These figures are based on past performance in specific neighborhoods and are not guarantees.",
   },
   {
     q: "What are the best areas for Airbnb in Nairobi?",
@@ -95,11 +95,7 @@ const faqs = [
   },
   {
     q: "Do I need to pay taxes on Airbnb income in Kenya?",
-    a: "Airbnb income is subject to taxes including Withholding Tax, which Airbnb deducts automatically from your payouts. Your specific tax obligations depend on your residency status, KRA registration, and how the property is held. We recommend consulting a qualified tax advisor or the lawyer who handled your property purchase for personalized guidance.",
-  },
-  {
-    q: "Can I use my property sometimes?",
-    a: "Yes. Block up to 30 days per year for personal use with advance notice. Many of our owners use their units when visiting Nairobi.",
+    a: "Airbnb income is subject to taxes including Withholding Tax, which Airbnb deducts automatically from your payouts. Your specific tax obligations depend on your residency status, KRA registration, and how the property is held. We recommend consulting a qualified tax advisor for personalized guidance.",
   },
   {
     q: "How long before my property starts earning?",
@@ -107,11 +103,19 @@ const faqs = [
   },
   {
     q: "How do I get paid?",
-    a: "Airbnb pays you directly to your account — we never hold your money. Our management fee and monthly overhead are billed separately. Off-platform bookings (rare, approximately 1% of total) are credited to your monthly bill or paid out at month's end. 99% of bookings come through Airbnb or Booking.com.",
+    a: "Airbnb pays you directly to your bank account. We never hold your money. Our service fees are quoted upfront and billed separately.",
   },
   {
-    q: "Can I get my unit furnished without signing a management contract?",
-    a: "Yes. Our furnishing and setup service is completely standalone. We'll furnish your unit, set up your listings, take professional photos, create house manuals, and configure the TV app — whether or not you use our management services.",
+    q: "Do I need to sign a management contract?",
+    a: "No. All our services are standalone. We'll furnish your unit, set up your listings, take professional photos, create house manuals, and train your cleaner — whether or not you use ongoing management services.",
+  },
+  {
+    q: "What's included in the free listing audit?",
+    a: "We review your photos, title, description, pricing, calendar settings, and competitive positioning. You'll receive a detailed report with specific, actionable recommendations — completely free, no strings attached.",
+  },
+  {
+    q: "Do you only work with new or empty units?",
+    a: "No. We work with existing hosts who want to improve their performance too. Our Photography & Optimization and Refresh packages are designed specifically for furnished units that need a boost.",
   },
 ]
 
@@ -120,28 +124,25 @@ export default function InvestPage() {
     <div className="pt-24">
       {/* ═══ HERO ═══ */}
       <section className="relative py-16 sm:py-24 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
-        {/* Subtle pattern overlay */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 25px 25px, white 1px, transparent 0)', backgroundSize: '50px 50px' }} />
         </div>
 
         <div className="container relative mx-auto px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
-            {/* Left: Copy */}
             <div>
               <p className="text-primary font-semibold text-lg mb-3">
-                Buy. Stay. Earn. Repeat.
+                Launch. Optimize. Earn.
               </p>
               <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl leading-tight">
-                Invest in Nairobi Short-Term Rentals
+                Launch Your Airbnb in Nairobi
               </h1>
               <p className="mt-6 text-xl leading-8 text-gray-300">
-                Explore Nairobi&apos;s booming short-term rental market. We help
-                property owners furnish, launch, and earn — with transparent
-                numbers and proven results.
+                We help property owners furnish, optimize, and launch
+                high-performing short-term rentals — with proven results
+                and transparent pricing.
               </p>
 
-              {/* Quick stats */}
               <div className="mt-10 grid grid-cols-3 gap-6">
                 <div>
                   <div className="text-3xl font-bold text-white">85%+</div>
@@ -157,24 +158,22 @@ export default function InvestPage() {
                 </div>
               </div>
 
-              {/* Mobile CTA */}
               <div className="mt-8 lg:hidden">
                 <Button size="lg" asChild className="w-full">
-                  <a href="#get-started">Schedule a Consultation</a>
+                  <a href="#free-audit">Get a Free Listing Audit</a>
                 </Button>
               </div>
             </div>
 
-            {/* Right: Lead Form */}
             <div className="hidden lg:block">
               <div className="rounded-2xl bg-gray-800/50 backdrop-blur border border-gray-700 p-8">
                 <h2 className="text-xl font-bold text-white mb-1">
-                  Schedule a Free Consultation
+                  Free Listing Audit
                 </h2>
                 <p className="text-gray-400 text-sm mb-6">
-                  We&apos;ll discuss your property, answer your questions, and provide a personalized revenue projection.
+                  Submit your Airbnb link and we&apos;ll tell you exactly what&apos;s holding your listing back — for free.
                 </p>
-                <LeadForm variant="dark" />
+                <AuditForm variant="dark" />
               </div>
             </div>
           </div>
@@ -190,7 +189,7 @@ export default function InvestPage() {
             </h2>
             <p className="mt-6 text-lg text-gray-600 leading-relaxed">
               A great unit in a great location is a strong start. But without
-              expert setup and management, even premium properties underperform.
+              expert setup, even premium properties underperform.
               Our portfolio consistently earns{" "}
               <span className="font-semibold text-primary">
                 50% higher nightly rates
@@ -202,7 +201,7 @@ export default function InvestPage() {
               than comparable listings in the same neighborhoods.
             </p>
             <p className="mt-4 text-lg font-semibold text-gray-900">
-              The right setup and management turns a good investment into a great one.
+              The right setup turns a good investment into a great one.
             </p>
           </div>
         </div>
@@ -221,23 +220,19 @@ export default function InvestPage() {
           </div>
 
           <div className="mx-auto max-w-3xl">
-            {/* Header */}
             <div className="grid grid-cols-4 gap-4 pb-4 border-b-2 border-gray-300">
               <div className="text-sm font-medium text-gray-500"></div>
               <div className="text-center">
                 <div className="text-sm font-bold text-primary">Elite Stays</div>
               </div>
               <div className="text-center">
-                <div className="text-sm font-bold text-gray-400">
-                  Typical Operator
-                </div>
+                <div className="text-sm font-bold text-gray-400">Typical Operator</div>
               </div>
               <div className="text-center">
                 <div className="text-sm font-bold text-gray-400">Difference</div>
               </div>
             </div>
 
-            {/* Row: Nightly Rate */}
             <div className="grid grid-cols-4 gap-4 py-4 items-center border-b border-gray-200">
               <div className="text-sm font-medium text-gray-700">2-Bed Nightly Rate</div>
               <div className="text-center font-semibold text-gray-900"><Price amount={15120} /></div>
@@ -247,7 +242,6 @@ export default function InvestPage() {
               </div>
             </div>
 
-            {/* Row: Occupancy */}
             <div className="grid grid-cols-4 gap-4 py-4 items-center border-b border-gray-200">
               <div className="text-sm font-medium text-gray-700">Average Occupancy</div>
               <div className="text-center font-semibold text-gray-900">75–85%</div>
@@ -257,7 +251,6 @@ export default function InvestPage() {
               </div>
             </div>
 
-            {/* Row: Monthly Net */}
             <div className="grid grid-cols-4 gap-4 py-4 items-center border-b border-gray-200">
               <div className="text-sm font-medium text-gray-700">Monthly Net to Owner (2-Bed)</div>
               <div className="text-center font-semibold text-gray-900"><Price amount={226000} />+</div>
@@ -267,7 +260,6 @@ export default function InvestPage() {
               </div>
             </div>
 
-            {/* Row: Rating */}
             <div className="grid grid-cols-4 gap-4 py-4 items-center">
               <div className="text-sm font-medium text-gray-700">Guest Rating</div>
               <div className="text-center font-semibold text-gray-900">4.92★</div>
@@ -295,73 +287,92 @@ export default function InvestPage() {
         <div className="container mx-auto px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              How We Help Property Owners
+              Our Services
             </h2>
             <p className="mt-4 text-gray-600">
-              Two services. Use one or both — it&apos;s up to you.
+              Everything you need to launch, optimize, or refresh your Airbnb property.
             </p>
           </div>
 
-          <div className="mx-auto max-w-5xl grid grid-cols-1 gap-8 lg:grid-cols-2">
-            {/* Furnishing Card */}
-            <div className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-8">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mb-4">
-                <Sofa className="h-6 w-6 text-primary" />
+          <div className="mx-auto max-w-5xl grid grid-cols-1 gap-8 lg:grid-cols-3">
+            {/* Full Furnishing Package */}
+            <div className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-8 lg:col-span-3 lg:grid lg:grid-cols-2 lg:gap-8">
+              <div>
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mb-4">
+                  <Sofa className="h-6 w-6 text-primary" />
+                </div>
+                <div className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800 mb-3">
+                  Most Popular — Empty Unit to First Booking
+                </div>
+                <h3 className="text-xl font-bold text-gray-900">
+                  Full Furnishing Package
+                </h3>
+                <p className="mt-3 text-gray-600 leading-relaxed">
+                  We take your empty unit to a fully bookable, guest-ready property in 4-6 weeks.
+                </p>
+                <ul className="mt-4 space-y-2">
+                  {[
+                    "Interior design & space planning",
+                    "Full furnishing sourcing & purchasing",
+                    "Coordinating workmen & installation",
+                    "Airbnb & Booking.com account setup",
+                    "Professional photography & video",
+                    "Hard & soft copy house manuals",
+                    "Find and train a dedicated cleaner",
+                    "Cleaning checklists & SOPs",
+                    "Guest message templates",
+                    "Launch pricing strategy",
+                    "Listing SEO optimization",
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-primary mt-1 shrink-0" />
+                      <span className="text-sm text-gray-700">{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <div className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800 mb-3">
-                Standalone — no management required
+              <div className="mt-6 lg:mt-0 flex flex-col justify-between">
+                <div>
+                  <div className="rounded-lg bg-white border border-gray-200 p-4">
+                    <div className="text-sm text-gray-500">Estimated furnishing cost</div>
+                    <div className="font-semibold text-gray-900"><Price amount={1200000} compact /> (1-Bed) / <Price amount={1500000} compact /> (2-Bed)</div>
+                    <div className="text-xs text-gray-500 mt-1">Plus our service fee</div>
+                  </div>
+                  <p className="mt-4 text-sm text-gray-600">
+                    <span className="font-medium">Site visit & detailed quote:</span>{" "}
+                    <Price amount={10000} /> — credited back in full if you hire us.
+                  </p>
+                </div>
+                <div className="mt-6 rounded-lg bg-gray-100 border border-gray-200 p-4">
+                  <p className="text-sm text-gray-600">
+                    <span className="font-medium">Need ongoing management?</span>{" "}
+                    We selectively partner with property owners who are the right fit. Ask us during your consultation.
+                  </p>
+                </div>
               </div>
-              <h3 className="text-xl font-bold text-gray-900">
-                Furnishing & Setup
-              </h3>
-              <p className="mt-3 text-gray-600 leading-relaxed">
-                We take your empty unit to a fully bookable, guest-ready property.
-              </p>
-              <ul className="mt-4 space-y-2">
-                {[
-                  "Full furnishing sourcing & purchasing",
-                  "Coordinating workmen & installation",
-                  "Airbnb & Booking.com account setup",
-                  "Professional photography & video",
-                  "Hard copy house manuals",
-                  "TV app setup with your property info",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-primary mt-1 shrink-0" />
-                    <span className="text-sm text-gray-700">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-6 rounded-lg bg-white border border-gray-200 p-4">
-                <div className="text-sm text-gray-500">Estimated furnishing cost</div>
-                <div className="font-semibold text-gray-900"><Price amount={1200000} compact /> (1-Bed) / <Price amount={1500000} compact /> (2-Bed)</div>
-                <div className="text-xs text-gray-500 mt-1">Plus our furnishing service fee</div>
-              </div>
-              <p className="mt-4 text-sm text-gray-600">
-                <span className="font-medium">Site visit & detailed quote:</span>{" "}
-                <Price amount={10000} /> — credited back in full if you hire us to furnish.
-              </p>
             </div>
 
-            {/* Management Card */}
+            {/* Photography & Listing Optimization */}
             <div className="rounded-2xl border border-gray-200 bg-white p-8">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mb-4">
-                <BarChart3 className="h-6 w-6 text-primary" />
+                <Camera className="h-6 w-6 text-primary" />
+              </div>
+              <div className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800 mb-3">
+                Quick Win — See Results in Days
               </div>
               <h3 className="text-xl font-bold text-gray-900">
-                Property Management
+                Photography & Listing Optimization
               </h3>
               <p className="mt-3 text-gray-600 leading-relaxed">
-                We handle the day-to-day so you collect passive income.
+                Great furniture with bad photos is invisible. We fix that.
               </p>
               <ul className="mt-4 space-y-2">
                 {[
-                  "Guest communication & support",
-                  "Cleaning coordination & quality control",
-                  "Dynamic pricing & listing optimization",
-                  "Maintenance management",
-                  "Monthly reporting via owner portal",
-                  "99% of bookings via Airbnb & Booking.com",
+                  "Professional photography & video",
+                  "Listing title & description rewrite",
+                  "SEO optimization for Airbnb search",
+                  "Calendar & pricing settings review",
+                  "Competitor positioning analysis",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-primary mt-1 shrink-0" />
@@ -370,73 +381,101 @@ export default function InvestPage() {
                 ))}
               </ul>
               <div className="mt-6 rounded-lg bg-gray-50 border border-gray-200 p-4">
-                <div className="text-sm text-gray-500">Management fee</div>
-                <div className="font-semibold text-gray-900">20% of booking revenue</div>
-                <div className="text-xs text-gray-500 mt-1">
-                  Overhead (cleaning, supplies, utilities, managers) billed monthly
-                </div>
+                <div className="text-sm text-gray-500">Starting from</div>
+                <div className="font-semibold text-gray-900">KES 35,000</div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* ═══ HOW YOU GET PAID ═══ */}
-      <section className="py-16 sm:py-20 bg-gray-50">
-        <div className="container mx-auto px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              How You Get Paid
-            </h2>
-            <p className="mt-4 text-gray-600">
-              Your money goes straight to you. Always.
-            </p>
-          </div>
-          <div className="mx-auto max-w-4xl grid grid-cols-1 gap-6 sm:grid-cols-3">
-            <div className="rounded-2xl bg-white p-6 text-center shadow-sm">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
-                <CreditCard className="h-6 w-6 text-green-700" />
+            {/* Refresh / Restage */}
+            <div className="rounded-2xl border border-gray-200 bg-white p-8">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mb-4">
+                <RefreshCw className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="font-bold text-gray-900">Direct Payouts</h3>
-              <p className="mt-2 text-sm text-gray-600">
-                Airbnb pays you directly to your account. We never hold your money.
+              <div className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800 mb-3">
+                Boost Revenue — Without Starting Over
+              </div>
+              <h3 className="text-xl font-bold text-gray-900">
+                Refresh / Restage
+              </h3>
+              <p className="mt-3 text-gray-600 leading-relaxed">
+                Your unit is furnished but underperforming. We diagnose why and fix it.
               </p>
+              <ul className="mt-4 space-y-2">
+                {[
+                  "Full property audit & assessment",
+                  "Updated soft furnishings & decor",
+                  "New professional photography",
+                  "Listing rewrite & repositioning",
+                  "Pricing strategy reset",
+                  "Updated house manuals",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-primary mt-1 shrink-0" />
+                    <span className="text-sm text-gray-700">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 rounded-lg bg-gray-50 border border-gray-200 p-4">
+                <div className="text-sm text-gray-500">Custom quote based on scope</div>
+                <div className="font-semibold text-gray-900">Starts with a <Price amount={10000} /> site visit</div>
+                <div className="text-xs text-gray-500 mt-1">Credited if you hire us</div>
+              </div>
             </div>
-            <div className="rounded-2xl bg-white p-6 text-center shadow-sm">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
-                <Eye className="h-6 w-6 text-green-700" />
+
+            {/* Free Listing Audit card */}
+            <div className="rounded-2xl border-2 border-green-200 bg-green-50 p-8">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-100 mb-4">
+                <Search className="h-6 w-6 text-green-700" />
               </div>
-              <h3 className="font-bold text-gray-900">Full Transparency</h3>
-              <p className="mt-2 text-sm text-gray-600">
-                Our management fee and overhead are billed separately with full breakdowns via your owner portal.
-              </p>
-            </div>
-            <div className="rounded-2xl bg-white p-6 text-center shadow-sm">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
-                <CheckCircle2 className="h-6 w-6 text-green-700" />
+              <div className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800 mb-3">
+                100% Free — No Strings Attached
               </div>
-              <h3 className="font-bold text-gray-900">Off-Platform Bookings</h3>
-              <p className="mt-2 text-sm text-gray-600">
-                The rare off-platform booking (~1%) is credited to your monthly bill or paid out at month&apos;s end.
+              <h3 className="text-xl font-bold text-gray-900">
+                Free Listing Audit
+              </h3>
+              <p className="mt-3 text-gray-600 leading-relaxed">
+                Not sure what&apos;s holding you back? Send us your listing and we&apos;ll tell you — for free.
               </p>
+              <ul className="mt-4 space-y-2">
+                {[
+                  "Photo & visual quality review",
+                  "Title & description analysis",
+                  "Pricing vs. competitors",
+                  "Calendar & settings check",
+                  "Actionable recommendations",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-green-600 mt-1 shrink-0" />
+                    <span className="text-sm text-gray-700">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6">
+                <Button size="lg" asChild className="w-full">
+                  <a href="#free-audit">
+                    Get My Free Audit
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </a>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* ═══ WHY WE OUTPERFORM ═══ */}
-      <section className="py-16 sm:py-20 bg-white">
+      <section className="py-16 sm:py-20 bg-gray-50">
         <div className="container mx-auto px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Why Our Owners Earn More
+              Why Our Properties Outperform
             </h2>
           </div>
           <div className="mx-auto max-w-5xl grid grid-cols-1 gap-8 sm:grid-cols-2">
             {whyBetter.map((item) => (
               <div
                 key={item.title}
-                className="rounded-2xl bg-gray-50 p-8 hover:shadow-md transition-shadow"
+                className="rounded-2xl bg-white p-8 hover:shadow-md transition-shadow"
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
                   <item.icon className="h-6 w-6 text-primary" />
@@ -532,14 +571,13 @@ export default function InvestPage() {
 
           <div className="mt-8 mx-auto max-w-2xl space-y-3">
             <p className="text-center text-sm text-gray-500">
-              Net figures shown after Airbnb platform fees and 20% management fee.
-              Overhead costs (cleaning, supplies, utilities, property managers)
-              are billed monthly and vary based on booking volume.
+              Net figures shown after Airbnb platform fees. Management fees apply
+              separately if you opt for ongoing management.
             </p>
             <p className="text-center text-sm text-gray-500">
               Furnishing costs are estimates. A detailed site visit with full
               furnishing list and pricing is available for <Price amount={10000} /> — credited
-              back in full if you hire us to furnish.
+              back in full if you hire us.
             </p>
             <p className="text-center text-sm text-gray-500">
               These projections are based on past performance in specific Nairobi
@@ -585,42 +623,23 @@ export default function InvestPage() {
           <div className="mx-auto max-w-4xl grid grid-cols-1 gap-8 sm:grid-cols-3">
             <div className="rounded-2xl bg-white p-8 text-center shadow-sm">
               <div className="text-4xl font-bold text-primary">4+</div>
-              <div className="mt-2 text-sm font-medium text-gray-900">
-                Years Operating
-              </div>
-              <div className="mt-1 text-xs text-gray-500">
-                Since 2022 in Nairobi
-              </div>
+              <div className="mt-2 text-sm font-medium text-gray-900">Years Operating</div>
+              <div className="mt-1 text-xs text-gray-500">Since 2022 in Nairobi</div>
             </div>
             <div className="rounded-2xl bg-white p-8 text-center shadow-sm">
               <div className="text-4xl font-bold text-primary">5,000+</div>
-              <div className="mt-2 text-sm font-medium text-gray-900">
-                Guests Hosted
-              </div>
-              <div className="mt-1 text-xs text-gray-500">
-                From 60+ countries
-              </div>
+              <div className="mt-2 text-sm font-medium text-gray-900">Guests Hosted</div>
+              <div className="mt-1 text-xs text-gray-500">From 60+ countries</div>
             </div>
             <div className="rounded-2xl bg-white p-8 text-center shadow-sm">
               <div className="text-4xl font-bold text-primary">0</div>
-              <div className="mt-2 text-sm font-medium text-gray-900">
-                Major Incidents
-              </div>
-              <div className="mt-1 text-xs text-gray-500">
-                Zero property damage claims
-              </div>
+              <div className="mt-2 text-sm font-medium text-gray-900">Major Incidents</div>
+              <div className="mt-1 text-xs text-gray-500">Zero property damage claims</div>
             </div>
           </div>
 
-          {/* Location badges */}
           <div className="mt-12 flex flex-wrap justify-center gap-3 max-w-2xl mx-auto">
-            {[
-              "Westlands",
-              "Kilimani",
-              "Lavington",
-              "Kileleshwa",
-              "Riverside",
-            ].map((loc) => (
+            {["Westlands", "Kilimani", "Lavington", "Kileleshwa", "Riverside"].map((loc) => (
               <span
                 key={loc}
                 className="rounded-full bg-white border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700"
@@ -637,11 +656,10 @@ export default function InvestPage() {
         <div className="container mx-auto px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              What Our Property Owners Say
+              What Property Owners Say
             </h2>
           </div>
           <div className="mx-auto max-w-5xl grid grid-cols-1 gap-8 lg:grid-cols-2">
-            {/* Testimonial 1 */}
             <div className="rounded-2xl bg-gray-50 p-8">
               <div className="flex gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
@@ -666,7 +684,6 @@ export default function InvestPage() {
               </div>
             </div>
 
-            {/* Testimonial 2 */}
             <div className="rounded-2xl bg-gray-50 p-8">
               <div className="flex gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
@@ -696,6 +713,101 @@ export default function InvestPage() {
         </div>
       </section>
 
+      {/* ═══ FREE LISTING AUDIT ═══ */}
+      <section id="free-audit" className="py-16 sm:py-20 bg-primary/5">
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="mx-auto max-w-4xl grid gap-12 lg:grid-cols-2 items-center">
+            <div>
+              <div className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800 mb-4">
+                100% Free
+              </div>
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                Get a Free Listing Audit
+              </h2>
+              <p className="mt-4 text-lg text-gray-600">
+                Not sure where to start? Submit your Airbnb link and we&apos;ll
+                tell you exactly what&apos;s holding your listing back.
+              </p>
+              <div className="mt-8 space-y-4">
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                  <span className="text-gray-600">
+                    Detailed review of photos, copy, pricing & settings
+                  </span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                  <span className="text-gray-600">
+                    Competitor analysis for your specific area
+                  </span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                  <span className="text-gray-600">
+                    Actionable recommendations you can implement immediately
+                  </span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                  <span className="text-gray-600">
+                    No obligations — just real insights and honest advice
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-2xl bg-white shadow-lg border border-gray-200 p-8">
+              <AuditForm variant="light" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ STR ACADEMY ═══ */}
+      <section className="py-16 sm:py-20 bg-gray-900">
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="inline-flex items-center rounded-full bg-primary/20 px-4 py-1.5 text-sm font-semibold text-primary mb-6">
+              Coming Soon
+            </div>
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <GraduationCap className="h-8 w-8 text-primary" />
+              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                Elite Stays Academy
+              </h2>
+            </div>
+            <p className="mt-4 text-lg text-gray-300 leading-relaxed">
+              A complete course series on how to crush it as an STR operator in Nairobi.
+              From finding the right property to maximizing revenue — everything we&apos;ve
+              learned in 4+ years, packaged for you.
+            </p>
+
+            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-left">
+              {[
+                "Finding the right property & neighborhood",
+                "Furnishing for maximum bookings",
+                "Pricing strategy & revenue optimization",
+                "Guest experience & 5-star reviews",
+                "Operations & team management",
+                "Scaling from 1 to 10+ units",
+              ].map((topic) => (
+                <div key={topic} className="flex items-start gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-primary mt-1 shrink-0" />
+                  <span className="text-sm text-gray-300">{topic}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10">
+              <p className="text-gray-400 text-sm mb-4">
+                Be the first to know when we launch.
+              </p>
+              <AcademySignup />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ FAQ ═══ */}
       <section className="py-16 sm:py-20 bg-white">
         <div className="container mx-auto px-6 lg:px-8">
@@ -712,8 +824,8 @@ export default function InvestPage() {
         </div>
       </section>
 
-      {/* ═══ BOTTOM CTA + FORM ═══ */}
-      <section id="get-started" className="py-16 sm:py-20 bg-gray-900">
+      {/* ═══ BOTTOM CTA ═══ */}
+      <section className="py-16 sm:py-20 bg-gray-900">
         <div className="container mx-auto px-6 lg:px-8">
           <div className="mx-auto max-w-4xl grid gap-12 lg:grid-cols-2 items-center">
             <div>
@@ -721,26 +833,26 @@ export default function InvestPage() {
                 Ready to Get Started?
               </h2>
               <p className="mt-4 text-lg text-gray-300">
-                Whether you need furnishing, management, or both — schedule a
-                free consultation and we&apos;ll walk you through everything.
+                Whether you need a full furnishing package, a listing refresh,
+                or just want to know what&apos;s holding you back — we&apos;re here to help.
               </p>
               <div className="mt-8 space-y-4">
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                   <span className="text-gray-300">
-                    Discuss your property and goals
+                    Free listing audit — no obligations
                   </span>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                   <span className="text-gray-300">
-                    Get a personalized revenue projection
+                    Personalized recommendations backed by market data
                   </span>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                   <span className="text-gray-300">
-                    No obligations — just real numbers and honest advice
+                    4+ years of proven results in Nairobi
                   </span>
                 </div>
               </div>
@@ -755,7 +867,8 @@ export default function InvestPage() {
             </div>
 
             <div className="rounded-2xl bg-gray-800/50 backdrop-blur border border-gray-700 p-8">
-              <LeadForm variant="dark" />
+              <h3 className="text-lg font-bold text-white mb-4">Free Listing Audit</h3>
+              <AuditForm variant="dark" />
             </div>
           </div>
         </div>
