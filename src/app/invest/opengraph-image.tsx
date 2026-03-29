@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og"
 
 export const runtime = "nodejs"
-export const alt = "Invest in Nairobi Short-Term Rentals | Elite Stays Africa"
+export const alt = "Airbnb Host Services in Nairobi | Elite Stays Africa"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
@@ -38,15 +38,15 @@ export default async function Image() {
 
         {/* Title */}
         <div style={{ color: "#ffffff", fontSize: 52, fontWeight: 800, lineHeight: 1.15, marginBottom: "16px", display: "flex" }}>
-          Invest in Nairobi
+          Launch Your Airbnb
         </div>
         <div style={{ color: "#ffffff", fontSize: 52, fontWeight: 800, lineHeight: 1.15, marginBottom: "32px", display: "flex" }}>
-          Short-Term Rentals
+          in Nairobi
         </div>
 
         {/* Subtitle */}
         <div style={{ color: "#9ca3af", fontSize: 24, lineHeight: 1.5, marginBottom: "48px", maxWidth: "800px", display: "flex" }}>
-          Furnishing, setup, and management services for Nairobi Airbnb properties. Schedule a free consultation.
+          Furnishing, photography, optimization & launch services for Airbnb properties. Get a free listing audit.
         </div>
 
         {/* Stats row */}
@@ -69,7 +69,7 @@ export default async function Image() {
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 80px", backgroundColor: "rgba(0,0,0,0.3)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <div style={{ backgroundColor: "#22c55e", borderRadius: "8px", padding: "10px 24px", color: "#ffffff", fontSize: 18, fontWeight: 700, display: "flex" }}>
-              Schedule a Free Consultation
+              Get a Free Listing Audit
             </div>
           </div>
           <div style={{ color: "#9ca3af", fontSize: 18, fontWeight: 600, display: "flex" }}>

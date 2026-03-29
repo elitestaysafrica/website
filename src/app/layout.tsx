@@ -12,7 +12,7 @@ const GA_ID = "G-K2K44Z6MSN";
 export const metadata: Metadata = {
   icons: {
     icon: "/favicon.png",
-    apple: "/favicon.png",
+    apple: "/apple-touch-icon.png",
   },
   title: "Elite Stays Africa | Premium Short-Term Rentals in Nairobi",
   description:
