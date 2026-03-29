@@ -22,6 +22,7 @@ import {
   Search,
   ClipboardCheck,
   Paintbrush,
+  Handshake,
 } from "lucide-react"
 import { AuditForm, AcademySignup, FAQItem } from "./InvestClientComponents"
 
@@ -31,13 +32,13 @@ const whyBetter = [
     icon: Target,
     title: "Precision Pricing",
     description:
-      "We don't guess. We research every competitor on the map, analyze booking patterns, and price for maximum revenue — not just occupancy.",
+      "We research every competitor on the map, analyze booking patterns, and price for maximum revenue — not just occupancy.",
   },
   {
     icon: Star,
     title: "5-Star Guest Experience",
     description:
-      "Hotel-grade cleaning, instant communication, curated interiors. Happy guests leave 5-star reviews. Reviews drive more bookings. Repeat.",
+      "Hotel-grade cleaning, instant communication, curated interiors. Happy guests leave 5-star reviews. Reviews drive more bookings.",
   },
   {
     icon: Zap,
@@ -79,7 +80,7 @@ const steps = [
 const faqs = [
   {
     q: "Is Airbnb profitable in Nairobi?",
-    a: "Yes — when set up well. Our portfolio averages 75-85% occupancy with nightly rates well above market average. A well-furnished 1-bedroom in a good area can net the owner approximately KES 167,000 per month after Airbnb fees. Location, furnishing quality, and professional setup are the three biggest factors. These figures are based on past performance and are not guarantees.",
+    a: "Yes — when set up well. Our portfolio averages 75-85% occupancy with nightly rates well above market average. A well-set-up 2-bedroom in a good area can net the owner approximately KES 283,000 per month after Airbnb fees. Location, furnishing quality, and professional setup are the biggest factors. These figures are based on past performance and are not guarantees.",
   },
   {
     q: "How much does it cost to furnish an Airbnb in Nairobi?",
@@ -87,7 +88,11 @@ const faqs = [
   },
   {
     q: "How much can I earn from an Airbnb in Kenya?",
-    a: "It depends on location, unit size, and setup quality. Based on our portfolio performance, a 1-bedroom can net the owner approximately KES 167,000/month and a 2-bedroom approximately KES 226,000/month at 75% occupancy, after Airbnb platform fees. These figures are based on past performance in specific neighborhoods and are not guarantees.",
+    a: "It depends on location, unit size, and setup quality. Based on our portfolio performance at 75% occupancy, a 1-bedroom can net approximately KES 210,000/month and a 2-bedroom approximately KES 283,000/month after Airbnb platform fees. These figures are based on past performance in specific neighborhoods and are not guarantees.",
+  },
+  {
+    q: "How does your pricing compare to other furnishing companies?",
+    a: "Typical Nairobi interior design firms charge KES 1.6M+ for furniture alone in a 1-bedroom — before any Airbnb setup. Our total cost (furniture + setup fee) starts around KES 1.05M for a 1-bedroom, and you get a fully launched, revenue-ready property, not just a furnished apartment.",
   },
   {
     q: "What are the best areas for Airbnb in Nairobi?",
@@ -107,7 +112,7 @@ const faqs = [
   },
   {
     q: "Do I need to sign a management contract?",
-    a: "No. All our services are standalone. We'll furnish your unit, set up your listings, take professional photos, create house manuals, and train your cleaner — whether or not you use ongoing management services.",
+    a: "No. All our setup services are standalone. We'll furnish your unit, set up your listings, take professional photos, create house manuals, and train your cleaner — whether or not you use management services. If you do want management, we offer it selectively or can connect you with a qualified manager.",
   },
   {
     q: "What's included in the free listing audit?",
@@ -180,110 +185,61 @@ export default function InvestPage() {
         </div>
       </section>
 
-      {/* ═══ THE PROBLEM ═══ */}
+      {/* ═══ THE ESA DIFFERENCE ═══ */}
       <section className="py-16 sm:py-20 bg-white">
         <div className="container mx-auto px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Buying the Right Property Is Only Half the Equation
+              The ESA Difference
             </h2>
             <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-              A great unit in a great location is a strong start. But without
-              expert setup, even premium properties underperform.
-              Our portfolio consistently earns{" "}
+              Most furnishing companies hand you a furnished apartment and walk away.
+              We hand you a{" "}
               <span className="font-semibold text-primary">
-                50% higher nightly rates
-              </span>{" "}
-              and{" "}
-              <span className="font-semibold text-primary">
-                15-20% more booked nights
-              </span>{" "}
-              than comparable listings in the same neighborhoods.
-            </p>
-            <p className="mt-4 text-lg font-semibold text-gray-900">
-              The right setup turns a good investment into a great one.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ COMPARISON TABLE ═══ */}
-      <section className="py-16 sm:py-20 bg-gray-50">
-        <div className="container mx-auto px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Same City. Different Results.
-            </h2>
-            <p className="mt-4 text-gray-600">
-              Real data from Nairobi&apos;s short-term rental market.
+                revenue-generating business
+              </span>.
             </p>
           </div>
 
-          <div className="mx-auto max-w-3xl">
-            <div className="grid grid-cols-4 gap-4 pb-4 border-b-2 border-gray-300">
-              <div className="text-sm font-medium text-gray-500"></div>
-              <div className="text-center">
-                <div className="text-sm font-bold text-primary">Elite Stays</div>
-              </div>
-              <div className="text-center">
-                <div className="text-sm font-bold text-gray-400">Typical Operator</div>
-              </div>
-              <div className="text-center">
-                <div className="text-sm font-bold text-gray-400">Difference</div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-4 gap-4 py-4 items-center border-b border-gray-200">
-              <div className="text-sm font-medium text-gray-700">2-Bed Nightly Rate</div>
-              <div className="text-center font-semibold text-gray-900"><Price amount={15120} /></div>
-              <div className="text-center text-gray-500"><Price amount={10080} /></div>
-              <div className="text-center">
-                <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-sm font-semibold text-green-800">+50%</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-4 gap-4 py-4 items-center border-b border-gray-200">
-              <div className="text-sm font-medium text-gray-700">Average Occupancy</div>
-              <div className="text-center font-semibold text-gray-900">75–85%</div>
-              <div className="text-center text-gray-500">~55–65%</div>
-              <div className="text-center">
-                <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-sm font-semibold text-green-800">+15–20pts</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-4 gap-4 py-4 items-center border-b border-gray-200">
-              <div className="text-sm font-medium text-gray-700">Monthly Net to Owner (2-Bed)</div>
-              <div className="text-center font-semibold text-gray-900"><Price amount={226000} />+</div>
-              <div className="text-center text-gray-500">~<Price amount={120000} /></div>
-              <div className="text-center">
-                <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-sm font-semibold text-green-800">+88%</span>
+          {/* Cost comparison callout */}
+          <div className="mt-12 mx-auto max-w-4xl">
+            <div className="rounded-2xl bg-gray-50 border border-gray-200 overflow-hidden">
+              <div className="grid grid-cols-1 md:grid-cols-2">
+                <div className="p-8 border-b md:border-b-0 md:border-r border-gray-200">
+                  <div className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Typical Interior Design Firm</div>
+                  <div className="text-3xl font-bold text-gray-900"><Price amount={1600000} />+</div>
+                  <div className="text-sm text-gray-500 mt-1">Furniture only (1-bedroom)</div>
+                  <ul className="mt-4 space-y-2 text-sm text-gray-500">
+                    <li>✗ No Airbnb account setup</li>
+                    <li>✗ No listing optimization</li>
+                    <li>✗ No cleaner training</li>
+                    <li>✗ No pricing strategy</li>
+                    <li>✗ No launch support</li>
+                  </ul>
+                </div>
+                <div className="p-8 bg-primary/5">
+                  <div className="text-sm font-semibold text-primary uppercase tracking-wide mb-2">Elite Stays Africa</div>
+                  <div className="text-3xl font-bold text-gray-900">From <Price amount={1050000} /></div>
+                  <div className="text-sm text-gray-500 mt-1">Furniture + full setup (1-bedroom)</div>
+                  <ul className="mt-4 space-y-2 text-sm text-gray-700">
+                    <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary shrink-0" /> Airbnb & Booking.com setup</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary shrink-0" /> Listing optimization & SEO</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary shrink-0" /> Cleaner recruitment & training</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary shrink-0" /> Data-driven pricing strategy</li>
+                    <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary shrink-0" /> Full launch support</li>
+                  </ul>
+                </div>
               </div>
             </div>
-
-            <div className="grid grid-cols-4 gap-4 py-4 items-center">
-              <div className="text-sm font-medium text-gray-700">Guest Rating</div>
-              <div className="text-center font-semibold text-gray-900">4.92★</div>
-              <div className="text-center text-gray-500">4.86★</div>
-              <div className="text-center">
-                <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-sm font-semibold text-green-800">Higher</span>
-              </div>
-            </div>
+            <p className="mt-4 text-center text-sm text-gray-500">
+              Based on actual quotes from Nairobi-based interior design firms (2026).
+            </p>
           </div>
-
-          <p className="mt-8 text-center text-sm text-gray-500 max-w-xl mx-auto">
-            Based on our portfolio performance in Westlands, Kilimani, Kileleshwa,
-            and Lavington. Past performance is not a guarantee of future results.
-            Results vary by unit, location, and season. See our{" "}
-            <Link href="/market-intel" className="underline hover:text-gray-700">
-              live market data
-            </Link>{" "}
-            for methodology.
-          </p>
         </div>
       </section>
 
       {/* ═══ OUR SERVICES ═══ */}
-      <section className="py-16 sm:py-20 bg-white">
+      <section className="py-16 sm:py-20 bg-gray-50">
         <div className="container mx-auto px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -297,7 +253,6 @@ export default function InvestPage() {
           <div className="mx-auto max-w-5xl grid grid-cols-1 gap-8 lg:grid-cols-3">
             {/* Full Furnishing Package — Featured Hero Card */}
             <div className="lg:col-span-3 rounded-2xl border-2 border-primary/30 overflow-hidden">
-              {/* Top banner */}
               <div className="bg-gradient-to-r from-primary to-primary/80 px-8 py-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Sofa className="h-6 w-6 text-white" />
@@ -308,13 +263,12 @@ export default function InvestPage() {
                 </span>
               </div>
 
-              <div className="bg-primary/5 p-8">
+              <div className="bg-white p-8">
                 <p className="text-gray-600 leading-relaxed max-w-2xl">
                   We take your empty unit to a fully bookable, guest-ready property in 4-6 weeks. Design, furnish, set up, and launch — everything handled.
                 </p>
 
                 <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  {/* Column 1: What we do */}
                   <div>
                     <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-4">Setup & Design</h4>
                     <ul className="space-y-2.5">
@@ -333,7 +287,6 @@ export default function InvestPage() {
                     </ul>
                   </div>
 
-                  {/* Column 2: Launch services */}
                   <div>
                     <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-4">Launch & Optimize</h4>
                     <ul className="space-y-2.5">
@@ -352,9 +305,8 @@ export default function InvestPage() {
                     </ul>
                   </div>
 
-                  {/* Column 3: Pricing */}
                   <div className="space-y-4">
-                    <div className="rounded-xl bg-white shadow-sm border border-gray-200 p-6">
+                    <div className="rounded-xl bg-primary/5 border border-primary/20 p-6">
                       <div className="text-xs font-semibold text-primary uppercase tracking-wide mb-4">ESA Setup Fee</div>
                       <div className="flex items-end gap-6">
                         <div>
@@ -381,8 +333,7 @@ export default function InvestPage() {
                   </div>
                 </div>
 
-                {/* Bottom bar */}
-                <div className="mt-8 pt-6 border-t border-primary/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="mt-8 pt-6 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-4 text-sm text-gray-600">
                     <span>
                       <span className="font-medium">Site visit:</span>{" "}
@@ -395,11 +346,6 @@ export default function InvestPage() {
                     <a href="#free-audit">Get Started <ArrowRight className="ml-1 h-3 w-3" /></a>
                   </Button>
                 </div>
-
-                {/* Management mention */}
-                <p className="mt-4 text-sm text-gray-500 italic">
-                  Need ongoing management? We selectively partner with property owners who are the right fit. Ask us during your consultation.
-                </p>
               </div>
             </div>
 
@@ -514,6 +460,164 @@ export default function InvestPage() {
         </div>
       </section>
 
+      {/* ═══ WHAT OUR PROPERTIES EARN ═══ */}
+      <section className="py-16 sm:py-20 bg-gray-900">
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              What Our Properties Earn
+            </h2>
+            <p className="mt-4 text-gray-400">
+              Projections at 75% occupancy based on our portfolio performance. After Airbnb platform fees.
+            </p>
+          </div>
+
+          <div className="mx-auto max-w-4xl grid grid-cols-1 gap-8 lg:grid-cols-2">
+            {/* 1-Bed Card */}
+            <div className="rounded-2xl bg-gray-800 border border-gray-700 p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold text-white">1-Bedroom</h3>
+              </div>
+              <div className="space-y-4">
+                <div className="flex justify-between border-b border-gray-700 pb-3">
+                  <span className="text-gray-400">Total Investment</span>
+                  <span className="font-semibold text-white">~<Price amount={1250000} /></span>
+                </div>
+                <div className="flex justify-between border-b border-gray-700 pb-3">
+                  <span className="text-gray-400">Nightly Rate</span>
+                  <span className="font-semibold text-white"><Price amount={11214} /></span>
+                </div>
+                <div className="flex justify-between border-b border-gray-700 pb-3">
+                  <span className="text-gray-400">Occupancy</span>
+                  <span className="font-semibold text-white">75%</span>
+                </div>
+                <div className="rounded-lg bg-green-900/30 border border-green-800/50 p-4">
+                  <div className="text-sm text-green-400">Estimated Net to Owner / Month</div>
+                  <div className="text-2xl font-bold text-green-400">
+                    ~<Price amount={210000} />
+                  </div>
+                </div>
+                <div className="text-center text-sm text-gray-400 pt-2">
+                  Estimated payback: <span className="text-white font-medium">~6 months</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 2-Bed Card */}
+            <div className="rounded-2xl bg-gray-800 border border-primary/50 p-8 relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-bold text-white uppercase tracking-wide">
+                Most Popular
+              </div>
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold text-white">2-Bedroom</h3>
+              </div>
+              <div className="space-y-4">
+                <div className="flex justify-between border-b border-gray-700 pb-3">
+                  <span className="text-gray-400">Total Investment</span>
+                  <span className="font-semibold text-white">~<Price amount={1650000} /></span>
+                </div>
+                <div className="flex justify-between border-b border-gray-700 pb-3">
+                  <span className="text-gray-400">Nightly Rate</span>
+                  <span className="font-semibold text-white"><Price amount={15120} /></span>
+                </div>
+                <div className="flex justify-between border-b border-gray-700 pb-3">
+                  <span className="text-gray-400">Occupancy</span>
+                  <span className="font-semibold text-white">75%</span>
+                </div>
+                <div className="rounded-lg bg-green-900/30 border border-green-800/50 p-4">
+                  <div className="text-sm text-green-400">Estimated Net to Owner / Month</div>
+                  <div className="text-2xl font-bold text-green-400">
+                    ~<Price amount={283000} />
+                  </div>
+                </div>
+                <div className="text-center text-sm text-gray-400 pt-2">
+                  Estimated payback: <span className="text-white font-medium">~6 months</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 mx-auto max-w-2xl space-y-3">
+            <p className="text-center text-sm text-gray-400 font-semibold">
+              Net after Airbnb platform fees (~18%). Does not include management, utilities, or operational costs.
+            </p>
+            <p className="text-center text-sm text-gray-500">
+              Total investment = mid-range furniture + ESA setup fee. Actual costs quoted after site visit.
+            </p>
+            <p className="text-center text-sm text-gray-500">
+              Based on past performance in specific Nairobi neighborhoods. Not guarantees.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ PROFESSIONAL MANAGEMENT ═══ */}
+      <section className="py-16 sm:py-20 bg-white">
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="mx-auto max-w-4xl">
+            <div className="rounded-2xl bg-gray-50 border border-gray-200 overflow-hidden">
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-0">
+                {/* Left: Copy */}
+                <div className="lg:col-span-3 p-8 lg:p-10">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                      <Handshake className="h-5 w-5 text-primary" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-900">
+                      Professional Management
+                    </h2>
+                  </div>
+                  <p className="text-gray-600 leading-relaxed">
+                    Already set up and want to go fully hands-off? We selectively manage
+                    high-performing properties — or we&apos;ll connect you with a vetted
+                    management partner in our network.
+                  </p>
+                  <ul className="mt-6 space-y-2">
+                    {[
+                      "Guest communication & 24/7 support",
+                      "Cleaning coordination & quality control",
+                      "Dynamic pricing & revenue optimization",
+                      "Maintenance management",
+                      "Monthly reporting via owner portal",
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                        <span className="text-sm text-gray-700">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Right: Stats + CTA */}
+                <div className="lg:col-span-2 bg-gray-900 p-8 lg:p-10 flex flex-col justify-center">
+                  <div className="space-y-6 text-center">
+                    <div>
+                      <div className="text-3xl font-bold text-white">85%+</div>
+                      <div className="text-sm text-gray-400">Avg. Occupancy</div>
+                    </div>
+                    <div>
+                      <div className="text-3xl font-bold text-white">4.92★</div>
+                      <div className="text-sm text-gray-400">Guest Rating</div>
+                    </div>
+                    <div>
+                      <div className="text-3xl font-bold text-white">20%</div>
+                      <div className="text-sm text-gray-400">Management Fee</div>
+                    </div>
+                    <div className="pt-2">
+                      <Button size="sm" asChild>
+                        <a href="https://wa.me/254111695444">
+                          Inquire About Management
+                        </a>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ WHY WE OUTPERFORM ═══ */}
       <section className="py-16 sm:py-20 bg-gray-50">
         <div className="container mx-auto px-6 lg:px-8">
@@ -539,100 +643,6 @@ export default function InvestPage() {
                 </p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ ROI PROJECTIONS ═══ */}
-      <section className="py-16 sm:py-20 bg-gray-900">
-        <div className="container mx-auto px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              What Your Investment Could Earn
-            </h2>
-            <p className="mt-4 text-gray-400">
-              Projections at 75% occupancy based on our portfolio performance.
-            </p>
-          </div>
-
-          <div className="mx-auto max-w-4xl grid grid-cols-1 gap-8 lg:grid-cols-2">
-            {/* 1-Bed Card */}
-            <div className="rounded-2xl bg-gray-800 border border-gray-700 p-8">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-white">1-Bedroom</h3>
-              </div>
-              <div className="space-y-4">
-                <div className="flex justify-between border-b border-gray-700 pb-3">
-                  <span className="text-gray-400">Furnishing Estimate</span>
-                  <span className="font-semibold text-white">~<Price amount={1200000} /></span>
-                </div>
-                <div className="flex justify-between border-b border-gray-700 pb-3">
-                  <span className="text-gray-400">Nightly Rate</span>
-                  <span className="font-semibold text-white"><Price amount={11214} /></span>
-                </div>
-                <div className="flex justify-between border-b border-gray-700 pb-3">
-                  <span className="text-gray-400">Occupancy</span>
-                  <span className="font-semibold text-white">75%</span>
-                </div>
-                <div className="rounded-lg bg-green-900/30 border border-green-800/50 p-4">
-                  <div className="text-sm text-green-400">Estimated Net to Owner / Month</div>
-                  <div className="text-2xl font-bold text-green-400">
-                    ~<Price amount={167000} />
-                  </div>
-                </div>
-                <div className="text-center text-sm text-gray-400 pt-2">
-                  Estimated payback on furnishing: <span className="text-white font-medium">~7 months</span>
-                </div>
-              </div>
-            </div>
-
-            {/* 2-Bed Card */}
-            <div className="rounded-2xl bg-gray-800 border border-primary/50 p-8 relative">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-bold text-white uppercase tracking-wide">
-                Most Popular
-              </div>
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-white">2-Bedroom</h3>
-              </div>
-              <div className="space-y-4">
-                <div className="flex justify-between border-b border-gray-700 pb-3">
-                  <span className="text-gray-400">Furnishing Estimate</span>
-                  <span className="font-semibold text-white">~<Price amount={1500000} /></span>
-                </div>
-                <div className="flex justify-between border-b border-gray-700 pb-3">
-                  <span className="text-gray-400">Nightly Rate</span>
-                  <span className="font-semibold text-white"><Price amount={15120} /></span>
-                </div>
-                <div className="flex justify-between border-b border-gray-700 pb-3">
-                  <span className="text-gray-400">Occupancy</span>
-                  <span className="font-semibold text-white">75%</span>
-                </div>
-                <div className="rounded-lg bg-green-900/30 border border-green-800/50 p-4">
-                  <div className="text-sm text-green-400">Estimated Net to Owner / Month</div>
-                  <div className="text-2xl font-bold text-green-400">
-                    ~<Price amount={226000} />
-                  </div>
-                </div>
-                <div className="text-center text-sm text-gray-400 pt-2">
-                  Estimated payback on furnishing: <span className="text-white font-medium">~7 months</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-8 mx-auto max-w-2xl space-y-3">
-            <p className="text-center text-sm text-gray-400 font-semibold">
-              Net figures include Airbnb platform fees and 20% professional management.
-            </p>
-            <p className="text-center text-sm text-gray-500">
-              Furnishing costs are estimates. A detailed site visit with full
-              furnishing list and pricing is available for <Price amount={10000} /> — credited
-              back in full if you hire us.
-            </p>
-            <p className="text-center text-sm text-gray-500">
-              These projections are based on past performance in specific Nairobi
-              neighborhoods and are not guarantees. We do not operate in all areas.
-            </p>
           </div>
         </div>
       </section>
@@ -719,9 +729,8 @@ export default function InvestPage() {
               <blockquote className="text-gray-700 leading-relaxed">
                 &ldquo;My apartments have been operating near full capacity, and guests
                 consistently leave glowing reviews. I couldn&apos;t be happier with the
-                results and highly recommend their services to any property owner
-                looking for reliable, professional management. I&apos;m excited to
-                continue working with them!&rdquo;
+                results and highly recommend their services to any property owner.
+                I&apos;m excited to continue working with them!&rdquo;
               </blockquote>
               <div className="mt-6 flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
@@ -743,11 +752,10 @@ export default function InvestPage() {
               <blockquote className="text-gray-700 leading-relaxed">
                 &ldquo;Sustained occupancies of over 85% and rental rates above market,
                 even compared to other units within the same building. We had one
-                unit with another management group, and the difference was night
-                and day. Once we handed it over to Andrew and Peris, occupancy
-                increased, income more than doubled, and ratings climbed. I highly
-                recommend them to anyone seeking peace of mind and strong passive
-                rental returns.&rdquo;
+                unit with another company, and the difference was night and day.
+                Once we handed it over to the Elite Stays team, occupancy increased,
+                income more than doubled, and ratings climbed. Highly recommended
+                for anyone seeking strong passive rental returns.&rdquo;
               </blockquote>
               <div className="mt-6 flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">

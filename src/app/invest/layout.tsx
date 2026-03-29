@@ -85,7 +85,7 @@ const faqSchema = {
       name: "How much can I earn from an Airbnb in Kenya?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Based on our portfolio performance, a 1-bedroom can net the owner approximately KES 167,000/month and a 2-bedroom approximately KES 226,000/month at 75% occupancy, after Airbnb platform fees. These figures are based on past performance and are not guarantees.",
+        text: "Based on our portfolio performance at 75% occupancy, a 1-bedroom can net approximately KES 210,000/month and a 2-bedroom approximately KES 283,000/month after Airbnb platform fees. These figures are based on past performance and are not guarantees.",
       },
     },
     {
