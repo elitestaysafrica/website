@@ -350,11 +350,11 @@ export default function InvestPage() {
             </div>
 
             {/* Photography & Listing Optimization */}
-            <div className="rounded-2xl border border-gray-200 bg-white p-8">
+            <div className="rounded-2xl border border-gray-200 bg-white p-8 flex flex-col">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mb-4">
                 <Camera className="h-6 w-6 text-primary" />
               </div>
-              <div className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800 mb-3">
+              <div className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800 mb-3 self-start">
                 Quick Win — See Results in Days
               </div>
               <h3 className="text-xl font-bold text-gray-900">
@@ -363,7 +363,7 @@ export default function InvestPage() {
               <p className="mt-3 text-gray-600 leading-relaxed">
                 Great furniture with bad photos is invisible. We fix that.
               </p>
-              <ul className="mt-4 space-y-2">
+              <ul className="mt-4 space-y-2 flex-1">
                 {[
                   "Professional photography & video",
                   "Listing title & description rewrite",
@@ -384,11 +384,11 @@ export default function InvestPage() {
             </div>
 
             {/* Refresh / Restage */}
-            <div className="rounded-2xl border border-gray-200 bg-white p-8">
+            <div className="rounded-2xl border border-gray-200 bg-white p-8 flex flex-col">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mb-4">
                 <RefreshCw className="h-6 w-6 text-primary" />
               </div>
-              <div className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800 mb-3">
+              <div className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800 mb-3 self-start">
                 Boost Revenue — Without Starting Over
               </div>
               <h3 className="text-xl font-bold text-gray-900">
@@ -397,7 +397,7 @@ export default function InvestPage() {
               <p className="mt-3 text-gray-600 leading-relaxed">
                 Your unit is furnished but underperforming. We diagnose why and fix it.
               </p>
-              <ul className="mt-4 space-y-2">
+              <ul className="mt-4 space-y-2 flex-1">
                 {[
                   "Full property audit & assessment",
                   "Updated soft furnishings & decor",
@@ -420,11 +420,11 @@ export default function InvestPage() {
             </div>
 
             {/* Free Listing Audit card */}
-            <div className="rounded-2xl border-2 border-green-200 bg-green-50 p-8">
+            <div className="rounded-2xl border-2 border-green-200 bg-green-50 p-8 flex flex-col">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-100 mb-4">
                 <Search className="h-6 w-6 text-green-700" />
               </div>
-              <div className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800 mb-3">
+              <div className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800 mb-3 self-start">
                 100% Free — No Strings Attached
               </div>
               <h3 className="text-xl font-bold text-gray-900">
@@ -433,7 +433,7 @@ export default function InvestPage() {
               <p className="mt-3 text-gray-600 leading-relaxed">
                 Not sure what&apos;s holding you back? Send us your listing and we&apos;ll tell you — for free.
               </p>
-              <ul className="mt-4 space-y-2">
+              <ul className="mt-4 space-y-2 flex-1">
                 {[
                   "Photo & visual quality review",
                   "Title & description analysis",
