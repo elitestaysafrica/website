@@ -19,6 +19,11 @@ export async function POST(req: NextRequest) {
       avgBookings,
       nightlyRate,
       biggestChallenge,
+      // New host inquiry fields
+      hasProperty,
+      neighborhood,
+      unitSize,
+      interestedIn,
     } = body
 
     if (!email) {
@@ -36,6 +41,10 @@ export async function POST(req: NextRequest) {
       if (avgBookings) attributes.AVG_BOOKINGS = avgBookings
       if (nightlyRate) attributes.NIGHTLY_RATE = nightlyRate
       if (biggestChallenge) attributes.BIGGEST_CHALLENGE = biggestChallenge
+      if (hasProperty) attributes.HAS_PROPERTY = hasProperty
+      if (neighborhood) attributes.NEIGHBORHOOD = neighborhood
+      if (unitSize) attributes.UNIT_SIZE = unitSize
+      if (interestedIn) attributes.INTERESTED_IN = interestedIn
 
       await fetch("https://api.brevo.com/v3/contacts", {
         method: "POST",
@@ -56,7 +65,24 @@ export async function POST(req: NextRequest) {
       let subject = ""
       let htmlContent = ""
 
-      if (source === "listing-audit") {
+      if (source === "new-host-inquiry") {
+        subject = `🏠 New Host Inquiry: ${name || email}`
+        htmlContent = `
+          <h2>New Host Inquiry — Looking to Start</h2>
+          <p><strong>Name:</strong> ${name || "Not provided"}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>WhatsApp:</strong> ${phone || "Not provided"}</p>
+          <hr>
+          <p><strong>Has Property:</strong> ${hasProperty || "Not specified"}</p>
+          <p><strong>Neighborhood:</strong> ${neighborhood || "Not specified"}</p>
+          <p><strong>Unit Size:</strong> ${unitSize || "Not specified"}</p>
+          <p><strong>Interested In:</strong> ${interestedIn || "Not specified"}</p>
+          <hr>
+          <p><strong>Source:</strong> elitestaysafrica.com/invest (New Host Form)</p>
+          <p><strong>Time:</strong> ${new Date().toISOString()}</p>
+          <p><em>Reply within 48 hours.</em></p>
+        `
+      } else if (source === "listing-audit") {
         subject = `🔍 Free Listing Audit Request: ${name || email}`
         htmlContent = `
           <h2>New Listing Audit Request</h2>

@@ -173,10 +173,10 @@ export default function InvestPage() {
             <div className="hidden lg:block">
               <div className="rounded-2xl bg-gray-800/50 backdrop-blur border border-gray-700 p-8">
                 <h2 className="text-xl font-bold text-white mb-1">
-                  Free Listing Audit
+                  Get Started
                 </h2>
                 <p className="text-gray-400 text-sm mb-6">
-                  Submit your Airbnb link and we&apos;ll tell you exactly what&apos;s holding your listing back — for free.
+                  Already hosting? Get a free listing audit. Looking to start? Tell us about your project.
                 </p>
                 <AuditForm variant="dark" />
               </div>
@@ -925,7 +925,7 @@ export default function InvestPage() {
             </div>
 
             <div className="rounded-2xl bg-gray-800/50 backdrop-blur border border-gray-700 p-8">
-              <h3 className="text-lg font-bold text-white mb-4">Free Listing Audit</h3>
+              <h3 className="text-lg font-bold text-white mb-4">Get Started</h3>
               <AuditForm variant="dark" />
             </div>
           </div>
