@@ -295,85 +295,111 @@ export default function InvestPage() {
           </div>
 
           <div className="mx-auto max-w-5xl grid grid-cols-1 gap-8 lg:grid-cols-3">
-            {/* Full Furnishing Package */}
-            <div className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-8 lg:col-span-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mb-4">
-                <Sofa className="h-6 w-6 text-primary" />
+            {/* Full Furnishing Package — Featured Hero Card */}
+            <div className="lg:col-span-3 rounded-2xl border-2 border-primary/30 overflow-hidden">
+              {/* Top banner */}
+              <div className="bg-gradient-to-r from-primary to-primary/80 px-8 py-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Sofa className="h-6 w-6 text-white" />
+                  <h3 className="text-xl font-bold text-white">Full Furnishing Package</h3>
+                </div>
+                <span className="hidden sm:inline-flex items-center rounded-full bg-white/20 backdrop-blur px-3 py-1 text-xs font-semibold text-white">
+                  Most Popular — Empty Unit to First Booking
+                </span>
               </div>
-              <div className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800 mb-3">
-                Most Popular — Empty Unit to First Booking
-              </div>
-              <h3 className="text-xl font-bold text-gray-900">
-                Full Furnishing Package
-              </h3>
-              <p className="mt-3 text-gray-600 leading-relaxed">
-                We take your empty unit to a fully bookable, guest-ready property in 4-6 weeks.
-              </p>
 
-              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Left: What's included */}
-                <div>
-                  <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3">What&apos;s included</h4>
-                  <ul className="space-y-2">
-                    {[
-                      "Interior design & space planning",
-                      "Full furnishing sourcing & purchasing",
-                      "Coordinating workmen & installation",
-                      "Airbnb & Booking.com account setup",
-                      "Hard & soft copy house manuals",
-                      "Find and train a dedicated cleaner",
-                      "Cleaning checklists & SOPs",
-                      "Guest message templates",
-                      "Launch pricing strategy",
-                      "Listing SEO optimization",
-                    ].map((item) => (
-                      <li key={item} className="flex items-start gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-primary mt-1 shrink-0" />
-                        <span className="text-sm text-gray-700">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="mt-4 text-xs text-gray-500">
-                    Photography, hardcopy manuals, and all physical items billed at cost — no markup.
-                  </p>
+              <div className="bg-primary/5 p-8">
+                <p className="text-gray-600 leading-relaxed max-w-2xl">
+                  We take your empty unit to a fully bookable, guest-ready property in 4-6 weeks. Design, furnish, set up, and launch — everything handled.
+                </p>
+
+                <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  {/* Column 1: What we do */}
+                  <div>
+                    <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-4">Setup & Design</h4>
+                    <ul className="space-y-2.5">
+                      {[
+                        "Interior design & space planning",
+                        "Full furnishing sourcing & purchasing",
+                        "Coordinating workmen & installation",
+                        "Find and train a dedicated cleaner",
+                        "Cleaning checklists & SOPs",
+                      ].map((item) => (
+                        <li key={item} className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                          <span className="text-sm text-gray-700">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Column 2: Launch services */}
+                  <div>
+                    <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-4">Launch & Optimize</h4>
+                    <ul className="space-y-2.5">
+                      {[
+                        "Airbnb & Booking.com account setup",
+                        "Listing SEO optimization",
+                        "Launch pricing strategy",
+                        "Guest message templates",
+                        "Hard & soft copy house manuals",
+                      ].map((item) => (
+                        <li key={item} className="flex items-start gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                          <span className="text-sm text-gray-700">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Column 3: Pricing */}
+                  <div className="space-y-4">
+                    <div className="rounded-xl bg-white shadow-sm border border-gray-200 p-6">
+                      <div className="text-xs font-semibold text-primary uppercase tracking-wide mb-4">ESA Setup Fee</div>
+                      <div className="flex items-end gap-6">
+                        <div>
+                          <div className="text-3xl font-bold text-gray-900"><Price amount={250000} /></div>
+                          <div className="text-sm text-gray-500 mt-1">1-Bedroom</div>
+                        </div>
+                        <div className="text-gray-300 text-2xl font-light pb-1">/</div>
+                        <div>
+                          <div className="text-3xl font-bold text-gray-900"><Price amount={350000} /></div>
+                          <div className="text-sm text-gray-500 mt-1">2-Bedroom</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="rounded-xl bg-gray-50 border border-gray-200 p-5">
+                      <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Furniture & Materials</div>
+                      <div className="text-sm text-gray-900 font-semibold">
+                        <Price amount={800000} /> – <Price amount={1300000} /> <span className="font-normal text-gray-500">(1-Bed)</span>
+                      </div>
+                      <div className="text-sm text-gray-900 font-semibold mt-1">
+                        <Price amount={1000000} /> – <Price amount={1600000} /> <span className="font-normal text-gray-500">(2-Bed)</span>
+                      </div>
+                      <div className="text-xs text-gray-500 mt-3">Quoted at actual cost — you see every line item. No markup.</div>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Right: Pricing */}
-                <div className="space-y-4">
-                  <div className="rounded-lg bg-white border border-gray-200 p-5">
-                    <div className="text-sm font-medium text-gray-500 mb-3">ESA Setup Fee</div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <div className="text-2xl font-bold text-gray-900"><Price amount={250000} /></div>
-                        <div className="text-sm text-gray-500">1-Bedroom</div>
-                      </div>
-                      <div>
-                        <div className="text-2xl font-bold text-gray-900"><Price amount={350000} /></div>
-                        <div className="text-sm text-gray-500">2-Bedroom</div>
-                      </div>
-                    </div>
+                {/* Bottom bar */}
+                <div className="mt-8 pt-6 border-t border-primary/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 text-sm text-gray-600">
+                    <span>
+                      <span className="font-medium">Site visit:</span>{" "}
+                      <Price amount={10000} /> — credited if you hire us
+                    </span>
+                    <span className="hidden sm:inline text-gray-300">•</span>
+                    <span>Photography & physical items billed at cost</span>
                   </div>
-                  <div className="rounded-lg bg-gray-50 border border-gray-200 p-5">
-                    <div className="text-sm font-medium text-gray-500 mb-2">Estimated furniture & materials</div>
-                    <div className="text-sm text-gray-900">
-                      <span className="font-semibold"><Price amount={800000} /> – <Price amount={1300000} /></span> (1-Bed)
-                    </div>
-                    <div className="text-sm text-gray-900 mt-1">
-                      <span className="font-semibold"><Price amount={1000000} /> – <Price amount={1600000} /></span> (2-Bed)
-                    </div>
-                    <div className="text-xs text-gray-500 mt-2">Quoted separately at actual cost — you see every line item.</div>
-                  </div>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">Site visit & detailed quote:</span>{" "}
-                    <Price amount={10000} /> — credited back in full if you hire us.
-                  </p>
-                  <div className="rounded-lg bg-gray-100 border border-gray-200 p-4">
-                    <p className="text-sm text-gray-600">
-                      <span className="font-medium">Need ongoing management?</span>{" "}
-                      We selectively partner with property owners who are the right fit. Ask us during your consultation.
-                    </p>
-                  </div>
+                  <Button size="sm" variant="outline" asChild>
+                    <a href="#free-audit">Get Started <ArrowRight className="ml-1 h-3 w-3" /></a>
+                  </Button>
                 </div>
+
+                {/* Management mention */}
+                <p className="mt-4 text-sm text-gray-500 italic">
+                  Need ongoing management? We selectively partner with property owners who are the right fit. Ask us during your consultation.
+                </p>
               </div>
             </div>
 

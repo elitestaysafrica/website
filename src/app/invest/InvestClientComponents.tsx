@@ -138,7 +138,7 @@ export function AuditForm({ variant = "light" }: { variant?: "light" | "dark" })
       <input
         type="tel"
         name="phone"
-        placeholder="WhatsApp Number (optional)"
+        placeholder="WhatsApp Number (preferred — fastest way to reach you)"
         className={inputClasses}
       />
       <Button
