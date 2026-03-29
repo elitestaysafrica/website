@@ -1,26 +1,30 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Invest in Nairobi Short-Term Rentals | Elite Stays Africa",
+  title: "Airbnb Host Services in Nairobi | Elite Stays Africa",
   description:
-    "Furnishing, setup, and management services for Nairobi Airbnb properties. 85%+ occupancy, 50% higher nightly rates than typical operators. Schedule a free consultation.",
+    "Furnishing, setup, photography, and optimization services for Nairobi Airbnb properties. 85%+ occupancy, 50% higher nightly rates. Get a free listing audit.",
   keywords: [
+    "airbnb host services nairobi",
+    "airbnb furnishing nairobi",
+    "airbnb setup nairobi",
+    "airbnb photography nairobi",
+    "airbnb listing optimization kenya",
     "invest in nairobi real estate",
     "airbnb investment kenya",
-    "nairobi short term rental investment",
+    "nairobi short term rental",
     "property investment nairobi",
-    "airbnb property management nairobi",
-    "serviced apartments nairobi investment",
+    "serviced apartments nairobi",
     "rental yield nairobi",
-    "passive income kenya real estate",
+    "airbnb course nairobi",
+    "str academy kenya",
     "westlands property investment",
-    "kilimani investment property",
-    "airbnb furnishing nairobi",
+    "kilimani airbnb",
   ],
   openGraph: {
-    title: "Invest in Nairobi Short-Term Rentals | Elite Stays Africa",
+    title: "Airbnb Host Services in Nairobi | Elite Stays Africa",
     description:
-      "Furnishing, setup, and management for Nairobi Airbnb properties. 85%+ occupancy across our portfolio. Schedule a free consultation.",
+      "Furnishing, optimization, and launch services for Nairobi Airbnb properties. 85%+ occupancy. Get a free listing audit.",
     url: "https://www.elitestaysafrica.com/invest",
     siteName: "Elite Stays Africa",
     type: "website",
@@ -28,9 +32,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Invest in Nairobi Short-Term Rentals | Elite Stays Africa",
+    title: "Airbnb Host Services in Nairobi | Elite Stays Africa",
     description:
-      "Furnishing, setup, and management for Nairobi Airbnb properties. 85%+ occupancy. Schedule a free consultation.",
+      "Furnishing, optimization, and launch services for Nairobi Airbnb properties. 85%+ occupancy. Get a free listing audit.",
   },
   alternates: {
     canonical: "https://www.elitestaysafrica.com/invest",
@@ -50,7 +54,7 @@ const breadcrumbSchema = {
     {
       "@type": "ListItem",
       position: 2,
-      name: "For Investors",
+      name: "Host Services",
       item: "https://www.elitestaysafrica.com/invest",
     },
   ],
@@ -65,7 +69,7 @@ const faqSchema = {
       name: "Is Airbnb profitable in Nairobi?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes — when managed well. Our portfolio averages 75-85% occupancy with nightly rates well above market average. A well-furnished 1-bedroom in a good area can net the owner approximately KES 167,000 per month after Airbnb fees and management fee. These figures are based on past performance and are not guarantees.",
+        text: "Yes — when set up well. Our portfolio averages 75-85% occupancy with nightly rates well above market average. A well-furnished 1-bedroom in a good area can net the owner approximately KES 167,000 per month after Airbnb fees. These figures are based on past performance and are not guarantees.",
       },
     },
     {
@@ -73,15 +77,7 @@ const faqSchema = {
       name: "How much does it cost to furnish an Airbnb in Nairobi?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "We estimate KES 1.2M–1.4M for a 1-bedroom and KES 1.5M–1.7M for a 2-bedroom for the furnishing itself. Our furnishing service fee covers sourcing, workmen coordination, account setup, professional photography, house manuals, and TV app setup. A site visit with detailed quote is available for KES 10,000, credited back if you hire us to furnish. Furnishing is a standalone service and does not require a management contract.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What does your management fee cover?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Our management fee is 20% of booking revenue. Overhead costs — cleaning, supplies, utilities, and property managers — are billed monthly based on actual usage. You get paid directly by Airbnb. We never hold your money.",
+        text: "Furniture and materials typically run KES 800K–1.3M for a 1-bedroom and KES 1M–1.6M for a 2-bedroom, quoted at actual cost. Our flat setup fee is KES 250K (1-bed) or KES 350K (2-bed), covering interior design, sourcing, coordination, account setup, cleaner training, house manuals, and launch strategy. A site visit is available for KES 10,000, credited back if you hire us.",
       },
     },
     {
@@ -89,7 +85,7 @@ const faqSchema = {
       name: "How much can I earn from an Airbnb in Kenya?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Based on our portfolio performance, a 1-bedroom can net the owner approximately KES 167,000/month and a 2-bedroom approximately KES 226,000/month at 75% occupancy, after Airbnb fees and management fee. Overhead costs are billed separately. These figures are based on past performance and are not guarantees.",
+        text: "Based on our portfolio performance at 75% occupancy, a 1-bedroom can net approximately KES 210,000/month and a 2-bedroom approximately KES 283,000/month after Airbnb platform fees. These figures are based on past performance and are not guarantees.",
       },
     },
     {
@@ -97,7 +93,7 @@ const faqSchema = {
       name: "What are the best areas for Airbnb in Nairobi?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Westlands, Kilimani, Kileleshwa, and Lavington consistently perform best for short-term rentals, attracting both international tourists and business travelers with strong demand year-round. We do not take on properties in all areas.",
+        text: "Westlands, Kilimani, Kileleshwa, and Lavington consistently perform best for short-term rentals, attracting both international tourists and business travelers with strong demand year-round.",
       },
     },
     {
@@ -105,7 +101,7 @@ const faqSchema = {
       name: "Do I need to pay taxes on Airbnb income in Kenya?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Airbnb income is subject to taxes including Withholding Tax, which Airbnb deducts automatically from your payouts. We recommend consulting a qualified tax advisor or the lawyer who handled your property purchase for personalized guidance.",
+        text: "Airbnb income is subject to taxes including Withholding Tax, which Airbnb deducts automatically from your payouts. We recommend consulting a qualified tax advisor for personalized guidance.",
       },
     },
     {
@@ -114,6 +110,14 @@ const faqSchema = {
       acceptedAnswer: {
         "@type": "Answer",
         text: "From signing to first booking is typically 4-6 weeks. That includes furnishing, professional photography, listing creation, and optimization. First booking usually comes within 7-14 days of going live.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What's included in the free listing audit?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "We review your photos, title, description, pricing, calendar settings, and competitive positioning. You receive a detailed report with specific, actionable recommendations — completely free.",
       },
     },
   ],
