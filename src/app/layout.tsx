@@ -35,12 +35,23 @@ export const metadata: Metadata = {
     siteName: "Elite Stays Africa",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "https://pub-fc83f3cd6db94e62b59d4ec345ce8ffe.r2.dev/website/properties/2/4a7ba536-95e6-4aa5-b13b-82a1f7f12204.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Elite Stays Africa - Premium Short-Term Rentals in Nairobi",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Elite Stays Africa | Premium Short-Term Rentals in Nairobi",
     description:
       "Book professionally-managed Airbnb apartments in Nairobi's best neighborhoods.",
+    images: [
+      "https://pub-fc83f3cd6db94e62b59d4ec345ce8ffe.r2.dev/website/properties/2/4a7ba536-95e6-4aa5-b13b-82a1f7f12204.jpg",
+    ],
   },
   robots: {
     index: true,
