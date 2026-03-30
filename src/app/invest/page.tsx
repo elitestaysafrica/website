@@ -308,14 +308,14 @@ export default function InvestPage() {
                   <div className="space-y-4">
                     <div className="rounded-xl bg-primary/5 border border-primary/20 p-6">
                       <div className="text-xs font-semibold text-primary uppercase tracking-wide mb-4">ESA Setup Fee</div>
-                      <div className="flex items-end gap-6">
-                        <div>
-                          <div className="text-3xl font-bold text-gray-900"><Price amount={250000} /></div>
+                      <div className="flex items-end gap-3 sm:gap-6">
+                        <div className="min-w-0">
+                          <div className="text-2xl sm:text-3xl font-bold text-gray-900"><Price amount={250000} /></div>
                           <div className="text-sm text-gray-500 mt-1">1-Bedroom</div>
                         </div>
-                        <div className="text-gray-300 text-2xl font-light pb-1">/</div>
-                        <div>
-                          <div className="text-3xl font-bold text-gray-900"><Price amount={350000} /></div>
+                        <div className="text-gray-300 text-2xl font-light pb-1 shrink-0">/</div>
+                        <div className="min-w-0">
+                          <div className="text-2xl sm:text-3xl font-bold text-gray-900"><Price amount={350000} /></div>
                           <div className="text-sm text-gray-500 mt-1">2-Bedroom</div>
                         </div>
                       </div>
