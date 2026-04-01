@@ -37,7 +37,7 @@ const faqs = [
   },
   {
     q: "What's the difference between Guided Launch and Done-With-You?",
-    a: "Guided Launch: we review your listing remotely and do a 1-on-1 strategy call. Done-With-You: we physically come to your property and help you set up your first unit. Both include the full course and community access.",
+    a: "Guided Launch: you get three 30-minute 1-on-1 calls at key milestones — after completing the course, before going live, and after your first guest review. Done-With-You: we physically come to your property and help you set up your first unit. Both include the full course and community access.",
   },
   {
     q: "Is this just for Nairobi?",
@@ -327,9 +327,10 @@ export default function AcademyPage() {
               <ul className="mt-8 space-y-3 flex-1">
                 {[
                   "Everything in Self-Starter",
-                  "1-on-1 strategy call with Bill or Peris",
-                  "We review your listing before you go live",
-                  "Priority community support",
+                  "3× 30-min 1-on-1 calls with Bill or Peris",
+                  "Call 1: Post-course Q&A — clear up any questions",
+                  "Call 2: Pre-launch listing review — we check everything before you go live",
+                  "Call 3: Post-first-review debrief — optimize based on real feedback",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 shrink-0" />
@@ -354,7 +355,7 @@ export default function AcademyPage() {
               </div>
               <ul className="mt-8 space-y-3 flex-1">
                 {[
-                  "Everything in Guided Launch",
+                  "Everything in Guided Launch (incl. 3 calls)",
                   "We physically help set up your first unit",
                   "On-site guidance & mentorship",
                   "Our time + expertise (not furnishing costs)",
