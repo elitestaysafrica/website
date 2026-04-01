@@ -94,7 +94,7 @@ export default function AcademyPage() {
             <div className="mt-10">
               <Button size="lg" asChild>
                 <a href="#notify">
-                  Get Notified <ArrowRight className="ml-2 h-5 w-5" />
+                  Enrol Now <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
             </div>
@@ -304,7 +304,7 @@ export default function AcademyPage() {
                   className="w-full border-gray-600 text-white hover:bg-gray-700"
                   asChild
                 >
-                  <a href="#notify">Get Notified</a>
+                  <a href="#notify">Enrol Now</a>
                 </Button>
               </div>
             </div>
@@ -345,7 +345,7 @@ export default function AcademyPage() {
               </ul>
               <div className="mt-8">
                 <Button size="lg" className="w-full" asChild>
-                  <a href="#notify">Get Notified</a>
+                  <a href="#notify">Enrol Now</a>
                 </Button>
               </div>
             </div>
@@ -378,7 +378,7 @@ export default function AcademyPage() {
                   className="w-full border-gray-600 text-white hover:bg-gray-700"
                   asChild
                 >
-                  <a href="#notify">Get Notified</a>
+                  <a href="#notify">Apply Now</a>
                 </Button>
               </div>
             </div>
@@ -465,7 +465,7 @@ export default function AcademyPage() {
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button size="lg" asChild>
                 <a href="#notify">
-                  Get Notified <ArrowRight className="ml-2 h-5 w-5" />
+                  Enrol Now <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
               <Button variant="outline" size="lg" asChild className="border-gray-600 text-white hover:bg-gray-700">
