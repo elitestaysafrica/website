@@ -33,7 +33,7 @@ const faqs = [
   },
   {
     q: "Can I get a refund?",
-    a: "Yes. Complete all modules and implement the system. If you can't launch within 6 months, we refund 100%. No questions asked.",
+    a: "Yes. Complete all modules and show us you implemented the system. If it still didn't work, we'll first try to help you fix it. If we can't get you launched within 6 months of enrollment, you get a full refund.",
   },
   {
     q: "What's the difference between Guided Launch and Done-With-You?",
@@ -311,12 +311,18 @@ export default function AcademyPage() {
               </div>
               <h3 className="text-xl font-bold text-white">Guided Launch</h3>
               <div className="mt-4">
-                <span className="text-4xl font-bold text-white">
+                <span className="text-lg text-gray-500 line-through">
                   <Price amount={75000} />
                 </span>
+                <div className="mt-1">
+                  <span className="text-4xl font-bold text-white">
+                    <Price amount={45000} />
+                  </span>
+                </div>
               </div>
-              <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-green-500/20 px-3 py-1 text-xs font-semibold text-green-400">
-                Launch week: <Price amount={45000} />
+              <div className="mt-3 rounded-lg bg-green-500/20 border border-green-500/30 px-4 py-2 text-center">
+                <div className="text-sm font-bold text-green-400">🔥 Pre-Launch: 40% OFF</div>
+                <div className="text-xs text-green-400/80 mt-0.5">Price increases weekly until launch</div>
               </div>
               <ul className="mt-8 space-y-3 flex-1">
                 {[
@@ -381,7 +387,7 @@ export default function AcademyPage() {
               </div>
               <p className="mt-2 text-sm text-gray-300">
                 Complete everything and can&apos;t launch in 6 months? Full
-                refund. No questions asked.
+                refund. 
               </p>
             </div>
           </div>
@@ -399,7 +405,7 @@ export default function AcademyPage() {
             <p className="mt-6 text-lg text-gray-600 leading-relaxed">
               Complete all modules, implement what you learn, and if you
               can&apos;t launch a profitable Airbnb within 6 months — we&apos;ll
-              refund 100% of your course fee. No questions asked.
+              refund 100% of your course fee — just show us you put in the work. 
             </p>
             <p className="mt-4 text-gray-500">
               We&apos;re that confident in the system because we use it
