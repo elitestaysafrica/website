@@ -1,7 +1,8 @@
 "use client"
 
-import { ChevronDown } from "lucide-react"
-import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { ChevronDown, CheckCircle2, Bell } from "lucide-react"
+import { useState, FormEvent } from "react"
 
 const modules = [
   {
@@ -114,5 +115,95 @@ export function FAQItem({ q, a }: { q: string; a: string }) {
       </summary>
       <p className="pb-5 text-gray-600 leading-relaxed">{a}</p>
     </details>
+  )
+}
+
+export function NotifyForm({ variant = "dark" }: { variant?: "light" | "dark" }) {
+  const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const isDark = variant === "dark"
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setLoading(true)
+    const form = e.currentTarget
+
+    const data = {
+      source: "academy-notify",
+      name: (form.elements.namedItem("name") as HTMLInputElement).value,
+      email: "academy-waitlist@elitestaysafrica.com", // placeholder for Brevo
+      phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
+      interestedIn: (form.elements.namedItem("tier") as HTMLSelectElement).value,
+    }
+
+    try {
+      await fetch("/api/invest-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+      setSubmitted(true)
+    } catch {
+      setSubmitted(true)
+    }
+    setLoading(false)
+  }
+
+  if (submitted) {
+    return (
+      <div className={`rounded-2xl p-8 text-center ${isDark ? "bg-green-500/10 border border-green-500/30" : "bg-green-50 border border-green-200"}`}>
+        <CheckCircle2 className={`h-12 w-12 mx-auto ${isDark ? "text-green-400" : "text-green-600"}`} />
+        <h3 className={`mt-4 text-xl font-bold ${isDark ? "text-green-300" : "text-green-900"}`}>
+          You&apos;re On the List!
+        </h3>
+        <p className={`mt-2 ${isDark ? "text-green-400/80" : "text-green-700"}`}>
+          We&apos;ll WhatsApp you as soon as pre-sale opens. You&apos;ll get first access + the best discount.
+        </p>
+      </div>
+    )
+  }
+
+  const inputClasses = isDark
+    ? "w-full rounded-lg border border-gray-600 bg-gray-700 px-4 py-3 text-white placeholder-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+    : "w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+
+  const selectClasses = isDark
+    ? "w-full rounded-lg border border-gray-600 bg-gray-700 px-4 py-3 text-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+    : "w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <input
+        name="name"
+        type="text"
+        required
+        placeholder="Your name"
+        className={inputClasses}
+      />
+      <input
+        name="phone"
+        type="tel"
+        required
+        placeholder="WhatsApp number (e.g. 0712 345 678)"
+        className={inputClasses}
+      />
+      <select name="tier" required className={selectClasses}>
+        <option value="">Which tier interests you?</option>
+        <option value="self-starter">Self-Starter — KES 25,000</option>
+        <option value="guided-launch">Guided Launch — KES 75,000</option>
+        <option value="done-with-you">Done-With-You — KES 250,000</option>
+        <option value="not-sure">Not sure yet</option>
+      </select>
+      <Button type="submit" size="lg" className="w-full" disabled={loading}>
+        {loading ? (
+          "Submitting..."
+        ) : (
+          <>
+            <Bell className="mr-2 h-4 w-4" /> Notify Me When Pre-Sale Opens
+          </>
+        )}
+      </Button>
+    </form>
   )
 }

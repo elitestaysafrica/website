@@ -99,12 +99,15 @@ export async function POST(req: NextRequest) {
           <p><strong>Time:</strong> ${new Date().toISOString()}</p>
           <p><em>Reply within 48 hours with the audit report.</em></p>
         `
-      } else if (source === "academy-waitlist") {
-        subject = `🎓 Academy Waitlist Signup: ${email}`
+      } else if (source === "academy-waitlist" || source === "academy-notify") {
+        subject = `🎓 Academy Pre-Sale Signup: ${name || phone || email}`
         htmlContent = `
-          <h2>New Academy Waitlist Signup</h2>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Source:</strong> elitestaysafrica.com/invest (Academy Waitlist)</p>
+          <h2>New Academy Pre-Sale Signup</h2>
+          <p><strong>Name:</strong> ${name || "Not provided"}</p>
+          <p><strong>WhatsApp:</strong> ${phone || "Not provided"}</p>
+          <p><strong>Tier Interest:</strong> ${interestedIn || "Not specified"}</p>
+          <hr>
+          <p><strong>Source:</strong> elitestaysafrica.com/academy</p>
           <p><strong>Time:</strong> ${new Date().toISOString()}</p>
         `
       } else {
