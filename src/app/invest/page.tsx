@@ -24,7 +24,7 @@ import {
   Paintbrush,
   Handshake,
 } from "lucide-react"
-import { AuditForm, AcademySignup, FAQItem } from "./InvestClientComponents"
+import { AuditForm, FAQItem } from "./InvestClientComponents"
 
 /* ─── Why we outperform ─── */
 const whyBetter = [
@@ -825,13 +825,13 @@ export default function InvestPage() {
       <section className="py-16 sm:py-20 bg-gray-900">
         <div className="container mx-auto px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <div className="inline-flex items-center rounded-full bg-primary/20 px-4 py-1.5 text-sm font-semibold text-primary mb-6">
-              Coming Soon
+            <div className="inline-flex items-center rounded-full bg-green-500/20 px-4 py-1.5 text-sm font-semibold text-green-400 mb-6">
+              🔥 Pre-Sale Now Open
             </div>
             <div className="flex items-center justify-center gap-3 mb-4">
               <GraduationCap className="h-8 w-8 text-primary" />
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Elite Stays Academy
+                ESA University
               </h2>
             </div>
             <p className="mt-4 text-lg text-gray-300 leading-relaxed">
@@ -858,9 +858,13 @@ export default function InvestPage() {
 
             <div className="mt-10">
               <p className="text-gray-400 text-sm mb-4">
-                Be the first to know when we launch.
+                Three tiers from KES 25K. Early-bird pricing won&apos;t last.
               </p>
-              <AcademySignup />
+              <Button size="lg" asChild>
+                <Link href="/academy">
+                  See the Course <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
