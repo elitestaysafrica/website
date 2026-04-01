@@ -826,7 +826,7 @@ export default function InvestPage() {
         <div className="container mx-auto px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <div className="inline-flex items-center rounded-full bg-green-500/20 px-4 py-1.5 text-sm font-semibold text-green-400 mb-6">
-              🔥 Pre-Sale Now Open
+              🔥 Pre-Sale Opening Soon
             </div>
             <div className="flex items-center justify-center gap-3 mb-4">
               <GraduationCap className="h-8 w-8 text-primary" />
