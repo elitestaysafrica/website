@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Price } from "@/components/Price"
+import Image from "next/image"
 import Link from "next/link"
 import {
   GraduationCap,
@@ -201,14 +202,14 @@ export default function AcademyPage() {
             {[
               {
                 name: "Bill",
-                initials: "B",
+                image: "/images/team/bill.webp",
                 role: "Strategy & Market Analysis",
                 bio: "American expat, 4+ years operating short-term rentals in Nairobi. Tracks 500+ listings daily. Covers pricing strategy, market analysis, business models, listing optimization, and scaling.",
                 videos: "~33 videos",
               },
               {
                 name: "Peris",
-                initials: "P",
+                image: "/images/team/peris.webp",
                 role: "Operations & Guest Experience",
                 bio: "Kenyan operations expert. Manages day-to-day across multiple properties. Covers cleaning systems, vendor sourcing, furnishing, guest experience, staff management, and local knowledge.",
                 videos: "~26 videos",
@@ -219,9 +220,13 @@ export default function AcademyPage() {
                 className="rounded-2xl border border-gray-200 p-8"
               >
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/60 text-2xl font-bold text-white">
-                    {instructor.initials}
-                  </div>
+                  <Image
+                    src={instructor.image}
+                    alt={instructor.name}
+                    width={64}
+                    height={64}
+                    className="h-16 w-16 rounded-full object-cover"
+                  />
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">
                       {instructor.name}
