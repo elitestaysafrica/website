@@ -17,7 +17,7 @@ import {
   Home,
   Wrench,
 } from "lucide-react"
-import { ModuleAccordion, FAQItem, NotifyForm } from "./AcademyClientComponents"
+import { ModuleAccordion, FAQItem } from "./AcademyClientComponents"
 
 const faqs = [
   {
@@ -93,7 +93,7 @@ export default function AcademyPage() {
 
             <div className="mt-10">
               <Button size="lg" asChild>
-                <a href="#notify">
+                <a href="/academy/enrol">
                   Enrol Now <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
@@ -304,7 +304,7 @@ export default function AcademyPage() {
                   className="w-full border-gray-600 text-white hover:bg-gray-700"
                   asChild
                 >
-                  <a href="#notify">Enrol Now</a>
+                  <a href="/academy/enrol">Enrol Now</a>
                 </Button>
               </div>
             </div>
@@ -345,7 +345,7 @@ export default function AcademyPage() {
               </ul>
               <div className="mt-8">
                 <Button size="lg" className="w-full" asChild>
-                  <a href="#notify">Enrol Now</a>
+                  <a href="/academy/enrol">Enrol Now</a>
                 </Button>
               </div>
             </div>
@@ -378,22 +378,9 @@ export default function AcademyPage() {
                   className="w-full border-gray-600 text-white hover:bg-gray-700"
                   asChild
                 >
-                  <a href="#notify">Apply Now</a>
+                  <a href="/academy/enrol">Apply Now</a>
                 </Button>
               </div>
-            </div>
-          </div>
-
-          {/* Notify Form */}
-          <div id="notify" className="mt-12 mx-auto max-w-md">
-            <div className="rounded-2xl border border-gray-700 bg-gray-800/80 backdrop-blur p-8">
-              <h3 className="text-xl font-bold text-white text-center mb-2">
-                Be First to Know
-              </h3>
-              <p className="text-sm text-gray-400 text-center mb-6">
-                Pre-sale opens soon. Get notified + first access to the best discount.
-              </p>
-              <NotifyForm variant="dark" />
             </div>
           </div>
 
@@ -464,7 +451,7 @@ export default function AcademyPage() {
             </p>
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button size="lg" asChild>
-                <a href="#notify">
+                <a href="/academy/enrol">
                   Enrol Now <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
