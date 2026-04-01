@@ -11,6 +11,7 @@ const navigation = [
   { name: "Properties", href: "/properties" },
   // { name: "Market Intel", href: "/market-intel" }, // Temporarily hidden
   { name: "For Investors", href: "/invest" },
+  { name: "Academy", href: "/academy" },
   { name: "Blog", href: "/blog" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
