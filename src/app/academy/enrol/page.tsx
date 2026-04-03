@@ -60,14 +60,21 @@ export default function EnrolPage() {
     }
 
     try {
-      await fetch("/api/contact", {
+      const res = await fetch("/api/invest-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          source: "academy-enrol",
+          name: data.name,
+          email: data.email,
+          phone: data.whatsapp,
+          interestedIn: `${data.tier} | Exp: ${data.experience} | Budget: ${data.budget} | Timeline: ${data.timeline} | Heard: ${data.hearAbout} | Note: ${data.message}`,
+        }),
       })
-      setSubmitted(true)
+      if (res.ok) setSubmitted(true)
+      else alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
     } catch {
-      setSubmitted(true)
+      alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
     } finally {
       setLoading(false)
     }

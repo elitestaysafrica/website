@@ -132,20 +132,24 @@ export function NotifyForm({ variant = "dark" }: { variant?: "light" | "dark" })
     const data = {
       source: "academy-notify",
       name: (form.elements.namedItem("name") as HTMLInputElement).value,
-      email: "academy-waitlist@elitestaysafrica.com", // placeholder for Brevo
+      email: (form.elements.namedItem("email") as HTMLInputElement).value,
       phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
       interestedIn: (form.elements.namedItem("tier") as HTMLSelectElement).value,
     }
 
     try {
-      await fetch("/api/invest-lead", {
+      const res = await fetch("/api/invest-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       })
-      setSubmitted(true)
+      if (res.ok) {
+        setSubmitted(true)
+      } else {
+        alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
+      }
     } catch {
-      setSubmitted(true)
+      alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
     }
     setLoading(false)
   }
@@ -179,6 +183,13 @@ export function NotifyForm({ variant = "dark" }: { variant?: "light" | "dark" })
         type="text"
         required
         placeholder="Your name"
+        className={inputClasses}
+      />
+      <input
+        name="email"
+        type="email"
+        required
+        placeholder="Email address"
         className={inputClasses}
       />
       <input

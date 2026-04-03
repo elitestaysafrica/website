@@ -1,40 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// Telegram Bot notification
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || ''
-const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || ''
-
-async function sendTelegramNotification(message: string) {
-  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-    console.log('Telegram not configured, skipping notification')
-    return false
-  }
-  
-  try {
-    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`
-    
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text: message,
-        parse_mode: 'Markdown',
-      }),
-    })
-    
-    if (response.ok) {
-      console.log('Telegram notification sent successfully')
-      return true
-    } else {
-      console.error('Failed to send Telegram notification:', await response.text())
-      return false
-    }
-  } catch (error) {
-    console.error('Telegram notification error:', error)
-    return false
-  }
-}
+const BREVO_API_KEY = process.env.BREVO_API_KEY || ""
+const BREVO_INVESTOR_LIST_ID = parseInt(process.env.BREVO_INVESTOR_LIST_ID || "7")
+const NOTIFICATION_EMAIL = "hello@elitestaysafrica.com"
 
 export async function POST(request: NextRequest) {
   try {
@@ -49,31 +17,62 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Format the message for notification
-    const formattedMessage = `🔔 *New Website Inquiry*
+    if (BREVO_API_KEY) {
+      // 1. Add to Brevo
+      const attributes: Record<string, string> = {
+        FIRSTNAME: name?.split(" ")[0] || "",
+        LASTNAME: name?.split(" ").slice(1).join(" ") || "",
+      }
+      if (phone) attributes.WHATSAPP = phone
+      if (subject) attributes.SUBJECT = subject
+      if (message) attributes.MESSAGE = message
 
-*Name:* ${name}
-*Email:* ${email}
-*Phone:* ${phone || 'Not provided'}
-*Subject:* ${subject}
+      await fetch("https://api.brevo.com/v3/contacts", {
+        method: "POST",
+        headers: {
+          "api-key": BREVO_API_KEY,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          attributes,
+          listIds: [BREVO_INVESTOR_LIST_ID],
+          updateEnabled: true,
+        }),
+      })
 
-*Message:*
-${message}
+      // 2. Send notification email
+      await fetch("https://api.brevo.com/v3/smtp/email", {
+        method: "POST",
+        headers: {
+          "api-key": BREVO_API_KEY,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          sender: { name: "Elite Stays Website", email: "hello@elitestaysafrica.com" },
+          to: [{ email: NOTIFICATION_EMAIL }],
+          subject: `📨 Contact Form: ${name || email}`,
+          htmlContent: `
+            <h2>New Contact Form Submission</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone:</strong> ${phone || "Not provided"}</p>
+            <p><strong>Subject:</strong> ${subject || "Not specified"}</p>
+            <hr>
+            <p><strong>Message:</strong></p>
+            <p>${message}</p>
+            <p><em>Time: ${new Date().toISOString()}</em></p>
+          `,
+        }),
+      })
+    }
 
----
-_elitestaysafrica.com_`
-
-    // Log the submission
-    console.log('Contact form submission:', { name, email, phone, subject, message })
-
-    // Send Telegram notification
-    await sendTelegramNotification(formattedMessage)
-
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Message received! We will get back to you soon.' 
+    return NextResponse.json({
+      success: true,
+      message: "Message received! We'll get back to you soon.",
     })
-
   } catch (error) {
     console.error('Contact form error:', error)
     return NextResponse.json(

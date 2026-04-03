@@ -66,9 +66,9 @@ export function AuditForm({ variant = "light" }: { variant?: "light" | "dark" })
         body: JSON.stringify(data),
       })
       if (res.ok) setSubmitted(true)
-      else setSubmitted(true)
+      else alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
     } catch {
-      setSubmitted(true)
+      alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
     }
     setLoading(false)
   }
@@ -279,9 +279,9 @@ export function AcademySignup() {
         body: JSON.stringify(data),
       })
       if (res.ok) setSubmitted(true)
-      else setSubmitted(true)
+      else alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
     } catch {
-      setSubmitted(true)
+      alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
     }
     setLoading(false)
   }
@@ -336,9 +336,9 @@ export function LeadForm({ variant = "light" }: { variant?: "light" | "dark" }) 
         body: JSON.stringify(data),
       })
       if (res.ok) setSubmitted(true)
-      else setSubmitted(true)
+      else alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
     } catch {
-      setSubmitted(true)
+      alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
     }
     setLoading(false)
   }
