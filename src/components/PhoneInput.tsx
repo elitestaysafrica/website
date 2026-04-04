@@ -205,7 +205,7 @@ export default function PhoneInput({
         >
           {COUNTRY_OPTIONS.map((country, i) => (
             <option key={`${country.code}-${i}`} value={country.code}>
-              {country.flag} +{country.code} {country.label}
+              {country.label} {country.flag} +{country.code}
             </option>
           ))}
         </select>
