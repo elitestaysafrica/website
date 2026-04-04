@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Instagram, Youtube, Linkedin } from "lucide-react"
+import { Instagram } from "lucide-react"
 
 const navigation = {
   properties: [
@@ -18,8 +18,6 @@ const navigation = {
   ],
   social: [
     { name: "Instagram", href: "https://instagram.com/elitestaysafrica", icon: Instagram },
-    { name: "YouTube", href: "https://youtube.com/@elitestaysafrica", icon: Youtube },
-    { name: "LinkedIn", href: "https://linkedin.com/company/elitestaysafrica", icon: Linkedin },
   ],
 }
 
