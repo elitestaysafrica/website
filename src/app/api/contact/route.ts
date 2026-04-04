@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 const BREVO_API_KEY = process.env.BREVO_API_KEY || ""
-const BREVO_INVESTOR_LIST_ID = parseInt(process.env.BREVO_INVESTOR_LIST_ID || "7")
+const BREVO_GUESTS_LIST = 3 // General contact = guests until we know better
 const NOTIFICATION_EMAIL = "hello@elitestaysafrica.com"
 
 export async function POST(request: NextRequest) {
@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
       const attributes: Record<string, string> = {
         FIRSTNAME: name?.split(" ")[0] || "",
         LASTNAME: name?.split(" ").slice(1).join(" ") || "",
+        LEAD_SOURCE: "Contact Form",
       }
       if (phone) attributes.WHATSAPP = phone.replace(/\D/g, "")
       if (subject) attributes.SUBJECT = subject
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify({
           email,
           attributes,
-          listIds: [BREVO_INVESTOR_LIST_ID],
+          listIds: [BREVO_GUESTS_LIST],
           updateEnabled: true,
         }),
       })

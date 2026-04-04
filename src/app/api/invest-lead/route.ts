@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 
 const BREVO_API_KEY = process.env.BREVO_API_KEY || ""
-const BREVO_LIST_ID = parseInt(process.env.BREVO_INVESTOR_LIST_ID || "7") // List ID 7 = Investors
+// Brevo list IDs: 3=Guests, 10=Hosts, 11=Investors, 12=Academy, 13=Newsletter
+const BREVO_HOSTS_LIST = 10
+const BREVO_INVESTORS_LIST = 11
+const BREVO_ACADEMY_LIST = 12
 const NOTIFICATION_EMAIL = "hello@elitestaysafrica.com"
 
 export async function POST(req: NextRequest) {
@@ -46,6 +49,21 @@ export async function POST(req: NextRequest) {
       if (unitSize) attributes.UNIT_SIZE = unitSize
       if (interestedIn) attributes.INTERESTED_IN = interestedIn
 
+      // Tag the lead source via LEAD_SOURCE attribute
+      const leadSource =
+        source === "listing-audit" ? "Listing Audit" :
+        source === "new-host-inquiry" ? (hasProperty === "yes" ? "New Host - Has Property" : "New Host - No Property") :
+        source === "academy-waitlist" || source === "academy-notify" ? "Academy" :
+        "Consultation"
+      attributes.LEAD_SOURCE = leadSource
+
+      // Route to correct list based on source
+      const listId =
+        source === "listing-audit" ? BREVO_HOSTS_LIST :
+        source === "new-host-inquiry" ? (hasProperty === "no" ? BREVO_INVESTORS_LIST : BREVO_HOSTS_LIST) :
+        source === "academy-waitlist" || source === "academy-notify" ? BREVO_ACADEMY_LIST :
+        BREVO_INVESTORS_LIST  // default consultation = investor
+
       await fetch("https://api.brevo.com/v3/contacts", {
         method: "POST",
         headers: {
@@ -56,7 +74,7 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({
           email,
           attributes,
-          listIds: [BREVO_LIST_ID],
+          listIds: [listId],
           updateEnabled: true,
         }),
       })
