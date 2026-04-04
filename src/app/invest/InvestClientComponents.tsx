@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import PhoneInput from "@/components/PhoneInput"
 import { ArrowRight, CheckCircle2, ChevronDown, Mail } from "lucide-react"
 import { useState, FormEvent } from "react"
 
@@ -227,11 +228,10 @@ export function AuditForm({ variant = "light" }: { variant?: "light" | "dark" })
               className={inputClasses}
             />
           </div>
-          <input
-            type="tel"
+          <PhoneInput
             name="phone"
             placeholder="WhatsApp Number (preferred — fastest way to reach you)"
-            className={inputClasses}
+            variant={variant}
           />
           <Button
             type="submit"
@@ -366,7 +366,11 @@ export function LeadForm({ variant = "light" }: { variant?: "light" | "dark" }) 
     <form onSubmit={handleSubmit} className="space-y-4">
       <input type="text" name="name" placeholder="Full Name" required className={inputClasses} />
       <input type="email" name="email" placeholder="Email Address" required className={inputClasses} />
-      <input type="tel" name="phone" placeholder="Phone / WhatsApp Number" className={inputClasses} />
+      <PhoneInput
+        name="phone"
+        placeholder="Phone / WhatsApp Number"
+        variant={variant}
+      />
       <select name="units" className={inputClasses} defaultValue="">
         <option value="" disabled>How many units are you considering?</option>
         <option value="1">1 unit</option>

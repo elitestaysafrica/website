@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import PhoneInput from "@/components/PhoneInput"
 import { ChevronDown, CheckCircle2, Bell } from "lucide-react"
 import { useState, FormEvent } from "react"
 
@@ -192,12 +193,11 @@ export function NotifyForm({ variant = "dark" }: { variant?: "light" | "dark" })
         placeholder="Email address"
         className={inputClasses}
       />
-      <input
+      <PhoneInput
         name="phone"
-        type="tel"
         required
         placeholder="WhatsApp number (e.g. 0712 345 678)"
-        className={inputClasses}
+        variant={variant}
       />
       <select name="tier" required className={selectClasses}>
         <option value="">Which tier interests you?</option>

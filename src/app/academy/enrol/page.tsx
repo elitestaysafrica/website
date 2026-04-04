@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { ArrowLeft, CheckCircle2, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import PhoneInput from "@/components/PhoneInput"
 
 const tiers = [
   { value: "self-starter", label: "Self-Starter — KES 25,000" },
@@ -158,13 +159,12 @@ export default function EnrolPage() {
                 <label htmlFor="whatsapp" className="block text-sm font-medium text-gray-300 mb-1">
                   WhatsApp Number *
                 </label>
-                <input
-                  type="tel"
+                <PhoneInput
                   id="whatsapp"
                   name="whatsapp"
                   required
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-4 py-3 text-white placeholder-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-                  placeholder="+254 7XX XXX XXX"
+                  variant="dark"
+                  placeholder="7XX XXX XXX"
                 />
                 <p className="mt-1 text-xs text-gray-500">We&apos;ll use this to notify you when pre-sale opens</p>
               </div>

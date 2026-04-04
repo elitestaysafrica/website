@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
         FIRSTNAME: name?.split(" ")[0] || "",
         LASTNAME: name?.split(" ").slice(1).join(" ") || "",
       }
-      if (phone) attributes.WHATSAPP = phone
+      if (phone) attributes.WHATSAPP = phone.replace(/\D/g, "")
       if (subject) attributes.SUBJECT = subject
       if (message) attributes.MESSAGE = message
 

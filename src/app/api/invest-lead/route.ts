@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
         FIRSTNAME: name?.split(" ")[0] || "",
         LASTNAME: name?.split(" ").slice(1).join(" ") || "",
       }
-      if (phone) attributes.WHATSAPP = phone
+      if (phone) attributes.WHATSAPP = phone.replace(/\D/g, "")
       if (listingUrl) attributes.LISTING_URL = listingUrl
       if (avgBookings) attributes.AVG_BOOKINGS = avgBookings
       if (nightlyRate) attributes.NIGHTLY_RATE = nightlyRate
