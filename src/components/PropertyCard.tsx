@@ -1,11 +1,11 @@
 'use client';
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { MapPin, Users, Bed, Bath, Wifi, Car, Dumbbell, Waves } from "lucide-react";
 import { Property } from "@/lib/api";
+import { addBookingTrackingParams, trackPropertyBookingClick } from "@/lib/analytics";
 import { useCurrency } from "@/components/CurrencySelector";
 
 interface PropertyCardProps {
@@ -17,6 +17,13 @@ interface PropertyCardProps {
 export function PropertyCard({ property, showBookButton = true, priority = false }: PropertyCardProps) {
   const mainPhoto = property.photos[0];
   const { convert } = useCurrency();
+  const trackedBookingUrl = property.bookingUrl
+    ? addBookingTrackingParams(property.bookingUrl, {
+        propertySlug: property.slug,
+        source: 'property_card',
+        buttonText: 'Book Now',
+      })
+    : null;
   
   return (
     <div className="group rounded-2xl bg-white shadow-sm ring-1 ring-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
@@ -116,9 +123,24 @@ export function PropertyCard({ property, showBookButton = true, priority = false
             </span>
             {property.price && <span className="text-gray-500 text-sm"> / night</span>}
           </div>
-          {showBookButton && property.bookingUrl && (
+          {showBookButton && trackedBookingUrl && (
             <Button size="sm" asChild>
-              <a href={property.bookingUrl} target="_blank" rel="noopener noreferrer">
+              <a
+                href={trackedBookingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() =>
+                  trackPropertyBookingClick({
+                    propertyId: property.id,
+                    propertySlug: property.slug,
+                    propertyName: property.name,
+                    location: property.location,
+                    source: 'property_card',
+                    buttonText: 'Book Now',
+                    destinationUrl: trackedBookingUrl,
+                  })
+                }
+              >
                 Book Now
               </a>
             </Button>

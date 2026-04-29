@@ -6,6 +6,7 @@ import { format, differenceInDays, addDays, parseISO } from 'date-fns';
 import { Users, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCurrency } from '@/components/CurrencySelector';
+import { addBookingTrackingParams, trackPropertyBookingClick } from '@/lib/analytics';
 import Link from 'next/link';
 import 'react-day-picker/style.css';
 
@@ -25,6 +26,7 @@ export function BookingWidget({
   checkInTime,
   checkOutTime,
   bookingUrl,
+  slug,
   bookedDates = [],
 }: BookingWidgetProps) {
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
@@ -50,30 +52,42 @@ export function BookingWidget({
     : 0;
   const total = price ? price * nights : 0;
 
-  // Build Airbnb URL with dates
+  const buttonText = nights > 0 ? 'Reserve on Airbnb' : 'Check Availability';
+  const checkIn = dateRange?.from ? format(dateRange.from, 'yyyy-MM-dd') : undefined;
+  const checkOut = dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined;
+
+  // Build Airbnb URL with dates and campaign tracking
   const buildBookingUrl = () => {
     if (!bookingUrl) return null;
-    
-    let url = bookingUrl;
-    const params = new URLSearchParams();
-    
-    if (dateRange?.from) {
-      params.set('check_in', format(dateRange.from, 'yyyy-MM-dd'));
+
+    try {
+      const url = new URL(bookingUrl);
+      
+      if (checkIn) {
+        url.searchParams.set('check_in', checkIn);
+      }
+      if (checkOut) {
+        url.searchParams.set('check_out', checkOut);
+      }
+      if (guests > 1) {
+        url.searchParams.set('guests', guests.toString());
+      }
+      
+      return addBookingTrackingParams(url.toString(), {
+        propertySlug: slug,
+        source: 'property_page_booking_widget',
+        buttonText,
+      });
+    } catch {
+      return addBookingTrackingParams(bookingUrl, {
+        propertySlug: slug,
+        source: 'property_page_booking_widget',
+        buttonText,
+      });
     }
-    if (dateRange?.to) {
-      params.set('check_out', format(dateRange.to, 'yyyy-MM-dd'));
-    }
-    if (guests > 1) {
-      params.set('guests', guests.toString());
-    }
-    
-    const queryString = params.toString();
-    if (queryString) {
-      url += (url.includes('?') ? '&' : '?') + queryString;
-    }
-    
-    return url;
   };
+
+  const trackedBookingUrl = buildBookingUrl();
 
   return (
     <div className="sticky top-24 rounded-2xl border border-gray-200 p-6 shadow-lg bg-white">
@@ -171,10 +185,26 @@ export function BookingWidget({
       )}
 
       {/* Book Button */}
-      {bookingUrl ? (
+      {trackedBookingUrl ? (
         <Button size="lg" className="w-full text-base" asChild>
-          <a href={buildBookingUrl() || bookingUrl} target="_blank" rel="noopener noreferrer">
-            {nights > 0 ? 'Reserve on Airbnb' : 'Check Availability'}
+          <a
+            href={trackedBookingUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() =>
+              trackPropertyBookingClick({
+                propertySlug: slug,
+                source: 'property_page_booking_widget',
+                buttonText,
+                destinationUrl: trackedBookingUrl,
+                nights,
+                guests,
+                checkIn,
+                checkOut,
+              })
+            }
+          >
+            {buttonText}
             <ExternalLink className="h-4 w-4 ml-2" />
           </a>
         </Button>
