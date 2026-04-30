@@ -17,6 +17,9 @@ interface BookingWidgetProps {
   checkOutTime: string;
   bookingUrl: string | null;
   slug: string;
+  propertyId?: number;
+  propertyName?: string;
+  location?: string;
   bookedDates?: { start: string; end: string }[];
 }
 
@@ -27,6 +30,9 @@ export function BookingWidget({
   checkOutTime,
   bookingUrl,
   slug,
+  propertyId,
+  propertyName,
+  location,
   bookedDates = [],
 }: BookingWidgetProps) {
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
@@ -193,7 +199,10 @@ export function BookingWidget({
             rel="noopener noreferrer"
             onClick={() =>
               trackPropertyBookingClick({
+                propertyId,
                 propertySlug: slug,
+                propertyName,
+                location,
                 source: 'property_page_booking_widget',
                 buttonText,
                 destinationUrl: trackedBookingUrl,

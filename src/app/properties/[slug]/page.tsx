@@ -215,6 +215,9 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
               checkOutTime={property.checkOutTime}
               bookingUrl={property.bookingUrl}
               slug={property.slug}
+              propertyId={property.id}
+              propertyName={property.name}
+              location={property.location}
               bookedDates={bookedDates}
             />
           </div>
