@@ -5,9 +5,11 @@ import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Providers } from "@/components/Providers";
+import { MetaPixelPageView } from "@/components/MetaPixelPageView";
 
 const inter = Inter({ subsets: ["latin"] });
 const GA_ID = "G-K2K44Z6MSN";
+const META_PIXEL_ID = "981780637838760";
 
 export const metadata: Metadata = {
   icons: {
@@ -79,8 +81,31 @@ export default function RootLayout({
             gtag('config', '${GA_ID}');
           `}
         </Script>
+        <Script id="meta-pixel" strategy="afterInteractive">
+          {`
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '${META_PIXEL_ID}');
+          `}
+        </Script>
       </head>
       <body className={inter.className}>
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: 'none' }}
+            src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
+            alt=""
+          />
+        </noscript>
+        <MetaPixelPageView />
         <Providers>
           <Header />
           <main className="min-h-screen">{children}</main>

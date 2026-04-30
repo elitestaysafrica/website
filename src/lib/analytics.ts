@@ -15,6 +15,7 @@ export type PropertyBookingClickParams = {
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
+    fbq?: (...args: unknown[]) => void;
   }
 }
 
@@ -31,11 +32,11 @@ export function trackPropertyBookingClick({
   checkIn,
   checkOut,
 }: PropertyBookingClickParams) {
-  if (typeof window === 'undefined' || typeof window.gtag !== 'function') {
+  if (typeof window === 'undefined') {
     return;
   }
 
-  window.gtag('event', 'property_booking_click', {
+  const eventParams = {
     property_id: propertyId,
     property_slug: propertySlug,
     property_name: propertyName,
@@ -47,7 +48,15 @@ export function trackPropertyBookingClick({
     guests,
     check_in: checkIn,
     check_out: checkOut,
-  });
+  };
+
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'property_booking_click', eventParams);
+  }
+
+  if (typeof window.fbq === 'function') {
+    window.fbq('trackCustom', 'PropertyBookingIntent', eventParams);
+  }
 }
 
 export function addBookingTrackingParams(
