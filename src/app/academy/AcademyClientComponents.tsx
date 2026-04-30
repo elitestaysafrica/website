@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import PhoneInput from "@/components/PhoneInput"
+import Link from "next/link"
 import { ChevronDown, CheckCircle2, Bell } from "lucide-react"
 import { useState, FormEvent } from "react"
 import { trackAcademyInterest } from "@/lib/analytics"
@@ -223,6 +224,9 @@ export function NotifyForm({ variant = "dark" }: { variant?: "light" | "dark" })
           </>
         )}
       </Button>
+      <p className={`text-xs text-center ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+        By joining the list, you agree we may contact you about ESA Academy and handle your information according to our <Link href="/privacy-policy" className="underline hover:text-primary">Privacy Policy</Link>.
+      </p>
     </form>
   )
 }

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import PhoneInput from "@/components/PhoneInput"
+import Link from "next/link"
 import { ArrowRight, CheckCircle2, ChevronDown, Mail } from "lucide-react"
 import { useState, FormEvent } from "react"
 import { trackAcademyInterest, trackInvestorIntent } from "@/lib/analytics"
@@ -274,7 +275,7 @@ export function AuditForm({ variant = "light" }: { variant?: "light" | "dark" })
             {!loading && <ArrowRight className="ml-2 h-5 w-5" />}
           </Button>
           <p className={`text-xs text-center ${isDark ? "text-gray-400" : "text-gray-500"}`}>
-            100% free. No obligations, no spam. We&apos;ll reply within 48 hours.
+            100% free. No obligations, no spam. By submitting, you agree we may contact you about Elite Stays Africa services and handle your information according to our <Link href="/privacy-policy" className="underline hover:text-primary">Privacy Policy</Link>.
           </p>
         </>
       )}
@@ -335,18 +336,23 @@ export function AcademySignup() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-      <input
-        type="email"
-        name="email"
-        placeholder="Enter your email"
-        required
-        className="flex-1 rounded-lg border border-gray-600 bg-gray-800 px-4 py-3 text-white placeholder-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-      />
-      <Button type="submit" size="lg" disabled={loading}>
-        {loading ? "..." : "Notify Me"}
-        {!loading && <Mail className="ml-2 h-4 w-4" />}
-      </Button>
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+      <div className="flex flex-col sm:flex-row gap-3">
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+          className="flex-1 rounded-lg border border-gray-600 bg-gray-800 px-4 py-3 text-white placeholder-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        />
+        <Button type="submit" size="lg" disabled={loading}>
+          {loading ? "..." : "Notify Me"}
+          {!loading && <Mail className="ml-2 h-4 w-4" />}
+        </Button>
+      </div>
+      <p className="mt-3 text-center text-xs text-gray-400">
+        By joining the list, you agree we may contact you about ESA Academy and handle your information according to our <Link href="/privacy-policy" className="underline hover:text-primary">Privacy Policy</Link>.
+      </p>
     </form>
   )
 }
@@ -422,7 +428,7 @@ export function LeadForm({ variant = "light" }: { variant?: "light" | "dark" }) 
         {!loading && <ArrowRight className="ml-2 h-5 w-5" />}
       </Button>
       <p className={`text-xs text-center ${isDark ? "text-gray-400" : "text-gray-500"}`}>
-        Free consultation. No obligations, no spam.
+        Free consultation. No obligations, no spam. By submitting, you agree we may contact you and handle your information according to our <Link href="/privacy-policy" className="underline hover:text-primary">Privacy Policy</Link>.
       </p>
     </form>
   )

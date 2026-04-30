@@ -320,7 +320,9 @@ function LeadCaptureForm() {
         {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Mail className="h-4 w-4 mr-2" />}
         Get the Full Market Report
       </Button>
-      <p className="text-xs text-gray-500 text-center">Free monthly reports. Unsubscribe anytime.</p>
+      <p className="text-xs text-gray-500 text-center">
+        Free monthly reports. Unsubscribe anytime. By submitting, you agree we may contact you and handle your information according to our <Link href="/privacy-policy" className="underline hover:text-primary">Privacy Policy</Link>.
+      </p>
     </form>
   )
 }

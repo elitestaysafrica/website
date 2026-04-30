@@ -12,6 +12,7 @@ const navigation = {
   company: [
     { name: "About Us", href: "/about" },
     { name: "Contact", href: "/contact" },
+    { name: "Privacy Policy", href: "/privacy-policy" },
   ],
   forOwners: [
     { name: "Partner With Us", href: "/invest" },

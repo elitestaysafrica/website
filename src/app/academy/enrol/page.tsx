@@ -342,7 +342,7 @@ export default function EnrolPage() {
             </Button>
 
             <p className="text-center text-xs text-gray-500">
-              No payment required now. We&apos;ll reach out on WhatsApp when enrolment opens.
+              No payment required now. By joining the waitlist, you agree we may contact you about ESA Academy and handle your information according to our <Link href="/privacy-policy" className="underline hover:text-primary">Privacy Policy</Link>.
             </p>
           </form>
         </div>

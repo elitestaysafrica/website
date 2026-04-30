@@ -6,6 +6,7 @@ import PhoneInput from "@/components/PhoneInput"
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react"
 import { trackContactClick, trackGuestIntent, trackInvestorIntent } from "@/lib/analytics"
 import { TrackPageIntent } from "@/components/IntentTracking"
+import Link from "next/link"
 
 const contactMethods = [
   {
@@ -309,6 +310,9 @@ export default function ContactPage() {
                     <Button type="submit" size="lg" disabled={isSubmitting} className="w-full sm:w-auto">
                       {isSubmitting ? "Sending..." : "Send Message"}
                     </Button>
+                    <p className="mt-3 text-xs text-gray-500">
+                      By submitting, you agree we may contact you about your inquiry and handle your information according to our <Link href="/privacy-policy" className="underline hover:text-primary">Privacy Policy</Link>.
+                    </p>
                   </div>
                 </form>
               )}
