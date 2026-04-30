@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { getProperties, Property } from "@/lib/api";
 import { Suspense } from "react";
 import { PropertyFilter } from "./PropertyFilter";
+import { IntentLink } from "@/components/IntentLink";
 
 export const metadata = {
   title: 'Short-Term Rental Properties in Nairobi | Elite Stays Africa',
@@ -107,12 +108,17 @@ export default function PropertiesPage() {
               <Button asChild>
                 <Link href="/contact">Get in Touch</Link>
               </Button>
-              <a
+              <IntentLink
                 href="https://wa.me/254111695444"
+                audienceType="guest"
+                intentType="whatsapp_click"
+                ctaText="Or message us on WhatsApp"
+                pagePath="/properties"
+                standardEvent="Contact"
                 className="text-sm text-gray-600 hover:text-primary transition-colors"
               >
                 Or message us on WhatsApp
-              </a>
+              </IntentLink>
             </div>
           </div>
         </div>

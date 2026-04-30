@@ -22,6 +22,8 @@ import {
 } from "lucide-react"
 
 import { useCurrency } from "@/components/CurrencySelector"
+import { TrackPageIntent } from "@/components/IntentTracking"
+import { trackInvestorIntent } from "@/lib/analytics"
 
 // USD to KES approximate rate (fallback)
 const USD_TO_KES = 129
@@ -273,6 +275,13 @@ function LeadCaptureForm() {
     try {
       await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://staff.elitestaysafrica.com/api/website"}/market-intel-lead`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.fromEntries(formData)) })
     } catch { /* */ }
+    trackInvestorIntent({
+      intentType: "lead_submit",
+      pagePath: "/market-intel",
+      formName: "market_intel_report_form",
+      source: "market-intel",
+      leadType: String(formData.get("role") || "market-intel-lead"),
+    }, "Lead")
     setLoading(false)
     setSubmitted(true)
   }
@@ -377,6 +386,12 @@ export default function MarketIntelContent({ initialData }: { initialData: Marke
 
   return (
     <div className="pt-24">
+      <TrackPageIntent
+        audienceType="investor"
+        intentType="market_intel_view"
+        pagePath="/market-intel"
+        pageTitle="Market Intel"
+      />
 
       {/* ══════ HERO (light, matches home page) ══════ */}
       <section className="py-16 bg-gradient-to-b from-gray-50 to-white">

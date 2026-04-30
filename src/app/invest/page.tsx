@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
 import { Price } from "@/components/Price"
 import {
   TrendingUp,
@@ -21,6 +20,8 @@ import {
   Handshake,
 } from "lucide-react"
 import { AuditForm, FAQItem } from "./InvestClientComponents"
+import { TrackPageIntent } from "@/components/IntentTracking"
+import { IntentLink } from "@/components/IntentLink"
 
 /* ─── Why we outperform ─── */
 const whyBetter = [
@@ -123,6 +124,12 @@ const faqs = [
 export default function InvestPage() {
   return (
     <div className="pt-24">
+      <TrackPageIntent
+        audienceType="investor"
+        intentType="page_view"
+        pagePath="/invest"
+        pageTitle="Invest / Owner Services"
+      />
       {/* ═══ HERO ═══ */}
       <section className="relative py-16 sm:py-24 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
         <div className="absolute inset-0 opacity-5">
@@ -161,7 +168,9 @@ export default function InvestPage() {
 
               <div className="mt-8 lg:hidden">
                 <Button size="lg" asChild className="w-full">
-                  <a href="#free-audit">Get a Free Listing Audit</a>
+                  <IntentLink href="#free-audit" audienceType="investor" intentType="audit_cta_click" ctaText="Get a Free Listing Audit" pagePath="/invest">
+                    Get a Free Listing Audit
+                  </IntentLink>
                 </Button>
               </div>
             </div>
@@ -339,7 +348,9 @@ export default function InvestPage() {
                     <span>Photography & physical items billed at cost</span>
                   </div>
                   <Button size="sm" variant="outline" asChild>
-                    <a href="#free-audit">Get Started <ArrowRight className="ml-1 h-3 w-3" /></a>
+                    <IntentLink href="#free-audit" audienceType="investor" intentType="audit_cta_click" ctaText="Get Started" pagePath="/invest">
+                      Get Started <ArrowRight className="ml-1 h-3 w-3" />
+                    </IntentLink>
                   </Button>
                 </div>
               </div>
@@ -445,10 +456,10 @@ export default function InvestPage() {
               </ul>
               <div className="mt-6">
                 <Button size="lg" asChild className="w-full">
-                  <a href="#free-audit">
+                  <IntentLink href="#free-audit" audienceType="investor" intentType="audit_cta_click" ctaText="Get My Free Audit" pagePath="/invest">
                     Get My Free Audit
                     <ArrowRight className="ml-2 h-4 w-4" />
-                  </a>
+                  </IntentLink>
                 </Button>
               </div>
             </div>
@@ -601,9 +612,9 @@ export default function InvestPage() {
                     </div>
                     <div className="pt-2">
                       <Button size="sm" asChild>
-                        <a href="https://wa.me/254111695444">
-                          Inquire About Management
-                        </a>
+                    <IntentLink href="https://wa.me/254111695444" audienceType="investor" intentType="whatsapp_click" ctaText="Inquire About Management" pagePath="/invest" standardEvent="Contact">
+                      Inquire About Management
+                    </IntentLink>
                       </Button>
                     </div>
                   </div>
@@ -857,9 +868,9 @@ export default function InvestPage() {
                 Three tiers from KES 25K. Early-bird pricing won&apos;t last.
               </p>
               <Button size="lg" asChild>
-                <Link href="/academy">
+                <IntentLink href="/academy" audienceType="academy" intentType="academy_cross_sell_click" ctaText="See the Course" pagePath="/invest">
                   See the Course <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
+                </IntentLink>
               </Button>
             </div>
           </div>
@@ -916,10 +927,10 @@ export default function InvestPage() {
               </div>
               <div className="mt-8">
                 <Button size="lg" className="border border-gray-500 bg-transparent text-white hover:bg-white/10" asChild>
-                  <a href="https://wa.me/254111695444">
+                  <IntentLink href="https://wa.me/254111695444" audienceType="investor" intentType="whatsapp_click" ctaText="Or message us on WhatsApp" pagePath="/invest" standardEvent="Contact">
                     <Phone className="mr-2 h-5 w-5" />
                     Or message us on WhatsApp
-                  </a>
+                  </IntentLink>
                 </Button>
               </div>
             </div>

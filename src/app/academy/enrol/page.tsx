@@ -6,6 +6,8 @@ import Image from "next/image"
 import { ArrowLeft, CheckCircle2, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import PhoneInput from "@/components/PhoneInput"
+import { trackAcademyInterest } from "@/lib/analytics"
+import { TrackPageIntent } from "@/components/IntentTracking"
 
 const tiers = [
   { value: "self-starter", label: "Self-Starter — KES 25,000" },
@@ -72,7 +74,16 @@ export default function EnrolPage() {
           interestedIn: `${data.tier} | Exp: ${data.experience} | Budget: ${data.budget} | Timeline: ${data.timeline} | Heard: ${data.hearAbout} | Note: ${data.message}`,
         }),
       })
-      if (res.ok) setSubmitted(true)
+      if (res.ok) {
+        trackAcademyInterest({
+          intentType: "lead_submit",
+          pagePath: "/academy/enrol",
+          formName: "academy_enrol_form",
+          source: "academy-enrol",
+          tier: data.tier,
+        }, "Lead")
+        setSubmitted(true)
+      }
       else alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
     } catch {
       alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
@@ -104,6 +115,12 @@ export default function EnrolPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+      <TrackPageIntent
+        audienceType="academy"
+        intentType="enrol_page_view"
+        pagePath="/academy/enrol"
+        pageTitle="ESA Academy Enrol"
+      />
       <div className="container mx-auto px-6 py-16 lg:py-24">
         {/* Back link */}
         <Link

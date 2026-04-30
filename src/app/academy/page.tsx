@@ -14,6 +14,8 @@ import {
   Wrench,
 } from "lucide-react"
 import { ModuleAccordion, FAQItem } from "./AcademyClientComponents"
+import { TrackPageIntent } from "@/components/IntentTracking"
+import { IntentLink } from "@/components/IntentLink"
 
 const faqs = [
   {
@@ -45,6 +47,12 @@ const faqs = [
 export default function AcademyPage() {
   return (
     <div className="pt-24">
+      <TrackPageIntent
+        audienceType="academy"
+        intentType="page_view"
+        pagePath="/academy"
+        pageTitle="ESA Academy"
+      />
       {/* ═══ HERO ═══ */}
       <section className="relative py-16 sm:py-24 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
         <div className="absolute inset-0 opacity-5">
@@ -300,7 +308,9 @@ export default function AcademyPage() {
                   className="w-full border-gray-600 text-white hover:bg-gray-700"
                   asChild
                 >
-                  <a href="/academy/enrol">Enrol Now</a>
+                <IntentLink href="/academy/enrol" audienceType="academy" intentType="enrol_cta_click" ctaText="Enrol Now" pagePath="/academy">
+                  Enrol Now
+                </IntentLink>
                 </Button>
               </div>
             </div>
@@ -341,7 +351,9 @@ export default function AcademyPage() {
               </ul>
               <div className="mt-8">
                 <Button size="lg" className="w-full" asChild>
-                  <a href="/academy/enrol">Enrol Now</a>
+                  <IntentLink href="/academy/enrol" audienceType="academy" intentType="enrol_cta_click" ctaText="Enrol Now" pagePath="/academy">
+                    Enrol Now
+                  </IntentLink>
                 </Button>
               </div>
             </div>
@@ -374,7 +386,9 @@ export default function AcademyPage() {
                   className="w-full border-gray-600 text-white hover:bg-gray-700"
                   asChild
                 >
-                  <a href="/academy/enrol">Apply Now</a>
+                  <IntentLink href="/academy/enrol" audienceType="academy" intentType="apply_cta_click" ctaText="Apply Now" pagePath="/academy">
+                    Apply Now
+                  </IntentLink>
                 </Button>
               </div>
             </div>
@@ -447,9 +461,9 @@ export default function AcademyPage() {
             </p>
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button size="lg" asChild>
-                <a href="/academy/enrol">
+                <IntentLink href="/academy/enrol" audienceType="academy" intentType="enrol_cta_click" ctaText="Enrol Now" pagePath="/academy">
                   Enrol Now <ArrowRight className="ml-2 h-5 w-5" />
-                </a>
+                </IntentLink>
               </Button>
               <Button variant="outline" size="lg" asChild className="border-gray-600 text-white hover:bg-gray-700">
                 <Link href="/invest">

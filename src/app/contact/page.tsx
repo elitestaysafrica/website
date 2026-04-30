@@ -4,6 +4,8 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import PhoneInput from "@/components/PhoneInput"
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react"
+import { trackContactClick, trackGuestIntent, trackInvestorIntent } from "@/lib/analytics"
+import { TrackPageIntent } from "@/components/IntentTracking"
 
 const contactMethods = [
   {
@@ -65,6 +67,24 @@ export default function ContactPage() {
         throw new Error('Failed to send message')
       }
       
+      if (formData.subject === "partnership") {
+        trackInvestorIntent({
+          intentType: "lead_submit",
+          pagePath: "/contact",
+          formName: "contact_form",
+          source: "contact-page",
+          subject: formData.subject,
+        }, "Lead")
+      } else {
+        trackGuestIntent({
+          intentType: "lead_submit",
+          pagePath: "/contact",
+          formName: "contact_form",
+          source: "contact-page",
+          subject: formData.subject,
+        }, "Lead")
+      }
+
       setSubmitted(true)
     } catch {
       setError('Something went wrong. Please try WhatsApp or email instead.')
@@ -84,6 +104,12 @@ export default function ContactPage() {
 
   return (
     <div className="pt-24">
+      <TrackPageIntent
+        audienceType="guest"
+        intentType="contact_page_view"
+        pagePath="/contact"
+        pageTitle="Contact"
+      />
       {/* Hero */}
       <section className="py-16 sm:py-24">
         <div className="container mx-auto px-6 lg:px-8">
@@ -117,6 +143,14 @@ export default function ContactPage() {
                   {method.href ? (
                     <a
                       href={method.href}
+                      onClick={() => trackContactClick({
+                        audienceType: method.description.toLowerCase().includes("booking") ? "guest" : "investor",
+                        intentType: method.title.toLowerCase() === "email" ? "email_click" : "whatsapp_click",
+                        pagePath: "/contact",
+                        ctaText: method.value,
+                        destinationUrl: method.href ?? undefined,
+                        source: "contact_method_card",
+                      })}
                       className="mt-2 block text-sm font-medium text-primary hover:underline"
                     >
                       {method.value}

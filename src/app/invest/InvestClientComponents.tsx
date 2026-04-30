@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import PhoneInput from "@/components/PhoneInput"
 import { ArrowRight, CheckCircle2, ChevronDown, Mail } from "lucide-react"
 import { useState, FormEvent } from "react"
+import { trackAcademyInterest, trackInvestorIntent } from "@/lib/analytics"
 
 export function FAQItem({ q, a }: { q: string; a: string }) {
   return (
@@ -66,7 +67,17 @@ export function AuditForm({ variant = "light" }: { variant?: "light" | "dark" })
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       })
-      if (res.ok) setSubmitted(true)
+      if (res.ok) {
+        trackInvestorIntent({
+          intentType: "lead_submit",
+          pagePath: "/invest",
+          formName: "invest_audit_form",
+          source: data.source,
+          journey,
+          leadType: journey === "have-listing" ? "listing-audit" : "new-host-inquiry",
+        }, "Lead")
+        setSubmitted(true)
+      }
       else alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
     } catch {
       alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
@@ -112,13 +123,33 @@ export function AuditForm({ variant = "light" }: { variant?: "light" | "dark" })
       <div className="flex gap-3">
         <div
           className={pillClasses(journey === "have-listing")}
-          onClick={() => { setJourney("have-listing"); setShowOtherInput(false) }}
+          onClick={() => {
+            setJourney("have-listing")
+            setShowOtherInput(false)
+            trackInvestorIntent({
+              intentType: "journey_select",
+              pagePath: "/invest",
+              ctaText: "I have a listing",
+              journey: "have-listing",
+              source: "invest_audit_form",
+            })
+          }}
         >
           I have a listing
         </div>
         <div
           className={pillClasses(journey === "looking-to-start")}
-          onClick={() => { setJourney("looking-to-start"); setShowOtherInput(false) }}
+          onClick={() => {
+            setJourney("looking-to-start")
+            setShowOtherInput(false)
+            trackInvestorIntent({
+              intentType: "journey_select",
+              pagePath: "/invest",
+              ctaText: "I'm looking to start",
+              journey: "looking-to-start",
+              source: "invest_audit_form",
+            })
+          }}
         >
           I&apos;m looking to start
         </div>
@@ -278,7 +309,15 @@ export function AcademySignup() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       })
-      if (res.ok) setSubmitted(true)
+      if (res.ok) {
+        trackAcademyInterest({
+          intentType: "lead_submit",
+          pagePath: "/invest",
+          formName: "academy_waitlist_inline",
+          source: "academy-waitlist",
+        }, "Lead")
+        setSubmitted(true)
+      }
       else alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
     } catch {
       alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")

@@ -5,6 +5,7 @@ import { PhotoGallery } from "@/components/PhotoGallery";
 import { BookingWidget } from "@/components/BookingWidget";
 import { AmenitiesList } from "@/components/AmenitiesList";
 import { PropertyMap } from "@/components/PropertyMap";
+import { TrackPageIntent } from "@/components/IntentTracking";
 import {
   MapPin,
   Bed,
@@ -122,6 +123,15 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
 
   return (
     <div className="pt-24 pb-16">
+      <TrackPageIntent
+        audienceType="guest"
+        intentType="property_view"
+        pagePath={`/properties/${property.slug}`}
+        pageTitle={property.name}
+        propertySlug={property.slug}
+        propertyName={property.name}
+        propertyLocation={property.location}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(lodgingSchema) }}

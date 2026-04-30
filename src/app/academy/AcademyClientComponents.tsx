@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import PhoneInput from "@/components/PhoneInput"
 import { ChevronDown, CheckCircle2, Bell } from "lucide-react"
 import { useState, FormEvent } from "react"
+import { trackAcademyInterest } from "@/lib/analytics"
 
 const modules = [
   {
@@ -145,6 +146,13 @@ export function NotifyForm({ variant = "dark" }: { variant?: "light" | "dark" })
         body: JSON.stringify(data),
       })
       if (res.ok) {
+        trackAcademyInterest({
+          intentType: "lead_submit",
+          pagePath: "/academy",
+          formName: "academy_notify_form",
+          source: "academy-notify",
+          tier: data.interestedIn,
+        }, "Lead")
         setSubmitted(true)
       } else {
         alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
