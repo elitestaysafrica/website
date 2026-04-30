@@ -6,15 +6,11 @@ import { Button } from "@/components/ui/button"
 import {
   BarChart3,
   TrendingUp,
-  TrendingDown,
   Minus,
   MapPin,
   ArrowRight,
   Building2,
-  Percent,
-  DollarSign,
   Calendar,
-  Users,
   Target,
   Clock,
   Star,
@@ -77,21 +73,25 @@ function Stars({ rating, size = "sm", light = false }: { rating: number; size?: 
 
 // Hook: detect mobile viewport
 function useIsMobile(breakpoint = 640) {
-  const [mobile, setMobile] = useState(false)
+  const [mobile, setMobile] = useState(() => {
+    if (typeof window === "undefined") return false
+    return window.matchMedia(`(max-width: ${breakpoint}px)`).matches
+  })
+
   useEffect(() => {
     const mq = window.matchMedia(`(max-width: ${breakpoint}px)`)
-    setMobile(mq.matches)
     const handler = (e: MediaQueryListEvent) => setMobile(e.matches)
     mq.addEventListener("change", handler)
     return () => mq.removeEventListener("change", handler)
   }, [breakpoint])
+
   return mobile
 }
 
 // Forward-looking line chart: today → 30 days out
 function ForwardCurveChart({ data }: { data: { date: string; day: number; market_pct: number | null; esa_pct: number | null }[] }) {
-  if (!data || data.length < 2) return null
   const mobile = useIsMobile()
+  if (!data || data.length < 2) return null
   const w = 640, h = mobile ? 300 : 260
   const pad = mobile ? { top: 30, right: 15, bottom: 45, left: 40 } : { top: 30, right: 25, bottom: 40, left: 50 }
   const iW = w - pad.left - pad.right
@@ -105,7 +105,7 @@ function ForwardCurveChart({ data }: { data: { date: string; day: number; market
   const y = (v: number) => pad.top + iH - ((v - minY) / (maxY - minY)) * iH
 
   const mkLine = (key: "market_pct" | "esa_pct") =>
-    data.filter(d => d[key] != null).map((d, i, arr) => `${i === 0 ? "M" : "L"}${x(data.indexOf(d))},${y(d[key]!)}`).join(" ")
+    data.filter(d => d[key] != null).map((d, i) => `${i === 0 ? "M" : "L"}${x(data.indexOf(d))},${y(d[key]!)}`).join(" ")
 
   const esaLine = mkLine("esa_pct")
   const mktLine = mkLine("market_pct")
@@ -161,8 +161,8 @@ function ForwardCurveChart({ data }: { data: { date: string; day: number; market
 
 // Trailing 30-day occupancy chart: ESA real, market estimated, avg manager band
 function TrailingOccupancyChart({ data }: { data: { date: string; esa: number; market: number; avg_manager: number }[] }) {
-  if (!data || data.length < 2) return null
   const mobile = useIsMobile()
+  if (!data || data.length < 2) return null
   const w = 640, h = mobile ? 320 : 280
   const pad = mobile ? { top: 30, right: 15, bottom: 45, left: 40 } : { top: 30, right: 25, bottom: 40, left: 50 }
   const iW = w - pad.left - pad.right
@@ -336,7 +336,7 @@ const faqItems: { q: string; a: string; aJsx?: React.ReactNode }[] = [
   {
     q: "How much can I earn from Airbnb in Nairobi?",
     a: "Earnings vary by location, property size, and management quality. A well-managed 1-bedroom apartment in Westlands or Kilimani can generate KES 150,000–200,000+ per month. 2-bedroom units in premium locations can exceed KES 250,000/month. These figures assume professional management with 75%+ occupancy.",
-    aJsx: <>Earnings vary by location, <a href="#occupancy-by-size" className="text-green-400 underline">property size</a>, and management quality. A well-managed 1-bedroom apartment in Westlands or Kilimani can generate KES 150,000–200,000+ per month. 2-bedroom units in premium locations can exceed KES 250,000/month. These figures assume professional management with 75%+ occupancy. See <a href="/properties" className="text-green-400 underline">our current listings</a> for real examples.</>,
+    aJsx: <>Earnings vary by location, <a href="#occupancy-by-size" className="text-green-400 underline">property size</a>, and management quality. A well-managed 1-bedroom apartment in Westlands or Kilimani can generate KES 150,000–200,000+ per month. 2-bedroom units in premium locations can exceed KES 250,000/month. These figures assume professional management with 75%+ occupancy. See <Link href="/properties" className="text-green-400 underline">our current listings</Link> for real examples.</>,
   },
   {
     q: "What is the average nightly rate for Airbnb in Nairobi?",

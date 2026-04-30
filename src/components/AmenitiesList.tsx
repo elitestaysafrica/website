@@ -23,9 +23,7 @@ import {
   Lock,
   Video,
   Flame,
-  Snowflake,
   Sun,
-  Moon,
   Check,
 } from 'lucide-react';
 

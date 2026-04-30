@@ -66,7 +66,7 @@ export default function ContactPage() {
       }
       
       setSubmitted(true)
-    } catch (err) {
+    } catch {
       setError('Something went wrong. Please try WhatsApp or email instead.')
     } finally {
       setIsSubmitting(false)
@@ -264,6 +264,12 @@ export default function ContactPage() {
                       className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                     />
                   </div>
+
+                  {error && (
+                    <p className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
+                      {error}
+                    </p>
+                  )}
 
                   <div>
                     <Button type="submit" size="lg" disabled={isSubmitting} className="w-full sm:w-auto">

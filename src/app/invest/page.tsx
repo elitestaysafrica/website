@@ -7,7 +7,6 @@ import {
   CheckCircle2,
   ArrowRight,
   BarChart3,
-  Building2,
   Users,
   Star,
   Zap,
@@ -15,13 +14,10 @@ import {
   Phone,
   Sofa,
   CreditCard,
-  Eye,
   Camera,
   RefreshCw,
   GraduationCap,
   Search,
-  ClipboardCheck,
-  Paintbrush,
   Handshake,
 } from "lucide-react"
 import { AuditForm, FAQItem } from "./InvestClientComponents"

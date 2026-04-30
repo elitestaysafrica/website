@@ -37,34 +37,35 @@ interface CurrencyContextType {
 const CurrencyContext = createContext<CurrencyContextType | null>(null);
 
 export function CurrencyProvider({ children }: { children: React.ReactNode }) {
-  const [currency, setCurrencyState] = useState('KES');
+  const [currency, setCurrencyState] = useState(() => {
+    if (typeof window === 'undefined') return 'KES';
+
+    const saved = window.localStorage.getItem('preferred_currency');
+    return saved && CURRENCIES[saved] ? saved : 'KES';
+  });
   const [rates, setRates] = useState<Record<string, number>>(FALLBACK_RATES);
   const [ratesSource, setRatesSource] = useState('fallback');
 
   useEffect(() => {
-    // Load currency preference from localStorage
-    const saved = localStorage.getItem('preferred_currency');
-    if (saved && CURRENCIES[saved]) {
-      setCurrencyState(saved);
-    }
+    let cancelled = false;
 
-    // Fetch live rates
-    fetchRates();
+    fetch('/api/rates')
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => {
+        if (!cancelled && data) {
+          setRates(data.rates);
+          setRatesSource(data.source);
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to fetch rates:', error);
+        // Keep using fallback rates
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
-
-  const fetchRates = async () => {
-    try {
-      const response = await fetch('/api/rates');
-      if (response.ok) {
-        const data = await response.json();
-        setRates(data.rates);
-        setRatesSource(data.source);
-      }
-    } catch (error) {
-      console.error('Failed to fetch rates:', error);
-      // Keep using fallback rates
-    }
-  };
 
   const setCurrency = (curr: string) => {
     setCurrencyState(curr);

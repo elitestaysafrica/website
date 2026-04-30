@@ -40,24 +40,16 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
     }
   }, [lightboxOpen, photos, loadedImages]);
 
-  if (photos.length === 0) {
-    return (
-      <div className="aspect-[16/9] bg-gray-100 rounded-2xl flex items-center justify-center">
-        <span className="text-gray-400">No photos available</span>
-      </div>
-    );
-  }
-
   const openLightbox = (index: number) => {
     setCurrentIndex(index);
     setLightboxOpen(true);
     document.body.style.overflow = 'hidden';
   };
 
-  const closeLightbox = () => {
+  const closeLightbox = useCallback(() => {
     setLightboxOpen(false);
     document.body.style.overflow = '';
-  };
+  }, []);
 
   const goNext = useCallback(() => {
     if (isTransitioning) return;
@@ -112,7 +104,15 @@ export function PhotoGallery({ photos, name }: PhotoGalleryProps) {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [lightboxOpen, goNext, goPrev]);
+  }, [lightboxOpen, closeLightbox, goNext, goPrev]);
+
+  if (photos.length === 0) {
+    return (
+      <div className="aspect-[16/9] bg-gray-100 rounded-2xl flex items-center justify-center">
+        <span className="text-gray-400">No photos available</span>
+      </div>
+    );
+  }
 
   // Get indices for prev, current, next for smooth transitions
   const prevIndex = (currentIndex - 1 + photos.length) % photos.length;

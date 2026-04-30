@@ -5,13 +5,9 @@ import Link from "next/link"
 import {
   GraduationCap,
   BookOpen,
-  Users,
-  Star,
   CheckCircle2,
   Shield,
-  Clock,
   Award,
-  Building2,
   TrendingUp,
   ArrowRight,
   Home,

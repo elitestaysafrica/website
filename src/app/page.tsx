@@ -2,7 +2,7 @@ import { Hero } from "@/components/sections/hero";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { PropertyCard } from "@/components/PropertyCard";
-import { getProperties, getStats } from "@/lib/api";
+import { getProperties } from "@/lib/api";
 import { StatsWithCurrency } from "@/components/StatsWithCurrency";
 import { 
   MapPin, 
@@ -191,9 +191,7 @@ function MarketIntelTeaser() {
 }
 
 // For Investors Section
-async function ForInvestors() {
-  const stats = await getStats();
-  
+function ForInvestors() {
   return (
     <section className="py-24 bg-gray-900">
       <div className="container mx-auto px-6 lg:px-8">

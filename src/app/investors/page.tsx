@@ -14,7 +14,6 @@ import {
   BarChart3,
   Calendar,
   CheckCircle2,
-  ArrowRight,
   Calculator,
   Phone,
   Mail
