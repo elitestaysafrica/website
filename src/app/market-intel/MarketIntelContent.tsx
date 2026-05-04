@@ -273,8 +273,13 @@ function LeadCaptureForm() {
     setLoading(true)
     const formData = new FormData(e.currentTarget)
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://staff.elitestaysafrica.com/api/website"}/market-intel-lead`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.fromEntries(formData)) })
-    } catch { /* */ }
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://staff.elitestaysafrica.com/api/website"}/market-intel-lead`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.fromEntries(formData)) })
+      if (!response.ok) throw new Error("Market intel lead capture failed")
+    } catch {
+      setLoading(false)
+      alert("Something went wrong. Please try again or WhatsApp us at +254 111 695 444.")
+      return
+    }
     trackInvestorIntent({
       intentType: "lead_submit",
       pagePath: "/market-intel",

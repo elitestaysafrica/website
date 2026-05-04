@@ -15,6 +15,7 @@ const contactMethods = [
     description: "For general inquiries and bookings",
     value: "hello@elitestaysafrica.com",
     href: "mailto:hello@elitestaysafrica.com",
+    audienceType: "guest" as const,
   },
   {
     icon: MessageCircle,
@@ -22,6 +23,7 @@ const contactMethods = [
     description: "Quick responses, 24/7",
     value: "Message us on WhatsApp",
     href: "https://wa.me/254111695444",
+    audienceType: "guest" as const,
   },
   {
     icon: Phone,
@@ -29,6 +31,7 @@ const contactMethods = [
     description: "Business hours: 8am - 8pm EAT",
     value: "Available via WhatsApp",
     href: "https://wa.me/254111695444",
+    audienceType: "guest" as const,
   },
   {
     icon: MapPin,
@@ -36,6 +39,7 @@ const contactMethods = [
     description: "Based in Nairobi, Kenya",
     value: "Nairobi, Kenya",
     href: null,
+    audienceType: "guest" as const,
   },
 ]
 
@@ -145,7 +149,7 @@ export default function ContactPage() {
                     <a
                       href={method.href}
                       onClick={() => trackContactClick({
-                        audienceType: method.description.toLowerCase().includes("booking") ? "guest" : "investor",
+                        audienceType: method.audienceType,
                         intentType: method.title.toLowerCase() === "email" ? "email_click" : "whatsapp_click",
                         pagePath: "/contact",
                         ctaText: method.value,

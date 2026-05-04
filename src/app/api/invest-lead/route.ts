@@ -7,6 +7,14 @@ const BREVO_INVESTORS_LIST = 11
 const BREVO_ACADEMY_LIST = 12
 const NOTIFICATION_EMAIL = "hello@elitestaysafrica.com"
 
+function isAcademySource(source: string) {
+  return ["academy-waitlist", "academy-notify", "academy-enrol"].includes(source)
+}
+
+function hasPropertyInHand(value?: string) {
+  return ["yes", "yes-own", "yes-lease"].includes(value || "")
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
@@ -52,16 +60,16 @@ export async function POST(req: NextRequest) {
       // Tag the lead source via LEAD_SOURCE attribute
       const leadSource =
         source === "listing-audit" ? "Listing Audit" :
-        source === "new-host-inquiry" ? (hasProperty === "yes" ? "New Host - Has Property" : "New Host - No Property") :
-        source === "academy-waitlist" || source === "academy-notify" ? "Academy" :
+        source === "new-host-inquiry" ? (hasPropertyInHand(hasProperty) ? "New Host - Has Property" : "New Host - No Property") :
+        isAcademySource(source) ? "Academy" :
         "Consultation"
       attributes.LEAD_SOURCE = leadSource
 
       // Route to correct list based on source
       const listId =
         source === "listing-audit" ? BREVO_HOSTS_LIST :
-        source === "new-host-inquiry" ? (hasProperty === "no" ? BREVO_INVESTORS_LIST : BREVO_HOSTS_LIST) :
-        source === "academy-waitlist" || source === "academy-notify" ? BREVO_ACADEMY_LIST :
+        source === "new-host-inquiry" ? (hasPropertyInHand(hasProperty) ? BREVO_HOSTS_LIST : BREVO_INVESTORS_LIST) :
+        isAcademySource(source) ? BREVO_ACADEMY_LIST :
         BREVO_INVESTORS_LIST  // default consultation = investor
 
       await fetch("https://api.brevo.com/v3/contacts", {
@@ -117,7 +125,7 @@ export async function POST(req: NextRequest) {
           <p><strong>Time:</strong> ${new Date().toISOString()}</p>
           <p><em>Reply within 48 hours with the audit report.</em></p>
         `
-      } else if (source === "academy-waitlist" || source === "academy-notify") {
+      } else if (isAcademySource(source)) {
         subject = `🎓 Academy Pre-Sale Signup: ${name || phone || email}`
         htmlContent = `
           <h2>New Academy Pre-Sale Signup</h2>

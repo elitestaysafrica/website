@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { getProperties, Property } from "@/lib/api";
 import { Suspense } from "react";
 import { PropertyFilter } from "./PropertyFilter";
 import { IntentLink } from "@/components/IntentLink";
+import { TrackPageIntent } from "@/components/IntentTracking";
 
 export const metadata = {
   title: 'Short-Term Rental Properties in Nairobi | Elite Stays Africa',
@@ -75,6 +75,12 @@ function LoadingSkeleton() {
 export default function PropertiesPage() {
   return (
     <div className="pt-24">
+      <TrackPageIntent
+        audienceType="guest"
+        intentType="properties_list_view"
+        pagePath="/properties"
+        pageTitle="Short-Term Rental Apartments in Nairobi"
+      />
       {/* Hero */}
       <section className="py-12 sm:py-16">
         <div className="container mx-auto px-6 lg:px-8">
@@ -106,7 +112,15 @@ export default function PropertiesPage() {
             </p>
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button asChild>
-                <Link href="/contact">Get in Touch</Link>
+                <IntentLink
+                  href="/contact"
+                  audienceType="guest"
+                  intentType="contact_cta_click"
+                  ctaText="Get in Touch"
+                  pagePath="/properties"
+                >
+                  Get in Touch
+                </IntentLink>
               </Button>
               <IntentLink
                 href="https://wa.me/254111695444"
