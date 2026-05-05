@@ -8,6 +8,7 @@ function MetaPixelPageViewInner() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    if (pathname?.startsWith('/class')) return;
     if (typeof window.fbq !== 'function') return;
 
     window.fbq('track', 'PageView');

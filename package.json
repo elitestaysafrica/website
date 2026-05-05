@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/generate-masterclass-content.mjs && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sync:masterclass": "node scripts/generate-masterclass-content.mjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",

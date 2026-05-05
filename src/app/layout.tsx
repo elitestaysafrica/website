@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
 import { Providers } from "@/components/Providers";
 import { MetaPixelPageView } from "@/components/MetaPixelPageView";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 
 const inter = Inter({ subsets: ["latin"] });
 const GA_ID = "G-K2K44Z6MSN";
@@ -107,9 +106,7 @@ export default function RootLayout({
         </noscript>
         <MetaPixelPageView />
         <Providers>
-          <Header />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
+          <SiteChrome>{children}</SiteChrome>
         </Providers>
       </body>
     </html>
