@@ -201,11 +201,11 @@ export default function PhoneInput({
           disabled={disabled}
           aria-label="Country code"
           className={`rounded-l-lg border px-2 py-3 text-sm ${baseClasses} ${focusClasses}`}
-          style={{ minWidth: "120px" }}
+          style={{ minWidth: "92px", maxWidth: "108px" }}
         >
           {COUNTRY_OPTIONS.map((country, i) => (
             <option key={`${country.code}-${i}`} value={country.code}>
-              {country.label} {country.flag} +{country.code}
+              {country.flag} +{country.code}
             </option>
           ))}
         </select>
