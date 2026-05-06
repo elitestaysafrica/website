@@ -118,7 +118,7 @@ export default function StartPage() {
         <div className="absolute -right-32 top-20 -z-10 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
         <div className="absolute -left-24 top-56 -z-10 h-64 w-64 rounded-full bg-gray-100 blur-3xl" />
 
-        <div className="mx-auto max-w-md sm:max-w-lg">
+        <div className="mx-auto" style={{ maxWidth: '34rem' }}>
           <div className="flex justify-center">
             <Image
               src="/images/logo.png"
