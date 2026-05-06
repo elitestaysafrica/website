@@ -163,7 +163,7 @@ export default function StartPage() {
 
               <div className="mt-5 flex flex-wrap justify-center gap-2 text-xs font-semibold text-gray-600">
                 <span className="rounded-full bg-gray-50 px-3 py-1.5 ring-1 ring-gray-200">Nairobi operators</span>
-                <span className="rounded-full bg-gray-50 px-3 py-1.5 ring-1 ring-gray-200">12 units</span>
+                <span className="rounded-full bg-gray-50 px-3 py-1.5 ring-1 ring-gray-200">5,000+ guests hosted</span>
                 <span className="rounded-full bg-gray-50 px-3 py-1.5 ring-1 ring-gray-200">4+ years</span>
               </div>
             </div>
