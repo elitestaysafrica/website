@@ -22,6 +22,16 @@ type IntentParams = {
   subject?: string;
 };
 
+type PathPickerIntentParams = {
+  pathKey: string;
+  pathLabel: string;
+  ctaText: string;
+  destinationUrl: string;
+  pagePath: string;
+  pageTitle?: string;
+  source?: string;
+};
+
 export type PropertyBookingClickParams = {
   propertyId?: number;
   propertySlug: string;
@@ -183,6 +193,33 @@ export function trackContactClick(params: IntentParams) {
       cta_text: params.ctaText,
       destination_url: params.destinationUrl,
       subject: params.subject,
+    },
+  });
+}
+
+export function trackPathPickerIntent({
+  pathKey,
+  pathLabel,
+  ctaText,
+  destinationUrl,
+  pagePath,
+  pageTitle,
+  source,
+}: PathPickerIntentParams) {
+  sendAnalyticsEvent({
+    gaEventName: 'path_picker_click',
+    metaCustomEventName: 'PathPickerClick',
+    metaStandardEventName: 'ViewContent',
+    params: {
+      audience_type: pathKey,
+      intent_type: 'path_picker_click',
+      path_key: pathKey,
+      path_label: pathLabel,
+      page_path: pagePath,
+      page_title: pageTitle,
+      cta_text: ctaText,
+      destination_url: destinationUrl,
+      source,
     },
   });
 }

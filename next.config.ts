@@ -22,6 +22,11 @@ const nextConfig: NextConfig = {
         destination: '/properties',
         permanent: false, // temporary until reward page is built
       },
+      {
+        source: '/tiktok',
+        destination: '/start',
+        permanent: false,
+      },
     ];
   },
   async rewrites() {

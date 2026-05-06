@@ -7,8 +7,9 @@ import { Footer } from "./footer";
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isPrivateClassArea = pathname?.startsWith("/class");
+  const isFocusedLandingPage = pathname?.startsWith("/start");
 
-  if (isPrivateClassArea) {
+  if (isPrivateClassArea || isFocusedLandingPage) {
     return <main className="min-h-screen">{children}</main>;
   }
 
