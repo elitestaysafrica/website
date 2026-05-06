@@ -8,7 +8,13 @@ const BREVO_ACADEMY_LIST = 12
 const NOTIFICATION_EMAIL = "hello@elitestaysafrica.com"
 
 function isAcademySource(source: string) {
-  return ["academy-waitlist", "academy-notify", "academy-enrol"].includes(source)
+  return [
+    "academy-waitlist",
+    "academy-notify",
+    "academy-enrol",
+    "academy-enrol-step1",
+    "academy-enrol-step2",
+  ].includes(source)
 }
 
 function hasPropertyInHand(value?: string) {
@@ -20,6 +26,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const {
       source = "consultation",
+      notify = true,
       name,
       email,
       phone,
@@ -88,6 +95,10 @@ export async function POST(req: NextRequest) {
       })
 
       // 2. Send notification email (different format per source)
+      if (!notify) {
+        return NextResponse.json({ ok: true })
+      }
+
       let subject = ""
       let htmlContent = ""
 

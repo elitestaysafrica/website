@@ -1,6 +1,6 @@
 export type AudienceType = 'guest' | 'investor' | 'academy';
 
-type MetaStandardEvent = 'ViewContent' | 'Lead' | 'Contact';
+type MetaStandardEvent = 'ViewContent' | 'Lead' | 'Contact' | 'InitiateCheckout' | 'CompleteRegistration';
 
 type IntentParams = {
   audienceType?: AudienceType;

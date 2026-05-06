@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button"
-import { Price } from "@/components/Price"
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -12,6 +11,7 @@ import {
   ArrowRight,
   Home,
   Wrench,
+  Lock,
 } from "lucide-react"
 import { ModuleAccordion, FAQItem } from "./AcademyClientComponents"
 import { TrackPageIntent } from "@/components/IntentTracking"
@@ -97,9 +97,9 @@ export default function AcademyPage() {
 
             <div className="mt-10">
               <Button size="lg" asChild>
-                <a href="#pricing">
-                  Enrol Now <ArrowRight className="ml-2 h-5 w-5" />
-                </a>
+                <IntentLink href="/academy/enrol" audienceType="academy" intentType="pricing_reveal_cta_click" ctaText="See Pricing + Curriculum" pagePath="/academy">
+                  See Pricing + Curriculum <ArrowRight className="ml-2 h-5 w-5" />
+                </IntentLink>
               </Button>
             </div>
           </div>
@@ -276,6 +276,7 @@ export default function AcademyPage() {
             </h2>
             <p className="mt-4 text-lg text-gray-300">
               Three tiers. Same course. Different levels of hands-on support.
+              Reserve interest first to see founding member pricing and full tier details.
             </p>
           </div>
 
@@ -283,10 +284,9 @@ export default function AcademyPage() {
             {/* Self-Starter */}
             <div className="rounded-2xl border border-gray-700 bg-gray-800/50 backdrop-blur p-8 flex flex-col">
               <h3 className="text-xl font-bold text-white">Self-Starter</h3>
-              <div className="mt-4">
-                <span className="text-4xl font-bold text-white">
-                  <Price amount={25000} />
-                </span>
+              <div className="mt-4 flex items-center gap-2 text-primary font-semibold">
+                <Lock className="h-4 w-4" />
+                Pricing revealed after interest form
               </div>
               <ul className="mt-8 space-y-3 flex-1">
                 {[
@@ -308,9 +308,9 @@ export default function AcademyPage() {
                   className="w-full border-gray-600 text-white hover:bg-gray-700"
                   asChild
                 >
-                <IntentLink href="/academy/enrol" audienceType="academy" intentType="enrol_cta_click" ctaText="Enrol Now" pagePath="/academy">
-                  Enrol Now
-                </IntentLink>
+                  <IntentLink href="/academy/enrol" audienceType="academy" intentType="pricing_reveal_cta_click" ctaText="See Self-Starter Pricing" pagePath="/academy">
+                    See Self-Starter Pricing
+                  </IntentLink>
                 </Button>
               </div>
             </div>
@@ -321,19 +321,13 @@ export default function AcademyPage() {
                 Most Popular
               </div>
               <h3 className="text-xl font-bold text-white">Guided Launch</h3>
-              <div className="mt-4">
-                <span className="text-lg text-gray-500 line-through">
-                  <Price amount={75000} />
-                </span>
-                <div className="mt-1">
-                  <span className="text-4xl font-bold text-white">
-                    <Price amount={45000} />
-                  </span>
-                </div>
+              <div className="mt-4 flex items-center gap-2 text-primary font-semibold">
+                <Lock className="h-4 w-4" />
+                Founding pricing shown after you reserve interest
               </div>
               <div className="mt-3 rounded-lg bg-green-500/20 border border-green-500/30 px-4 py-2 text-center">
-                <div className="text-sm font-bold text-green-400">🔥 Pre-Launch: 40% OFF</div>
-                <div className="text-xs text-green-400/80 mt-0.5">Price increases weekly until launch</div>
+                <div className="text-sm font-bold text-green-400">🔥 Pre-Launch founding offer</div>
+                <div className="text-xs text-green-400/80 mt-0.5">No payment now — see the tier breakdown first</div>
               </div>
               <ul className="mt-8 space-y-3 flex-1">
                 {[
@@ -351,8 +345,8 @@ export default function AcademyPage() {
               </ul>
               <div className="mt-8">
                 <Button size="lg" className="w-full" asChild>
-                  <IntentLink href="/academy/enrol" audienceType="academy" intentType="enrol_cta_click" ctaText="Enrol Now" pagePath="/academy">
-                    Enrol Now
+                  <IntentLink href="/academy/enrol" audienceType="academy" intentType="pricing_reveal_cta_click" ctaText="See Guided Launch Pricing" pagePath="/academy">
+                    See Guided Launch Pricing
                   </IntentLink>
                 </Button>
               </div>
@@ -361,10 +355,9 @@ export default function AcademyPage() {
             {/* Done-With-You */}
             <div className="rounded-2xl border border-gray-700 bg-gray-800/50 backdrop-blur p-8 flex flex-col">
               <h3 className="text-xl font-bold text-white">Done-With-You</h3>
-              <div className="mt-4">
-                <span className="text-4xl font-bold text-white">
-                  <Price amount={250000} />
-                </span>
+              <div className="mt-4 flex items-center gap-2 text-primary font-semibold">
+                <Lock className="h-4 w-4" />
+                Application pricing shown after interest form
               </div>
               <ul className="mt-8 space-y-3 flex-1">
                 {[
@@ -386,8 +379,8 @@ export default function AcademyPage() {
                   className="w-full border-gray-600 text-white hover:bg-gray-700"
                   asChild
                 >
-                  <IntentLink href="/academy/enrol" audienceType="academy" intentType="apply_cta_click" ctaText="Apply Now" pagePath="/academy">
-                    Apply Now
+                  <IntentLink href="/academy/enrol" audienceType="academy" intentType="pricing_reveal_cta_click" ctaText="Apply for Done-With-You" pagePath="/academy">
+                    Apply for Done-With-You
                   </IntentLink>
                 </Button>
               </div>
@@ -403,7 +396,7 @@ export default function AcademyPage() {
               </div>
               <p className="mt-2 text-sm text-gray-300">
                 Complete everything and can&apos;t launch in 6 months? Full
-                refund. 
+                refund. Founding prices are shown after you reserve interest.
               </p>
             </div>
           </div>
@@ -461,8 +454,8 @@ export default function AcademyPage() {
             </p>
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button size="lg" asChild>
-                <IntentLink href="/academy/enrol" audienceType="academy" intentType="enrol_cta_click" ctaText="Enrol Now" pagePath="/academy">
-                  Enrol Now <ArrowRight className="ml-2 h-5 w-5" />
+                <IntentLink href="/academy/enrol" audienceType="academy" intentType="enrol_cta_click" ctaText="Reserve Your Spot" pagePath="/academy">
+                  Reserve Your Spot <ArrowRight className="ml-2 h-5 w-5" />
                 </IntentLink>
               </Button>
               <Button variant="outline" size="lg" asChild className="border-gray-600 text-white hover:bg-gray-700">
