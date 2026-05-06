@@ -35,7 +35,13 @@ export function PathPickerLink({
     onClick?.(event);
   };
 
-  if (href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:')) {
+  const shouldUsePlainAnchor =
+    href.startsWith('http') ||
+    href.startsWith('mailto:') ||
+    href.startsWith('tel:') ||
+    href.startsWith('/blog');
+
+  if (shouldUsePlainAnchor) {
     return (
       <a href={href} onClick={handleClick} {...props}>
         {children}
@@ -44,7 +50,7 @@ export function PathPickerLink({
   }
 
   return (
-    <Link href={href} onClick={handleClick} {...props}>
+    <Link href={href} onClick={handleClick} prefetch={false} {...props}>
       {children}
     </Link>
   );
