@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync, writeFileSync, mkdirSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, writeFileSync, mkdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 
 const projectRoot = process.cwd();
@@ -40,6 +40,11 @@ function excerpt(content) {
     .slice(0, 2)
     .join(' ')
     .slice(0, 220);
+}
+
+if (!existsSync(masterclassRoot)) {
+  console.warn(`Masterclass source folder not found at ${masterclassRoot}; keeping checked-in generated content.`);
+  process.exit(0);
 }
 
 const relFiles = walk(masterclassRoot);
