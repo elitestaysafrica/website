@@ -255,7 +255,7 @@ export default function EnrolPage() {
               Reserve Your ESA University Spot
             </h1>
             <p className="mt-3 text-gray-400">
-              Book your spot now — no payment today. Choose your tier after we save your details.
+              Book your spot now — no payment today. Choose your tier on the next step.
             </p>
           </div>
 
