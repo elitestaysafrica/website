@@ -90,7 +90,7 @@ export default function AcademyPage() {
                 <div className="text-sm text-gray-400">Content</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-white">65+</div>
+                <div className="text-3xl font-bold text-white">55</div>
                 <div className="text-sm text-gray-400">Videos</div>
               </div>
             </div>
@@ -209,14 +209,14 @@ export default function AcademyPage() {
                 image: "/images/team/bill.webp",
                 role: "Strategy & Market Analysis",
                 bio: "American expat, 4+ years operating short-term rentals in Nairobi. Tracks 500+ listings daily. Covers pricing strategy, market analysis, business models, listing optimization, and scaling.",
-                videos: "~33 videos",
+                videos: "~30 videos",
               },
               {
                 name: "Peris",
                 image: "/images/team/peris.webp",
                 role: "Operations & Guest Experience",
                 bio: "Kenyan operations expert. Manages day-to-day across multiple properties. Covers cleaning systems, vendor sourcing, furnishing, guest experience, staff management, and local knowledge.",
-                videos: "~26 videos",
+                videos: "~25 videos",
               },
             ].map((instructor) => (
               <div
