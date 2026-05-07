@@ -82,15 +82,15 @@ export default function AcademyPage() {
 
             <div className="mt-10 flex justify-center gap-8 sm:gap-12">
               <div>
-                <div className="text-3xl font-bold text-white">10</div>
+                <div className="text-3xl font-bold text-white">8</div>
                 <div className="text-sm text-gray-400">Modules</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-white">~10 hrs</div>
+                <div className="text-3xl font-bold text-white">~4–6 hrs</div>
                 <div className="text-sm text-gray-400">Content</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-white">55</div>
+                <div className="text-3xl font-bold text-white">27</div>
                 <div className="text-sm text-gray-400">Videos</div>
               </div>
             </div>
@@ -164,8 +164,8 @@ export default function AcademyPage() {
               What You&apos;ll Learn
             </h2>
             <p className="mt-4 text-lg text-gray-600">
-              10 modules covering everything from market analysis to scaling
-              your portfolio. Each includes video lessons, quizzes, and
+              8 focused modules covering setup, launch, guests, operations,
+              money, and scaling. Each includes video lessons, quizzes, and
               downloadable resources.
             </p>
           </div>
@@ -209,14 +209,14 @@ export default function AcademyPage() {
                 image: "/images/team/bill.webp",
                 role: "Strategy & Market Analysis",
                 bio: "American expat, 4+ years operating short-term rentals in Nairobi. Tracks 500+ listings daily. Covers pricing strategy, market analysis, business models, listing optimization, and scaling.",
-                videos: "~30 videos",
+                videos: "~15 videos",
               },
               {
                 name: "Peris",
                 image: "/images/team/peris.webp",
                 role: "Operations & Guest Experience",
                 bio: "Kenyan operations expert. Manages day-to-day across multiple properties. Covers cleaning systems, vendor sourcing, furnishing, guest experience, staff management, and local knowledge.",
-                videos: "~25 videos",
+                videos: "~12 videos",
               },
             ].map((instructor) => (
               <div
@@ -290,7 +290,7 @@ export default function AcademyPage() {
               </div>
               <ul className="mt-8 space-y-3 flex-1">
                 {[
-                  "Full course — all 10 modules",
+                  "Full course — all 8 modules",
                   "Community access (Discord + WhatsApp)",
                   "All downloadable resources & templates",
                   "Quizzes + certificate",

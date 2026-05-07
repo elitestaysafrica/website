@@ -29,9 +29,9 @@ const tiers = [
     value: "self-starter",
     title: "Self-Starter",
     priceAmount: 25000,
-    summary: "All 10 modules. Watch on your time. WhatsApp community access.",
+    summary: "All 8 modules. Watch on your time. WhatsApp community access.",
     benefits: [
-      "Full course — all 10 modules",
+      "Full course — all 8 modules",
       "Community access (Discord + WhatsApp)",
       "All downloadable resources & templates",
       "Quizzes + certificate",
