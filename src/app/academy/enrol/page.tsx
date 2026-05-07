@@ -6,6 +6,7 @@ import Image from "next/image"
 import { ArrowLeft, CheckCircle2, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import PhoneInput from "@/components/PhoneInput"
+import { Price } from "@/components/Price"
 import { trackAcademyInterest } from "@/lib/analytics"
 import { TrackPageIntent } from "@/components/IntentTracking"
 
@@ -27,7 +28,7 @@ const tiers = [
   {
     value: "self-starter",
     title: "Self-Starter",
-    price: "KES 25,000",
+    priceAmount: 25000,
     summary: "All 10 modules. Watch on your time. WhatsApp community access.",
     benefits: [
       "Full course — all 10 modules",
@@ -39,7 +40,7 @@ const tiers = [
   {
     value: "guided-launch",
     title: "Guided Launch",
-    price: "KES 45,000",
+    priceAmount: 45000,
     summary: "Modules + 1-on-1 calls + listing audit + post-first-review check-in.",
     popular: true,
     benefits: [
@@ -53,7 +54,7 @@ const tiers = [
   {
     value: "done-with-you",
     title: "Done-With-You",
-    price: "KES 250,000",
+    priceAmount: 250000,
     summary: "We physically help you set up and launch your unit.",
     benefits: [
       "Everything in Guided Launch",
@@ -101,7 +102,7 @@ async function saveAcademyLead({
 }) {
   const tier = tiers.find((item) => item.value === selectedTier)
   const interestedIn = [
-    tier ? `${tier.title} — ${tier.price}` : "Academy interest captured before pricing reveal",
+    tier ? `${tier.title} — KES ${tier.priceAmount.toLocaleString()}` : "Academy interest captured before pricing reveal",
     questions?.experience ? `Exp: ${questions.experience}` : undefined,
     questions?.budget ? `Budget: ${questions.budget}` : undefined,
     questions?.timeline ? `Timeline: ${questions.timeline}` : undefined,
@@ -399,7 +400,7 @@ export default function EnrolPage() {
                       </div>
                     )}
                     <h3 className="text-lg font-bold text-white">{tier.title}</h3>
-                    <div className="mt-2 text-2xl font-bold text-primary">{tier.price}</div>
+                    <div className="mt-2 text-2xl font-bold text-primary"><Price amount={tier.priceAmount} /></div>
                     <p className="mt-2 text-sm text-gray-300">{tier.summary}</p>
                     <ul className="mt-4 space-y-2">
                       {tier.benefits.map((benefit) => (
