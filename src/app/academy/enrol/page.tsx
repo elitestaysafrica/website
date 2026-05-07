@@ -187,6 +187,17 @@ export default function EnrolPage() {
     }
   }
 
+  function handleTierSelect(tier: string) {
+    setSelectedTier(tier)
+    trackAcademyInterest({
+      intentType: "tier_select",
+      pagePath: "/academy/enrol",
+      formName: "academy_enrol_step_2",
+      source: "academy-enrol-step2",
+      tier,
+    })
+  }
+
   async function handleTierContinue() {
     if (!selectedTier) return
     setLoading(true)
@@ -387,7 +398,7 @@ export default function EnrolPage() {
                   <button
                     key={tier.value}
                     type="button"
-                    onClick={() => setSelectedTier(tier.value)}
+                    onClick={() => handleTierSelect(tier.value)}
                     className={`relative rounded-xl border p-5 text-left transition-colors ${
                       selectedTier === tier.value
                         ? "border-primary bg-primary/10"
