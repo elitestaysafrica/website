@@ -194,18 +194,17 @@ export default function PhoneInput({
 
   return (
     <div className={className}>
-      <div className="flex">
+      <div className="flex flex-col sm:flex-row">
         <select
           value={countryCode}
           onChange={(e) => setCountryCode(e.target.value)}
           disabled={disabled}
           aria-label="Country code"
-          className={`rounded-l-lg border px-2 py-3 text-sm ${baseClasses} ${focusClasses}`}
-          style={{ minWidth: "92px", maxWidth: "108px" }}
+          className={`w-full rounded-t-lg border px-3 py-3 text-sm sm:w-auto sm:min-w-[140px] sm:rounded-l-lg sm:rounded-r-none ${baseClasses} ${focusClasses}`}
         >
           {COUNTRY_OPTIONS.map((country, i) => (
             <option key={`${country.code}-${i}`} value={country.code}>
-              {country.flag} +{country.code}
+              {country.label} {country.flag} +{country.code}
             </option>
           ))}
         </select>
@@ -224,7 +223,7 @@ export default function PhoneInput({
           placeholder={placeholder}
           required={required}
           disabled={disabled}
-          className={`w-full flex-1 rounded-r-lg border border-l-0 px-4 py-3 placeholder-gray-400 ${baseClasses} ${focusClasses}`}
+          className={`w-full flex-1 rounded-b-lg border border-t-0 px-4 py-3 placeholder-gray-400 sm:rounded-b-none sm:rounded-r-lg sm:border-l-0 sm:border-t ${baseClasses} ${focusClasses}`}
         />
       </div>
 
