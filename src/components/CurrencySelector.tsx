@@ -37,17 +37,19 @@ interface CurrencyContextType {
 const CurrencyContext = createContext<CurrencyContextType | null>(null);
 
 export function CurrencyProvider({ children }: { children: React.ReactNode }) {
-  const [currency, setCurrencyState] = useState(() => {
-    if (typeof window === 'undefined') return 'KES';
-
-    const saved = window.localStorage.getItem('preferred_currency');
-    return saved && CURRENCIES[saved] ? saved : 'KES';
-  });
+  const [currency, setCurrencyState] = useState('KES');
   const [rates, setRates] = useState<Record<string, number>>(FALLBACK_RATES);
   const [ratesSource, setRatesSource] = useState('fallback');
 
   useEffect(() => {
     let cancelled = false;
+
+    const saved = window.localStorage.getItem('preferred_currency');
+    if (saved && CURRENCIES[saved]) {
+      queueMicrotask(() => {
+        if (!cancelled) setCurrencyState(saved);
+      });
+    }
 
     fetch('/api/rates')
       .then((response) => (response.ok ? response.json() : null))

@@ -12,7 +12,7 @@ const navigation = [
   // { name: "Market Intel", href: "/market-intel" }, // Temporarily hidden
   { name: "For Investors", href: "/invest" },
   { name: "Academy", href: "/academy" },
-  { name: "Blog", href: "/blog" },
+  { name: "Blog", href: "/blog", plainAnchor: true },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ]
@@ -95,13 +95,23 @@ export function Header() {
           {/* Desktop nav */}
           <div className="hidden lg:flex lg:gap-x-8">
             {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-sm font-medium text-gray-700 hover:text-primary transition-colors"
-              >
-                {item.name}
-              </Link>
+              item.plainAnchor ? (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="text-sm font-medium text-gray-700 hover:text-primary transition-colors"
+                >
+                  {item.name}
+                </a>
+              ) : (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-sm font-medium text-gray-700 hover:text-primary transition-colors"
+                >
+                  {item.name}
+                </Link>
+              )
             ))}
           </div>
 
@@ -172,24 +182,37 @@ export function Header() {
           {/* Menu content */}
           <div style={{ padding: '24px 16px' }}>
             <nav>
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  style={{
-                    display: 'block',
-                    padding: '16px',
-                    fontSize: '18px',
-                    fontWeight: 600,
-                    color: '#111827',
-                    textDecoration: 'none',
-                    borderBottom: '1px solid #f3f4f6',
-                  }}
-                >
-                  {item.name}
-                </Link>
-              ))}
+              {navigation.map((item) => {
+                const navLinkStyle = {
+                  display: 'block',
+                  padding: '16px',
+                  fontSize: '18px',
+                  fontWeight: 600,
+                  color: '#111827',
+                  textDecoration: 'none',
+                  borderBottom: '1px solid #f3f4f6',
+                }
+
+                return item.plainAnchor ? (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    style={navLinkStyle}
+                  >
+                    {item.name}
+                  </a>
+                ) : (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    style={navLinkStyle}
+                  >
+                    {item.name}
+                  </Link>
+                )
+              })}
             </nav>
 
             {/* Currency Selector for Mobile */}
