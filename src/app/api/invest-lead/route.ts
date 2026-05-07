@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
         isAcademySource(source) ? BREVO_ACADEMY_LIST :
         BREVO_INVESTORS_LIST  // default consultation = investor
 
-      await fetch("https://api.brevo.com/v3/contacts", {
+      const brevoContactRes = await fetch("https://api.brevo.com/v3/contacts", {
         method: "POST",
         headers: {
           "api-key": BREVO_API_KEY,
@@ -93,6 +93,11 @@ export async function POST(req: NextRequest) {
           updateEnabled: true,
         }),
       })
+
+      if (!brevoContactRes.ok) {
+        console.error("Brevo contact save failed", await brevoContactRes.text())
+        return NextResponse.json({ error: "Lead save failed" }, { status: 502 })
+      }
 
       // 2. Send notification email (different format per source)
       if (!notify) {
@@ -178,9 +183,14 @@ export async function POST(req: NextRequest) {
       })
     }
 
+    if (!BREVO_API_KEY) {
+      console.error("Brevo API key is not configured")
+      return NextResponse.json({ error: "Lead save unavailable" }, { status: 503 })
+    }
+
     return NextResponse.json({ ok: true })
   } catch (error) {
     console.error("Lead capture error:", error)
-    return NextResponse.json({ ok: true }) // Don't expose errors to client
+    return NextResponse.json({ error: "Lead capture failed" }, { status: 500 })
   }
 }

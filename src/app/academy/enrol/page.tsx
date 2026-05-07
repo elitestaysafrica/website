@@ -127,6 +127,7 @@ export default function EnrolPage() {
   const [step, setStep] = useState<1 | 2 | 3>(1)
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [saveError, setSaveError] = useState("")
   const [selectedTier, setSelectedTier] = useState("")
   const [contact, setContact] = useState<ContactStep>({ name: "", whatsapp: "", email: "" })
   const [questions, setQuestions] = useState<QuestionsStep>({
@@ -144,6 +145,7 @@ export default function EnrolPage() {
   }, [])
 
   async function handleContactContinue() {
+    setSaveError("")
     const nameInput = document.getElementById("name") as HTMLInputElement | null
     const emailInput = document.getElementById("email") as HTMLInputElement | null
     const currentContact = {
@@ -165,7 +167,11 @@ export default function EnrolPage() {
     setContact(currentContact)
     setLoading(true)
     try {
-      await saveAcademyLead({ contact: currentContact })
+      const res = await saveAcademyLead({ contact: currentContact })
+      if (!res.ok) {
+        setSaveError("We couldn't save your details. Please try again or WhatsApp us at +254 111 695 444.")
+        return
+      }
       trackAcademyInterest({
         intentType: "contact_step_submit",
         pagePath: "/academy/enrol",
@@ -174,7 +180,7 @@ export default function EnrolPage() {
       }, "Lead")
       setStep(2)
     } catch {
-      setStep(2)
+      setSaveError("We couldn't save your details. Please try again or WhatsApp us at +254 111 695 444.")
     } finally {
       setLoading(false)
     }
@@ -360,6 +366,9 @@ export default function EnrolPage() {
               >
                 {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Saving...</> : "Show Me the Tiers"}
               </Button>
+              {saveError && (
+                <p className="text-center text-sm text-red-400">{saveError}</p>
+              )}
             </section>
           )}
 
