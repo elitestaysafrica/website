@@ -86,7 +86,7 @@ export default function AcademyPage() {
                 <div className="text-sm text-gray-400">Modules</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-white">~4–6 hrs</div>
+                <div className="text-3xl font-bold text-white">6+ hrs</div>
                 <div className="text-sm text-gray-400">Content</div>
               </div>
               <div>

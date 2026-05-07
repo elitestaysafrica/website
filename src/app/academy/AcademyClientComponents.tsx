@@ -12,49 +12,82 @@ const modules = [
     num: 1,
     title: "STR Foundations",
     videos: 1,
-    desc: "STR vs Airbnb, business models, tradeoffs, location choices, deal math, red flags, and choosing your path.",
+    lessons: ["STR Foundations"],
   },
   {
     num: 2,
     title: "Furnishing & Setting Up",
     videos: 5,
-    desc: "Setup principles, budget, room-by-room setup, essentials, 5-star touches, photography, and pre-launch walkthrough.",
+    lessons: [
+      "Setup Principles & Budget",
+      "Room-by-Room Setup",
+      "Essentials Checklist & 5-Star Touches",
+      "Photography Strategy & Shoot Day",
+      "Pre-Launch Walkthrough",
+    ],
   },
   {
     num: 3,
     title: "The Listing & Launch Pricing",
     videos: 3,
-    desc: "Title, description, photo order, amenities, rules, trust signals, and launch pricing strategy.",
+    lessons: [
+      "Title, Description & Photo Order",
+      "Amenities, Rules & Trust Signals",
+      "Launch Pricing Strategy",
+    ],
   },
   {
     num: 4,
     title: "Guest Acquisition & Ongoing Pricing",
     videos: 4,
-    desc: "Airbnb as the foundation, off-Airbnb channels, repeat guests, referrals, and ongoing market-based pricing.",
+    lessons: [
+      "Airbnb as Foundation",
+      "Off-Airbnb Channels",
+      "Repeat Guests & Referrals",
+      "Ongoing Pricing & Market Reading",
+    ],
   },
   {
     num: 5,
     title: "Guest Communications",
     videos: 3,
-    desc: "Message templates, the guest journey, check-in, during-stay support, complaints, checkout, and reviews.",
+    lessons: [
+      "Message Templates & The Guest Journey",
+      "Check-In & During-Stay",
+      "Complaints, Checkout & Reviews",
+    ],
   },
   {
     num: 6,
     title: "Operations & Maintenance",
     videos: 3,
-    desc: "Cleaning, turnover, maintenance, supplies, guest issues, protection, refunds, reviews, insurance, and post-mortems.",
+    lessons: [
+      "Cleaning & Turnover System",
+      "Maintenance & Supplies",
+      "When Things Go Wrong",
+    ],
   },
   {
     num: 7,
     title: "Money: Finances, Reporting & Taxes",
     videos: 3,
-    desc: "Revenue vs profit, monthly review, owner reporting, and Kenya tax basics for STR operators.",
+    lessons: [
+      "Revenue vs Profit & Monthly Review",
+      "Owner Reporting",
+      "Taxes for STR Operators in Kenya",
+    ],
   },
   {
     num: 8,
     title: "Scaling & Implementation",
     videos: 5,
-    desc: "When to scale, what breaks, SOPs before hiring, scaling models, 30/60/90 launch plan, and professional-operator mindset.",
+    lessons: [
+      "When to Scale & What Breaks",
+      "SOPs Before Hiring",
+      "Scaling Models",
+      "30/60/90-Day Launch Plan",
+      "Closing: Become A Professional Operator",
+    ],
   },
 ]
 
@@ -87,9 +120,16 @@ export function ModuleAccordion() {
             />
           </button>
           {openIndex === i && (
-            <div className="px-6 pb-5 pl-20 text-gray-600 leading-relaxed">
-              {mod.desc}
-            </div>
+            <ol className="space-y-2 px-6 pb-6 pl-20 text-gray-600">
+              {mod.lessons.map((lesson, lessonIndex) => (
+                <li key={lesson} className="flex gap-3 leading-relaxed">
+                  <span className="font-semibold text-primary">
+                    {mod.num}.{lessonIndex + 1}
+                  </span>
+                  <span>{lesson}</span>
+                </li>
+              ))}
+            </ol>
           )}
         </div>
       ))}
