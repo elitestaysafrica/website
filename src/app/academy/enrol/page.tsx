@@ -144,10 +144,28 @@ export default function EnrolPage() {
   }, [])
 
   async function handleContactContinue() {
-    if (!contact.name || !contact.whatsapp || !contact.email) return
+    const nameInput = document.getElementById("name") as HTMLInputElement | null
+    const emailInput = document.getElementById("email") as HTMLInputElement | null
+    const currentContact = {
+      ...contact,
+      name: nameInput?.value.trim() || "",
+      email: emailInput?.value.trim() || "",
+    }
+
+    if (!currentContact.name) {
+      nameInput?.focus()
+      return
+    }
+    if (!currentContact.whatsapp) return
+    if (!currentContact.email) {
+      emailInput?.focus()
+      return
+    }
+
+    setContact(currentContact)
     setLoading(true)
     try {
-      await saveAcademyLead({ contact })
+      await saveAcademyLead({ contact: currentContact })
       trackAcademyInterest({
         intentType: "contact_step_submit",
         pagePath: "/academy/enrol",
@@ -296,8 +314,8 @@ export default function EnrolPage() {
                   type="text"
                   id="name"
                   required
-                  value={contact.name}
-                  onChange={(e) => setContact((current) => ({ ...current, name: e.target.value }))}
+                  name="name"
+                  autoComplete="name"
                   className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-4 py-3 text-white caret-white placeholder-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                   placeholder="John Kamau"
                 />
@@ -326,8 +344,8 @@ export default function EnrolPage() {
                   type="email"
                   id="email"
                   required
-                  value={contact.email}
-                  onChange={(e) => setContact((current) => ({ ...current, email: e.target.value }))}
+                  name="email"
+                  autoComplete="email"
                   className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-4 py-3 text-white caret-white placeholder-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                   placeholder="john@example.com"
                 />
@@ -337,7 +355,7 @@ export default function EnrolPage() {
                 type="button"
                 size="lg"
                 className="w-full text-lg py-6"
-                disabled={loading || !contact.name || !contact.whatsapp || !contact.email}
+                disabled={loading}
                 onClick={handleContactContinue}
               >
                 {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Saving...</> : "Show Me the Tiers"}
