@@ -294,7 +294,8 @@ export default function EnrolPage() {
                   required
                   value={contact.name}
                   onChange={(e) => setContact({ ...contact, name: e.target.value })}
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-4 py-3 text-white placeholder-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                  className="w-full rounded-lg border border-gray-600 bg-gray-700 px-4 py-3 text-white caret-white placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                  style={{ color: "#ffffff", WebkitTextFillColor: "#ffffff" }}
                   placeholder="John Kamau"
                 />
               </div>
@@ -324,7 +325,8 @@ export default function EnrolPage() {
                   required
                   value={contact.email}
                   onChange={(e) => setContact({ ...contact, email: e.target.value })}
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-4 py-3 text-white placeholder-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                  className="w-full rounded-lg border border-gray-600 bg-gray-700 px-4 py-3 text-white caret-white placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                  style={{ color: "#ffffff", WebkitTextFillColor: "#ffffff" }}
                   placeholder="john@example.com"
                 />
               </div>
