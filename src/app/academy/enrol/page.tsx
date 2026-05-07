@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowLeft, CheckCircle2, Loader2 } from "lucide-react"
@@ -138,6 +138,10 @@ export default function EnrolPage() {
   })
 
   const selectedTierDetails = tiers.find((tier) => tier.value === selectedTier)
+
+  const handleWhatsappChange = useCallback((value: string) => {
+    setContact((current) => ({ ...current, whatsapp: value }))
+  }, [])
 
   async function handleContactContinue() {
     if (!contact.name || !contact.whatsapp || !contact.email) return
@@ -293,9 +297,8 @@ export default function EnrolPage() {
                   id="name"
                   required
                   value={contact.name}
-                  onChange={(e) => setContact({ ...contact, name: e.target.value })}
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700 px-4 py-3 text-white caret-white placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-                  style={{ color: "#ffffff", WebkitTextFillColor: "#ffffff" }}
+                  onChange={(e) => setContact((current) => ({ ...current, name: e.target.value }))}
+                  className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-4 py-3 text-white caret-white placeholder-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                   placeholder="John Kamau"
                 />
               </div>
@@ -309,7 +312,7 @@ export default function EnrolPage() {
                   name="whatsapp"
                   required
                   variant="dark"
-                  onValueChange={(value) => setContact({ ...contact, whatsapp: value })}
+                  onValueChange={handleWhatsappChange}
                   placeholder="7XX XXX XXX"
                 />
                 <p className="mt-1 text-xs text-gray-500">We&apos;ll use this to notify you when pre-sale opens</p>
@@ -324,9 +327,8 @@ export default function EnrolPage() {
                   id="email"
                   required
                   value={contact.email}
-                  onChange={(e) => setContact({ ...contact, email: e.target.value })}
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700 px-4 py-3 text-white caret-white placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-                  style={{ color: "#ffffff", WebkitTextFillColor: "#ffffff" }}
+                  onChange={(e) => setContact((current) => ({ ...current, email: e.target.value }))}
+                  className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-4 py-3 text-white caret-white placeholder-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                   placeholder="john@example.com"
                 />
               </div>
