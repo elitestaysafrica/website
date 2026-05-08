@@ -11,8 +11,8 @@ import {
   Sparkles,
   Star,
 } from 'lucide-react';
-import { TrackPageIntent } from '@/components/IntentTracking';
 import { PathPickerLink } from './PathPickerLink';
+import { StartPageTracking } from './StartPageTracking';
 
 export const metadata: Metadata = {
   title: 'Start Here | Elite Stays Africa',
@@ -106,12 +106,7 @@ const secondaryLinks = [
 export default function StartPage() {
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      <TrackPageIntent
-        audienceType="academy"
-        intentType="tiktok_start_page_view"
-        pagePath="/start"
-        pageTitle="Elite Stays Africa Start Here"
-      />
+      <StartPageTracking />
 
       <section className="relative isolate overflow-hidden px-4 py-8 sm:px-6 lg:px-8">
         <div className="absolute inset-x-0 top-0 -z-10 h-72 bg-gradient-to-b from-primary/10 via-primary/5 to-transparent" />

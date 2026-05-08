@@ -32,6 +32,12 @@ type PathPickerIntentParams = {
   source?: string;
 };
 
+type StartPageViewParams = {
+  pagePath: string;
+  pageTitle?: string;
+  source?: string;
+};
+
 export type PropertyBookingClickParams = {
   propertyId?: number;
   propertySlug: string;
@@ -168,6 +174,19 @@ export function trackAcademyInterest(
       form_name: params.formName,
       tier: params.tier,
       source: params.source,
+    },
+  });
+}
+
+export function trackStartPageView({ pagePath, pageTitle, source }: StartPageViewParams) {
+  sendAnalyticsEvent({
+    gaEventName: 'start_page_view',
+    metaCustomEventName: 'StartPageView',
+    params: {
+      intent_type: 'start_page_view',
+      page_path: pagePath,
+      page_title: pageTitle,
+      source,
     },
   });
 }
