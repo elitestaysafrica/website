@@ -3,7 +3,7 @@ import Script from "next/script";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
-import { MetaPixelPageView } from "@/components/MetaPixelPageView";
+import { PageViewTracking } from "@/components/PageViewTracking";
 import { SiteChrome } from "@/components/layout/SiteChrome";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -77,7 +77,7 @@ export default function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${GA_ID}');
+            gtag('config', '${GA_ID}', { send_page_view: false });
           `}
         </Script>
         <Script id="meta-pixel" strategy="afterInteractive">
@@ -104,7 +104,7 @@ export default function RootLayout({
             alt=""
           />
         </noscript>
-        <MetaPixelPageView />
+        <PageViewTracking />
         <Providers>
           <SiteChrome>{children}</SiteChrome>
         </Providers>

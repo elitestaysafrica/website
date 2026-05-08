@@ -38,6 +38,12 @@ type StartPageViewParams = {
   source?: string;
 };
 
+type PageViewParams = {
+  pagePath: string;
+  pageLocation: string;
+  pageTitle?: string;
+};
+
 export type PropertyBookingClickParams = {
   propertyId?: number;
   propertySlug: string;
@@ -95,6 +101,13 @@ function sendAnalyticsEvent({
       window.fbq('trackCustom', metaCustomEventName, eventParams);
     }
   }
+}
+
+function getPathPickerAudienceType(pathKey: string): AudienceType | undefined {
+  if (pathKey === 'academy') return 'academy';
+  if (pathKey === 'properties') return 'guest';
+  if (pathKey === 'management' || pathKey === 'furnishing') return 'investor';
+  return undefined;
 }
 
 export function trackGuestIntent(
@@ -191,6 +204,26 @@ export function trackStartPageView({ pagePath, pageTitle, source }: StartPageVie
   });
 }
 
+export function trackPageView({ pagePath, pageLocation, pageTitle }: PageViewParams) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const pageViewParams = cleanParams({
+    page_path: pagePath,
+    page_location: pageLocation,
+    page_title: pageTitle,
+  });
+
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'page_view', pageViewParams);
+  }
+
+  if (typeof window.fbq === 'function') {
+    window.fbq('track', 'PageView');
+  }
+}
+
 export function trackContactClick(params: IntentParams) {
   const audienceType = params.audienceType ?? 'guest';
   const gaEventName = `${audienceType}_contact_click`;
@@ -225,12 +258,14 @@ export function trackPathPickerIntent({
   pageTitle,
   source,
 }: PathPickerIntentParams) {
+  const audienceType = getPathPickerAudienceType(pathKey);
+
   sendAnalyticsEvent({
     gaEventName: 'path_picker_click',
     metaCustomEventName: 'PathPickerClick',
     metaStandardEventName: 'ViewContent',
     params: {
-      audience_type: pathKey,
+      audience_type: audienceType,
       intent_type: 'path_picker_click',
       path_key: pathKey,
       path_label: pathLabel,
