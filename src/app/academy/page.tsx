@@ -97,8 +97,8 @@ export default function AcademyPage() {
 
             <div className="mt-10">
               <Button size="lg" asChild>
-                <IntentLink href="/academy/enrol" audienceType="academy" intentType="pricing_reveal_cta_click" ctaText="See Pricing + Curriculum" pagePath="/academy">
-                  See Pricing + Curriculum <ArrowRight className="ml-2 h-5 w-5" />
+                <IntentLink href="/academy/enrol" audienceType="academy" intentType="curriculum_price_cta_click" ctaText="Get Curriculum + Early-Bird Price" pagePath="/academy">
+                  Get Curriculum + Early-Bird Price <ArrowRight className="ml-2 h-5 w-5" />
                 </IntentLink>
               </Button>
             </div>
@@ -308,8 +308,8 @@ export default function AcademyPage() {
                   className="w-full border-gray-600 text-white hover:bg-gray-700"
                   asChild
                 >
-                  <IntentLink href="/academy/enrol" audienceType="academy" intentType="pricing_reveal_cta_click" ctaText="View Self-Starter Details" pagePath="/academy">
-                    View Self-Starter Details
+                  <IntentLink href="/academy/enrol" audienceType="academy" intentType="curriculum_price_cta_click" ctaText="Get Curriculum + Early-Bird Price" pagePath="/academy">
+                    Get Curriculum + Early-Bird Price
                   </IntentLink>
                 </Button>
               </div>
@@ -345,8 +345,8 @@ export default function AcademyPage() {
               </ul>
               <div className="mt-8">
                 <Button size="lg" className="w-full" asChild>
-                  <IntentLink href="/academy/enrol" audienceType="academy" intentType="pricing_reveal_cta_click" ctaText="View Guided Launch Details" pagePath="/academy">
-                    View Guided Launch Details
+                  <IntentLink href="/academy/enrol" audienceType="academy" intentType="curriculum_price_cta_click" ctaText="Get Curriculum + Early-Bird Price" pagePath="/academy">
+                    Get Curriculum + Early-Bird Price
                   </IntentLink>
                 </Button>
               </div>
@@ -379,8 +379,8 @@ export default function AcademyPage() {
                   className="w-full border-gray-600 text-white hover:bg-gray-700"
                   asChild
                 >
-                  <IntentLink href="/academy/enrol" audienceType="academy" intentType="pricing_reveal_cta_click" ctaText="Apply for Done-With-You" pagePath="/academy">
-                    Apply for Done-With-You
+                  <IntentLink href="/academy/enrol" audienceType="academy" intentType="curriculum_price_cta_click" ctaText="Get Curriculum + Early-Bird Price" pagePath="/academy">
+                    Get Curriculum + Early-Bird Price
                   </IntentLink>
                 </Button>
               </div>
@@ -454,8 +454,8 @@ export default function AcademyPage() {
             </p>
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button size="lg" asChild>
-                <IntentLink href="/academy/enrol" audienceType="academy" intentType="enrol_cta_click" ctaText="Reserve Your Spot" pagePath="/academy">
-                  Reserve Your Spot <ArrowRight className="ml-2 h-5 w-5" />
+                <IntentLink href="/academy/enrol" audienceType="academy" intentType="curriculum_price_cta_click" ctaText="Get Curriculum + Early-Bird Price" pagePath="/academy">
+                  Get Curriculum + Early-Bird Price <ArrowRight className="ml-2 h-5 w-5" />
                 </IntentLink>
               </Button>
               <Button variant="outline" size="lg" asChild className="border-gray-600 text-white hover:bg-gray-700">

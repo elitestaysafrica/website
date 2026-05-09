@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowLeft, CheckCircle2, Loader2 } from "lucide-react"
@@ -18,11 +18,13 @@ type ContactStep = {
 
 type QuestionsStep = {
   experience: string
-  budget: string
   timeline: string
+  support: string
   hearAbout: string
   message: string
 }
+
+type AcademyLeadSource = "academy-enrol-step1" | "academy-enrol-step2" | "academy-enrol"
 
 const tiers = [
   {
@@ -30,6 +32,7 @@ const tiers = [
     title: "Self-Starter",
     priceAmount: 25000,
     summary: "All 8 modules. Watch on your time. WhatsApp community access.",
+    bestFor: "You want the full system and can execute on your own.",
     benefits: [
       "Full course — all 8 modules",
       "Community access (Discord + WhatsApp)",
@@ -42,6 +45,7 @@ const tiers = [
     title: "Guided Launch",
     priceAmount: 45000,
     summary: "Modules + 1-on-1 calls + listing audit + post-first-review check-in.",
+    bestFor: "You want the course plus operator feedback before and after launch.",
     popular: true,
     benefits: [
       "Everything in Self-Starter",
@@ -56,6 +60,7 @@ const tiers = [
     title: "Done-With-You",
     priceAmount: 250000,
     summary: "We physically help you set up and launch your unit.",
+    bestFor: "You have a unit or budget and want hands-on launch help.",
     benefits: [
       "Everything in Guided Launch",
       "On-site setup help",
@@ -72,12 +77,18 @@ const experienceOptions = [
   "I want to start an Airbnb management business",
 ]
 
-const budgetOptions = [
-  "Under KES 500K",
-  "KES 500K – 1M",
-  "KES 1M – 2M",
-  "Over KES 2M",
-  "I'm not sure yet",
+const timelineOptions = [
+  "This month",
+  "1–3 months",
+  "3–6 months",
+  "Just learning for now",
+]
+
+const supportOptions = [
+  "Course only",
+  "Course + calls",
+  "Hands-on launch help",
+  "Not sure yet",
 ]
 
 const hearAboutOptions = [
@@ -89,23 +100,34 @@ const hearAboutOptions = [
   "Other",
 ]
 
+function recommendTier(questions: QuestionsStep) {
+  if (questions.support === "Hands-on launch help") return "done-with-you"
+  if (questions.support === "Course + calls") return "guided-launch"
+  if (questions.experience === "I have a property but haven't listed it") return "guided-launch"
+  if (questions.experience === "I'm already hosting but want to improve") return "guided-launch"
+  if (questions.timeline === "This month") return "guided-launch"
+  return "self-starter"
+}
+
 async function saveAcademyLead({
   contact,
   selectedTier,
   questions,
   notify = false,
+  source,
 }: {
   contact: ContactStep
   selectedTier?: string
   questions?: Partial<QuestionsStep>
   notify?: boolean
+  source: AcademyLeadSource
 }) {
   const tier = tiers.find((item) => item.value === selectedTier)
   const interestedIn = [
     tier ? `${tier.title} — KES ${tier.priceAmount.toLocaleString()}` : "Academy interest captured before pricing reveal",
-    questions?.experience ? `Exp: ${questions.experience}` : undefined,
-    questions?.budget ? `Budget: ${questions.budget}` : undefined,
+    questions?.experience ? `Stage: ${questions.experience}` : undefined,
     questions?.timeline ? `Timeline: ${questions.timeline}` : undefined,
+    questions?.support ? `Support: ${questions.support}` : undefined,
     questions?.hearAbout ? `Heard: ${questions.hearAbout}` : undefined,
     questions?.message ? `Note: ${questions.message}` : undefined,
   ].filter(Boolean).join(" | ")
@@ -114,7 +136,7 @@ async function saveAcademyLead({
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      source: notify ? "academy-enrol" : selectedTier ? "academy-enrol-step2" : "academy-enrol-step1",
+      source,
       notify,
       name: contact.name,
       email: contact.email,
@@ -133,13 +155,15 @@ export default function EnrolPage() {
   const [contact, setContact] = useState<ContactStep>({ name: "", whatsapp: "", email: "" })
   const [questions, setQuestions] = useState<QuestionsStep>({
     experience: "",
-    budget: "",
     timeline: "",
+    support: "",
     hearAbout: "",
     message: "",
   })
 
+  const recommendedTierValue = useMemo(() => recommendTier(questions), [questions])
   const selectedTierDetails = tiers.find((tier) => tier.value === selectedTier)
+  const recommendedTier = tiers.find((tier) => tier.value === recommendedTierValue)
 
   const handleWhatsappChange = useCallback((value: string) => {
     setContact((current) => ({ ...current, whatsapp: value }))
@@ -168,7 +192,11 @@ export default function EnrolPage() {
     setContact(currentContact)
     setLoading(true)
     try {
-      const res = await saveAcademyLead({ contact: currentContact, notify: true })
+      const res = await saveAcademyLead({
+        contact: currentContact,
+        notify: true,
+        source: "academy-enrol-step1",
+      })
       if (!res.ok) {
         setSaveError("We couldn't save your details. Please try again or WhatsApp us at +254 111 695 444.")
         return
@@ -187,42 +215,60 @@ export default function EnrolPage() {
     }
   }
 
-  function handleTierSelect(tier: string) {
-    setSelectedTier(tier)
-    trackAcademyInterest({
-      intentType: "tier_select",
-      pagePath: "/academy/enrol",
-      formName: "academy_enrol_step_2",
-      source: "academy-enrol-step2",
-      tier,
-    })
-  }
-
-  async function handleTierContinue() {
-    if (!selectedTier) return
+  async function handleQuestionsContinue() {
+    if (!questions.experience || !questions.timeline || !questions.support) return
+    const recommended = recommendTier(questions)
+    setSelectedTier(recommended)
     setLoading(true)
     try {
-      await saveAcademyLead({ contact, selectedTier })
+      await saveAcademyLead({
+        contact,
+        selectedTier: recommended,
+        questions,
+        source: "academy-enrol-step2",
+      })
       trackAcademyInterest({
-        intentType: "tier_step_submit",
+        intentType: "qualification_step_submit",
         pagePath: "/academy/enrol",
         formName: "academy_enrol_step_2",
         source: "academy-enrol-step2",
-        tier: selectedTier,
-      }, "InitiateCheckout")
-      setStep(3)
-    } catch {
+        tier: recommended,
+      })
+      trackAcademyInterest({
+        intentType: "tier_recommendation_view",
+        pagePath: "/academy/enrol",
+        formName: "academy_enrol_step_3",
+        source: "academy-enrol-step3",
+        tier: recommended,
+      })
       setStep(3)
     } finally {
       setLoading(false)
     }
   }
 
+  function handleTierSelect(tier: string) {
+    setSelectedTier(tier)
+    trackAcademyInterest({
+      intentType: "tier_select",
+      pagePath: "/academy/enrol",
+      formName: "academy_enrol_step_3",
+      source: "academy-enrol-step3",
+      tier,
+    })
+  }
+
   async function handleFinalSubmit() {
-    if (!questions.experience || !questions.timeline) return
+    if (!selectedTier) return
     setLoading(true)
     try {
-      const res = await saveAcademyLead({ contact, selectedTier, questions, notify: true })
+      const res = await saveAcademyLead({
+        contact,
+        selectedTier,
+        questions,
+        notify: true,
+        source: "academy-enrol",
+      })
       if (res.ok) {
         trackAcademyInterest({
           intentType: "lead_submit",
@@ -249,9 +295,9 @@ export default function EnrolPage() {
           <div className="mx-auto w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mb-6">
             <CheckCircle2 className="h-8 w-8 text-green-400" />
           </div>
-          <h1 className="text-3xl font-bold text-white">You&apos;re on the list!</h1>
+          <h1 className="text-3xl font-bold text-white">You&apos;re on the early-bird list.</h1>
           <p className="mt-4 text-gray-300">
-            We&apos;ll reach out on WhatsApp when pre-sale opens. You&apos;ll get first access to the best price.
+            We saved your details and tier interest. We&apos;ll send the curriculum, launch details, and next steps on WhatsApp/email.
           </p>
           <div className="mt-8">
             <Button asChild>
@@ -292,18 +338,18 @@ export default function EnrolPage() {
               />
             </Link>
             <h1 className="text-3xl font-bold text-white sm:text-4xl">
-              Reserve Your ESA University Spot
+              Get the ESA Academy Curriculum + Early-Bird Price
             </h1>
             <p className="mt-3 text-gray-400">
-              Book your spot now — no payment today. Choose your tier on the next step.
+              No payment now. First we&apos;ll send the full module breakdown, launch details, and the best-fit option for your situation.
             </p>
           </div>
 
           <div className="mb-8">
             <div className="flex items-center justify-between text-xs font-medium text-gray-400 mb-2">
               <span className={step >= 1 ? "text-primary" : ""}>Details</span>
-              <span className={step >= 2 ? "text-primary" : ""}>Tiers</span>
-              <span className={step >= 3 ? "text-primary" : ""}>Questions</span>
+              <span className={step >= 2 ? "text-primary" : ""}>Fit</span>
+              <span className={step >= 3 ? "text-primary" : ""}>Early-bird options</span>
             </div>
             <div className="grid grid-cols-3 gap-2">
               {[1, 2, 3].map((item) => (
@@ -318,9 +364,9 @@ export default function EnrolPage() {
           {step === 1 && (
             <section className="rounded-2xl border border-gray-700 bg-gray-800/60 backdrop-blur p-6 sm:p-8 space-y-5">
               <div>
-                <h2 className="text-xl font-semibold text-white">Your Details</h2>
+                <h2 className="text-xl font-semibold text-white">Where should we send it?</h2>
                 <p className="mt-1 text-sm text-gray-400">
-                  We&apos;ll save this first so we can still follow up if you don&apos;t finish the full form.
+                  We&apos;ll save this immediately so you don&apos;t get lost if you close the page before finishing.
                 </p>
               </div>
 
@@ -351,7 +397,7 @@ export default function EnrolPage() {
                   onValueChange={handleWhatsappChange}
                   placeholder="7XX XXX XXX"
                 />
-                <p className="mt-1 text-xs text-gray-500">We&apos;ll use this to notify you when pre-sale opens</p>
+                <p className="mt-1 text-xs text-gray-500">We&apos;ll use this for curriculum and early-bird updates.</p>
               </div>
 
               <div>
@@ -376,78 +422,21 @@ export default function EnrolPage() {
                 disabled={loading}
                 onClick={handleContactContinue}
               >
-                {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Saving...</> : "Show Me the Tiers"}
+                {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Saving...</> : "Send Me the Curriculum + Early-Bird Price"}
               </Button>
               {saveError && (
                 <p className="text-center text-sm text-red-400">{saveError}</p>
               )}
+              <p className="text-center text-xs text-gray-500">No payment required. No spam.</p>
             </section>
           )}
 
           {step === 2 && (
             <section className="rounded-2xl border border-gray-700 bg-gray-800/60 backdrop-blur p-6 sm:p-8 space-y-5">
               <div>
-                <h2 className="text-xl font-semibold text-white">Choose Your Tier</h2>
+                <h2 className="text-xl font-semibold text-white">Help us point you to the right option</h2>
                 <p className="mt-1 text-sm text-gray-400">
-                  Founding pricing is shown here after your interest is captured. You can change later.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-                {tiers.map((tier) => (
-                  <button
-                    key={tier.value}
-                    type="button"
-                    onClick={() => handleTierSelect(tier.value)}
-                    className={`relative rounded-xl border p-5 text-left transition-colors ${
-                      selectedTier === tier.value
-                        ? "border-primary bg-primary/10"
-                        : "border-gray-600 bg-gray-700/30 hover:border-gray-500"
-                    }`}
-                  >
-                    {tier.popular && (
-                      <div className="absolute -top-3 left-4 rounded-full bg-primary px-3 py-1 text-xs font-bold text-white">
-                        Most Popular
-                      </div>
-                    )}
-                    <h3 className="text-lg font-bold text-white">{tier.title}</h3>
-                    <div className="mt-2 text-2xl font-bold text-primary"><Price amount={tier.priceAmount} /></div>
-                    <p className="mt-2 text-sm text-gray-300">{tier.summary}</p>
-                    <ul className="mt-4 space-y-2">
-                      {tier.benefits.map((benefit) => (
-                        <li key={benefit} className="flex items-start gap-2 text-xs text-gray-300">
-                          <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
-                          <span>{benefit}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </button>
-                ))}
-              </div>
-
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Button type="button" variant="outline" className="border-gray-600 text-white hover:bg-gray-700" onClick={() => setStep(1)}>
-                  Back
-                </Button>
-                <Button
-                  type="button"
-                  size="lg"
-                  className="flex-1 text-lg py-6"
-                  disabled={loading || !selectedTier}
-                  onClick={handleTierContinue}
-                >
-                  {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Saving...</> : "Continue"}
-                </Button>
-              </div>
-            </section>
-          )}
-
-          {step === 3 && (
-            <section className="rounded-2xl border border-gray-700 bg-gray-800/60 backdrop-blur p-6 sm:p-8 space-y-5">
-              <div>
-                <h2 className="text-xl font-semibold text-white">Quick Questions</h2>
-                <p className="mt-1 text-sm text-gray-400">
-                  Helps us tailor the experience for you{selectedTierDetails ? ` — ${selectedTierDetails.title}` : ""}.
+                  Three quick questions. Then we&apos;ll show the early-bird options and our recommendation.
                 </p>
               </div>
 
@@ -470,25 +459,8 @@ export default function EnrolPage() {
               </div>
 
               <div>
-                <label htmlFor="budget" className="block text-sm font-medium text-gray-300 mb-1">
-                  What&apos;s your furnishing/setup budget?
-                </label>
-                <select
-                  id="budget"
-                  value={questions.budget}
-                  onChange={(e) => setQuestions({ ...questions, budget: e.target.value })}
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-                >
-                  <option value="">Select one...</option>
-                  {budgetOptions.map((opt) => (
-                    <option key={opt} value={opt}>{opt}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
                 <label htmlFor="timeline" className="block text-sm font-medium text-gray-300 mb-1">
-                  When are you looking to launch? *
+                  When do you want to launch or improve? *
                 </label>
                 <select
                   id="timeline"
@@ -498,17 +470,33 @@ export default function EnrolPage() {
                   className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                 >
                   <option value="">Select one...</option>
-                  <option value="asap">As soon as possible</option>
-                  <option value="1-3months">In 1–3 months</option>
-                  <option value="3-6months">In 3–6 months</option>
-                  <option value="6plus">6+ months from now</option>
-                  <option value="exploring">Just exploring for now</option>
+                  {timelineOptions.map((opt) => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="support" className="block text-sm font-medium text-gray-300 mb-1">
+                  What level of support sounds closest? *
+                </label>
+                <select
+                  id="support"
+                  required
+                  value={questions.support}
+                  onChange={(e) => setQuestions({ ...questions, support: e.target.value })}
+                  className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-4 py-3 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                >
+                  <option value="">Select one...</option>
+                  {supportOptions.map((opt) => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
                 </select>
               </div>
 
               <div>
                 <label htmlFor="hearAbout" className="block text-sm font-medium text-gray-300 mb-1">
-                  How did you hear about ESA University?
+                  How did you hear about ESA Academy?
                 </label>
                 <select
                   id="hearAbout"
@@ -538,6 +526,73 @@ export default function EnrolPage() {
               </div>
 
               <div className="flex flex-col gap-3 sm:flex-row">
+                <Button type="button" variant="outline" className="border-gray-600 text-white hover:bg-gray-700" onClick={() => setStep(1)}>
+                  Back
+                </Button>
+                <Button
+                  type="button"
+                  size="lg"
+                  className="flex-1 text-lg py-6"
+                  disabled={loading || !questions.experience || !questions.timeline || !questions.support}
+                  onClick={handleQuestionsContinue}
+                >
+                  {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Saving...</> : "Show Me the Best-Fit Option"}
+                </Button>
+              </div>
+            </section>
+          )}
+
+          {step === 3 && (
+            <section className="rounded-2xl border border-gray-700 bg-gray-800/60 backdrop-blur p-6 sm:p-8 space-y-6">
+              <div>
+                <h2 className="text-xl font-semibold text-white">Your early-bird options</h2>
+                <p className="mt-1 text-sm text-gray-400">
+                  Based on your answers, we&apos;d start you with <span className="font-semibold text-primary">{recommendedTier?.title}</span>. You can still choose any option.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                {tiers.map((tier) => {
+                  const isSelected = selectedTier === tier.value
+                  const isRecommended = recommendedTierValue === tier.value
+                  return (
+                    <button
+                      key={tier.value}
+                      type="button"
+                      onClick={() => handleTierSelect(tier.value)}
+                      className={`relative rounded-xl border p-5 text-left transition-colors ${
+                        isSelected
+                          ? "border-primary bg-primary/10"
+                          : "border-gray-600 bg-gray-700/30 hover:border-gray-500"
+                      }`}
+                    >
+                      {(tier.popular || isRecommended) && (
+                        <div className="absolute -top-3 left-4 rounded-full bg-primary px-3 py-1 text-xs font-bold text-white">
+                          {isRecommended ? "Best Fit" : "Most Popular"}
+                        </div>
+                      )}
+                      <h3 className="text-lg font-bold text-white">{tier.title}</h3>
+                      <div className="mt-2 text-2xl font-bold text-primary"><Price amount={tier.priceAmount} /></div>
+                      <p className="mt-2 text-sm text-gray-300">{tier.summary}</p>
+                      <p className="mt-2 text-xs text-gray-400">{tier.bestFor}</p>
+                      <ul className="mt-4 space-y-2">
+                        {tier.benefits.map((benefit) => (
+                          <li key={benefit} className="flex items-start gap-2 text-xs text-gray-300">
+                            <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                            <span>{benefit}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </button>
+                  )
+                })}
+              </div>
+
+              <div className="rounded-xl border border-primary/30 bg-primary/10 p-4 text-sm text-gray-200">
+                <strong className="text-white">No payment today.</strong> This reserves your early-bird interest so we can send the curriculum, launch date, and next steps before public enrollment opens.
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row">
                 <Button type="button" variant="outline" className="border-gray-600 text-white hover:bg-gray-700" onClick={() => setStep(2)}>
                   Back
                 </Button>
@@ -545,15 +600,15 @@ export default function EnrolPage() {
                   type="button"
                   size="lg"
                   className="flex-1 text-lg py-6"
-                  disabled={loading || !questions.experience || !questions.timeline}
+                  disabled={loading || !selectedTier}
                   onClick={handleFinalSubmit}
                 >
-                  {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Submitting...</> : "Join the Waitlist"}
+                  {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Reserving...</> : `Reserve ${selectedTierDetails?.title || "My"} Early-Bird Spot`}
                 </Button>
               </div>
 
               <p className="text-center text-xs text-gray-500">
-                No payment required now. By joining the waitlist, you agree we may contact you about ESA Academy and handle your information according to our <Link href="/privacy-policy" className="underline hover:text-primary">Privacy Policy</Link>.
+                By joining the early-bird list, you agree we may contact you about ESA Academy and handle your information according to our <Link href="/privacy-policy" className="underline hover:text-primary">Privacy Policy</Link>.
               </p>
             </section>
           )}
