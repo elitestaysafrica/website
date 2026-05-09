@@ -11,7 +11,8 @@ import {
   ArrowRight,
   Home,
   Wrench,
-  Lock,
+  Users,
+  Handshake,
 } from "lucide-react"
 import { ModuleAccordion, FAQItem } from "./AcademyClientComponents"
 import { TrackPageIntent } from "@/components/IntentTracking"
@@ -97,8 +98,8 @@ export default function AcademyPage() {
 
             <div className="mt-10">
               <Button size="lg" asChild>
-                <IntentLink href="/academy/enrol" audienceType="academy" intentType="curriculum_price_cta_click" ctaText="Get Curriculum + Early-Bird Price" pagePath="/academy">
-                  Get Curriculum + Early-Bird Price <ArrowRight className="ml-2 h-5 w-5" />
+                <IntentLink href="/academy/enrol" audienceType="academy" intentType="pricing_reveal_cta_click" ctaText="See Pricing + Curriculum" pagePath="/academy">
+                  See Pricing + Curriculum <ArrowRight className="ml-2 h-5 w-5" />
                 </IntentLink>
               </Button>
             </div>
@@ -253,7 +254,7 @@ export default function AcademyPage() {
         </div>
       </section>
 
-      {/* ═══ PRICING ═══ */}
+      {/* ═══ SUPPORT PATHS ═══ */}
       <section
         id="pricing"
         className="relative py-16 sm:py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
@@ -272,133 +273,57 @@ export default function AcademyPage() {
         <div className="container relative mx-auto px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Choose Your Path
+              Start With the Curriculum. Pick Support After.
             </h2>
             <p className="mt-4 text-lg text-gray-300">
-              Three tiers. Same course. Different levels of hands-on support.
-              Reserve interest first to see founding member pricing and full tier details.
+              Everyone gets the same Nairobi-specific operating system. After we understand where you are, we’ll show the right level of support and founding member pricing.
             </p>
           </div>
 
-          <div className="mx-auto max-w-5xl grid grid-cols-1 gap-8 lg:grid-cols-3">
-            {/* Self-Starter */}
-            <div className="rounded-2xl border border-gray-700 bg-gray-800/50 backdrop-blur p-8 flex flex-col">
-              <h3 className="text-xl font-bold text-white">Self-Starter</h3>
-              <div className="mt-4 flex items-center gap-2 text-primary font-semibold">
-                <Lock className="h-4 w-4" />
-                Reserve interest to view pricing
+          <div className="mx-auto max-w-5xl grid grid-cols-1 gap-6 md:grid-cols-3">
+            {[
+              {
+                icon: BookOpen,
+                title: "Learn the System",
+                desc: "The full 8-module course, templates, checklists, quizzes, and community access.",
+              },
+              {
+                icon: Users,
+                title: "Get Operator Feedback",
+                desc: "Add calls and listing review when you want Bill or Peris to check your setup before launch.",
+              },
+              {
+                icon: Handshake,
+                title: "Launch With Help",
+                desc: "For serious hosts who want hands-on support setting up and launching their first unit.",
+              },
+            ].map((item) => (
+              <div key={item.title} className="rounded-2xl border border-gray-700 bg-gray-800/50 backdrop-blur p-8 text-center">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-primary/15">
+                  <item.icon className="h-7 w-7 text-primary" />
+                </div>
+                <h3 className="mt-5 text-xl font-bold text-white">{item.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-gray-300">{item.desc}</p>
               </div>
-              <ul className="mt-8 space-y-3 flex-1">
-                {[
-                  "Full course — all 8 modules",
-                  "Community access (Discord + WhatsApp)",
-                  "All downloadable resources & templates",
-                  "Quizzes + certificate",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                    <span className="text-sm text-gray-300">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-8">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full border-gray-600 text-white hover:bg-gray-700"
-                  asChild
-                >
-                  <IntentLink href="/academy/enrol" audienceType="academy" intentType="curriculum_price_cta_click" ctaText="Get Curriculum + Early-Bird Price" pagePath="/academy">
-                    Get Curriculum + Early-Bird Price
-                  </IntentLink>
-                </Button>
-              </div>
-            </div>
-
-            {/* Guided Launch */}
-            <div className="rounded-2xl border-2 border-primary bg-gray-800/50 backdrop-blur p-8 flex flex-col relative">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-bold text-white uppercase tracking-wide">
-                Most Popular
-              </div>
-              <h3 className="text-xl font-bold text-white">Guided Launch</h3>
-              <div className="mt-4 flex items-center gap-2 text-primary font-semibold">
-                <Lock className="h-4 w-4" />
-                Early access founding pricing
-              </div>
-              <div className="mt-3 rounded-lg bg-green-500/20 border border-green-500/30 px-4 py-2 text-center">
-                <div className="text-sm font-bold text-green-400">🔥 Pre-Launch founding offer</div>
-                <div className="text-xs text-green-400/80 mt-0.5">No payment now — see the tier breakdown first</div>
-              </div>
-              <ul className="mt-8 space-y-3 flex-1">
-                {[
-                  "Everything in Self-Starter",
-                  "3× 30-min 1-on-1 calls with Bill or Peris",
-                  "Call 1: Post-course Q&A — clear up any questions",
-                  "Call 2: Pre-launch listing review — we check everything before you go live",
-                  "Call 3: Post-first-review debrief — optimize based on real feedback",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                    <span className="text-sm text-gray-300">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-8">
-                <Button size="lg" className="w-full" asChild>
-                  <IntentLink href="/academy/enrol" audienceType="academy" intentType="curriculum_price_cta_click" ctaText="Get Curriculum + Early-Bird Price" pagePath="/academy">
-                    Get Curriculum + Early-Bird Price
-                  </IntentLink>
-                </Button>
-              </div>
-            </div>
-
-            {/* Done-With-You */}
-            <div className="rounded-2xl border border-gray-700 bg-gray-800/50 backdrop-blur p-8 flex flex-col">
-              <h3 className="text-xl font-bold text-white">Done-With-You</h3>
-              <div className="mt-4 flex items-center gap-2 text-primary font-semibold">
-                <Lock className="h-4 w-4" />
-                Apply to view availability + pricing
-              </div>
-              <ul className="mt-8 space-y-3 flex-1">
-                {[
-                  "Everything in Guided Launch (incl. 3 calls)",
-                  "We physically help set up your first unit",
-                  "On-site guidance & mentorship",
-                  "Our time + expertise (not furnishing costs)",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                    <span className="text-sm text-gray-300">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-8">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full border-gray-600 text-white hover:bg-gray-700"
-                  asChild
-                >
-                  <IntentLink href="/academy/enrol" audienceType="academy" intentType="curriculum_price_cta_click" ctaText="Get Curriculum + Early-Bird Price" pagePath="/academy">
-                    Get Curriculum + Early-Bird Price
-                  </IntentLink>
-                </Button>
-              </div>
-            </div>
+            ))}
           </div>
 
-          {/* Money-back guarantee */}
-          <div className="mt-10 mx-auto max-w-2xl">
-            <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-5 text-center">
-              <div className="flex items-center justify-center gap-2 text-green-400 font-semibold">
-                <Shield className="h-5 w-5" />
-                Money-Back Guarantee
-              </div>
-              <p className="mt-2 text-sm text-gray-300">
-                Complete everything and can&apos;t launch in 6 months? Full
-                refund. Founding prices are available after you reserve interest.
-              </p>
+          <div className="mt-10 mx-auto max-w-2xl rounded-xl border border-green-500/30 bg-green-500/10 p-5 text-center">
+            <div className="flex items-center justify-center gap-2 text-green-400 font-semibold">
+              <Shield className="h-5 w-5" />
+              Money-Back Guarantee
             </div>
+            <p className="mt-2 text-sm text-gray-300">
+              Complete everything and can&apos;t launch in 6 months? Full refund. No payment is due when you first submit interest.
+            </p>
+          </div>
+
+          <div className="mt-10 text-center">
+            <Button size="lg" asChild>
+              <IntentLink href="/academy/enrol" audienceType="academy" intentType="pricing_reveal_cta_click" ctaText="See Pricing + Curriculum" pagePath="/academy">
+                See Pricing + Curriculum <ArrowRight className="ml-2 h-5 w-5" />
+              </IntentLink>
+            </Button>
           </div>
         </div>
       </section>
@@ -454,8 +379,8 @@ export default function AcademyPage() {
             </p>
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button size="lg" asChild>
-                <IntentLink href="/academy/enrol" audienceType="academy" intentType="curriculum_price_cta_click" ctaText="Get Curriculum + Early-Bird Price" pagePath="/academy">
-                  Get Curriculum + Early-Bird Price <ArrowRight className="ml-2 h-5 w-5" />
+                <IntentLink href="/academy/enrol" audienceType="academy" intentType="pricing_reveal_cta_click" ctaText="See Pricing + Curriculum" pagePath="/academy">
+                  See Pricing + Curriculum <ArrowRight className="ml-2 h-5 w-5" />
                 </IntentLink>
               </Button>
               <Button variant="outline" size="lg" asChild className="border-gray-600 text-white hover:bg-gray-700">

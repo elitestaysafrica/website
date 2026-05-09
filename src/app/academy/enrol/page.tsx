@@ -162,7 +162,6 @@ export default function EnrolPage() {
   })
 
   const recommendedTierValue = useMemo(() => recommendTier(questions), [questions])
-  const selectedTierDetails = tiers.find((tier) => tier.value === selectedTier)
   const recommendedTier = tiers.find((tier) => tier.value === recommendedTierValue)
 
   const handleWhatsappChange = useCallback((value: string) => {
@@ -338,10 +337,10 @@ export default function EnrolPage() {
               />
             </Link>
             <h1 className="text-3xl font-bold text-white sm:text-4xl">
-              Get the ESA Academy Curriculum + Early-Bird Price
+              See Pricing + Curriculum
             </h1>
             <p className="mt-3 text-gray-400">
-              No payment now. First we&apos;ll send the full module breakdown, launch details, and the best-fit option for your situation.
+              Start with your details so we can send the full module breakdown and match you with the right support level.
             </p>
           </div>
 
@@ -364,9 +363,9 @@ export default function EnrolPage() {
           {step === 1 && (
             <section className="rounded-2xl border border-gray-700 bg-gray-800/60 backdrop-blur p-6 sm:p-8 space-y-5">
               <div>
-                <h2 className="text-xl font-semibold text-white">Where should we send it?</h2>
+                <h2 className="text-xl font-semibold text-white">Your Details</h2>
                 <p className="mt-1 text-sm text-gray-400">
-                  We&apos;ll save this immediately so you don&apos;t get lost if you close the page before finishing.
+                  We&apos;ll save this first so we can follow up even if you don&apos;t finish the full form.
                 </p>
               </div>
 
@@ -397,7 +396,7 @@ export default function EnrolPage() {
                   onValueChange={handleWhatsappChange}
                   placeholder="7XX XXX XXX"
                 />
-                <p className="mt-1 text-xs text-gray-500">We&apos;ll use this for curriculum and early-bird updates.</p>
+                <p className="mt-1 text-xs text-gray-500">We&apos;ll use this to send Academy details and next steps.</p>
               </div>
 
               <div>
@@ -418,16 +417,16 @@ export default function EnrolPage() {
               <Button
                 type="button"
                 size="lg"
-                className="w-full text-lg py-6"
+                className="w-full py-4 text-base sm:py-6 sm:text-lg whitespace-normal leading-snug"
                 disabled={loading}
                 onClick={handleContactContinue}
               >
-                {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Saving...</> : "Send Me the Curriculum + Early-Bird Price"}
+                {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Saving...</> : "Continue"}
               </Button>
               {saveError && (
                 <p className="text-center text-sm text-red-400">{saveError}</p>
               )}
-              <p className="text-center text-xs text-gray-500">No payment required. No spam.</p>
+              <p className="text-center text-xs text-gray-500">No payment required.</p>
             </section>
           )}
 
@@ -532,11 +531,11 @@ export default function EnrolPage() {
                 <Button
                   type="button"
                   size="lg"
-                  className="flex-1 text-lg py-6"
+                  className="flex-1 py-4 text-base sm:py-6 sm:text-lg whitespace-normal leading-snug"
                   disabled={loading || !questions.experience || !questions.timeline || !questions.support}
                   onClick={handleQuestionsContinue}
                 >
-                  {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Saving...</> : "Show Me the Best-Fit Option"}
+                  {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Saving...</> : "Show Best Fit"}
                 </Button>
               </div>
             </section>
@@ -599,11 +598,11 @@ export default function EnrolPage() {
                 <Button
                   type="button"
                   size="lg"
-                  className="flex-1 text-lg py-6"
+                  className="flex-1 py-4 text-base sm:py-6 sm:text-lg whitespace-normal leading-snug"
                   disabled={loading || !selectedTier}
                   onClick={handleFinalSubmit}
                 >
-                  {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Reserving...</> : `Reserve ${selectedTierDetails?.title || "My"} Early-Bird Spot`}
+                  {loading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Reserving...</> : "Reserve My Spot"}
                 </Button>
               </div>
 
