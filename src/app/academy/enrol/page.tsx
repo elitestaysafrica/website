@@ -168,7 +168,7 @@ export default function EnrolPage() {
     setContact(currentContact)
     setLoading(true)
     try {
-      const res = await saveAcademyLead({ contact: currentContact })
+      const res = await saveAcademyLead({ contact: currentContact, notify: true })
       if (!res.ok) {
         setSaveError("We couldn't save your details. Please try again or WhatsApp us at +254 111 695 444.")
         return

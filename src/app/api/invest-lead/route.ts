@@ -142,10 +142,13 @@ export async function POST(req: NextRequest) {
           <p><em>Reply within 48 hours with the audit report.</em></p>
         `
       } else if (isAcademySource(source)) {
-        subject = `🎓 Academy Pre-Sale Signup: ${name || phone || email}`
+        subject = source === "academy-enrol-step1"
+          ? `🎓 Academy Contact Captured: ${name || phone || email}`
+          : `🎓 Academy Pre-Sale Signup: ${name || phone || email}`
         htmlContent = `
           <h2>New Academy Pre-Sale Signup</h2>
           <p><strong>Name:</strong> ${name || "Not provided"}</p>
+          <p><strong>Email:</strong> ${email}</p>
           <p><strong>WhatsApp:</strong> ${phone || "Not provided"}</p>
           <p><strong>Tier Interest:</strong> ${interestedIn || "Not specified"}</p>
           <hr>
@@ -167,7 +170,7 @@ export async function POST(req: NextRequest) {
         `
       }
 
-      await fetch("https://api.brevo.com/v3/smtp/email", {
+      const brevoEmailRes = await fetch("https://api.brevo.com/v3/smtp/email", {
         method: "POST",
         headers: {
           "api-key": BREVO_API_KEY,
@@ -181,6 +184,10 @@ export async function POST(req: NextRequest) {
           htmlContent,
         }),
       })
+
+      if (!brevoEmailRes.ok) {
+        console.error("Brevo notification email failed", await brevoEmailRes.text())
+      }
     }
 
     if (!BREVO_API_KEY) {
