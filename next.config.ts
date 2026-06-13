@@ -13,6 +13,16 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: '/blog',
+        destination: 'https://blog.elitestaysafrica.com/',
+        permanent: true,
+      },
+      {
+        source: '/blog/:path*',
+        destination: 'https://blog.elitestaysafrica.com/:path*',
+        permanent: true,
+      },
+      {
         source: '/investors',
         destination: '/invest',
         permanent: true,
@@ -26,20 +36,6 @@ const nextConfig: NextConfig = {
         source: '/tiktok',
         destination: '/start',
         permanent: false,
-      },
-    ];
-  },
-  async rewrites() {
-    return [
-      {
-        // Proxy /blog requests to WordPress on VPS
-        source: '/blog',
-        destination: 'https://blog.elitestaysafrica.com/',
-      },
-      {
-        // Proxy /blog/* requests to WordPress on VPS
-        source: '/blog/:path*',
-        destination: 'https://blog.elitestaysafrica.com/:path*',
       },
     ];
   },

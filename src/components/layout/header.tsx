@@ -12,7 +12,7 @@ const navigation = [
   // { name: "Market Intel", href: "/market-intel" }, // Temporarily hidden
   { name: "For Investors", href: "/invest" },
   { name: "Academy", href: "/academy" },
-  { name: "Blog", href: "/blog", plainAnchor: true },
+  { name: "Blog", href: "https://blog.elitestaysafrica.com", plainAnchor: true },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ]

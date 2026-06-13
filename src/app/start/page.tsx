@@ -97,7 +97,7 @@ const secondaryLinks = [
     key: 'blog',
     label: 'Blog',
     title: 'Read STR guides',
-    href: '/blog?utm_source=tiktok&utm_medium=social&utm_campaign=peris_tiktok_start&utm_content=blog',
+    href: 'https://blog.elitestaysafrica.com/?utm_source=tiktok&utm_medium=social&utm_campaign=peris_tiktok_start&utm_content=blog',
     cta: 'Read the blog',
     icon: BookOpen,
   },
